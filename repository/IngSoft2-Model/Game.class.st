@@ -1,8 +1,8 @@
 "
-A board with a given number of spots
+A game with a given number of spots
 "
 Class {
-	#name : #Board,
+	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSpots'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> withSpots: numberOfSpots [
+Game class >> withSpots: numberOfSpots [
 	self assert: numberOfSpots > 0 description: 'Number of spots invalid'.
 	^self new
 		initializeWith: numberOfSpots
@@ -19,11 +19,11 @@ Board class >> withSpots: numberOfSpots [
 ]
 
 { #category : #initialization }
-Board >> initializeWith: spotAmount [
+Game >> initializeWith: spotAmount [
 	numberOfSpots := spotAmount.
 ]
 
 { #category : #accessing }
-Board >> numberOfSpots [
+Game >> numberOfSpots [
 	^numberOfSpots
 ]

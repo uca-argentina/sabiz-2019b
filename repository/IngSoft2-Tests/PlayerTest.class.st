@@ -14,4 +14,7 @@ PlayerTest >> testPlayerHasWon [
 
 { #category : #tests }
 PlayerTest >> testPlayerStartsAtPositionZero [
+	| player |
+	player := Player withNumber: 1.
+	self assert: player position equals: 0.
 ]
