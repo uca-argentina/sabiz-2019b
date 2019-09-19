@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'identificationNumber',
-		'position'
+		'position',
+		'players'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,13 +16,23 @@ Player class >> withNumber: playerIdentificationNumber [
 		initializeWith: playerIdentificationNumber 
 ]
 
-{ #category : #'as yet unclassified' }
-Player >> initializeWith: playerIdentificationNumber [ 
-	identificationNumber := playerIdentificationNumber.
-	position := 0
+{ #category : #playing }
+Player >> advance: numberOfSpotsToAdvance [ 
+	position := (self position) + numberOfSpotsToAdvance 
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
+Player >> identificationNumber [
+	^ identificationNumber
+]
+
+{ #category : #initialization }
+Player >> initializeWith: playerIdentificationNumber [ 
+	identificationNumber := playerIdentificationNumber.
+	position := 1
+]
+
+{ #category : #accessing }
 Player >> position [
 	^ position
 ]
