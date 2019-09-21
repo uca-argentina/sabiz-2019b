@@ -5,10 +5,6 @@ Class {
 }
 
 { #category : #tests }
-DiceTest >> testDiceHasGivenNumberOfFaces [
-]
-
-{ #category : #tests }
 DiceTest >> testDiceLoadedWithFiveReturnFiveWhenItIsRolled [
 	| dice |
 	dice := LoadedDice loadedWith: 5.
@@ -33,14 +29,4 @@ DiceTest >> testRandomDiceRollsValidNumber [
 	result := dice roll .
 	
 	self assert: (result > 0 and: result <= faces) .
-]
-
-{ #category : #tests }
-DiceTest >> testRandomDiceWithSixFacesRollsNumberBetweenOneAndSix [
-	
-	| dice roll |
-	dice := RandomDice with: 6.
-	roll := dice roll.
-	self assert: roll <= 6.
-	self assert: roll >= 1
 ]
