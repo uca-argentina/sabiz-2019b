@@ -110,6 +110,16 @@ GameTest >> testGameHasGivenSetOfDices [
 ]
 
 { #category : #tests }
+GameTest >> testGameIsOver [
+	| game player |
+	game := Game standard.
+	player := Player withNumber: 1.
+	game addPlayer: player.
+	game playout.
+	self assert: game isNotOver equals: false
+]
+
+{ #category : #tests }
 GameTest >> testPlayerCantMoveOnceOverTheEndLine [
 
 	| game player |
