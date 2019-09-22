@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'numberOfSpots',
 		'winner',
-		'players'
+		'players',
+		'leaderBoard'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,17 +26,28 @@ Game >> addPlayer: player [
 	players add: player
 ]
 
+{ #category : #setting }
+Game >> addPlayerToLeaderBoard: player [ 
+	leaderBoard add: player
+]
+
 { #category : #initialization }
 Game >> initializeWith: spotAmount [
 	numberOfSpots := spotAmount.
 	players := OrderedCollection new.
+	leaderBoard := OrderedCollection new.
+]
+
+{ #category : #accessing }
+Game >> leaderBoard [
+	^leaderBoard
 ]
 
 { #category : #playing }
 Game >> makeMoveByPlayer: player advancing: rollResult [ 
 	player advance: rollResult.
 	player position >= self numberOfSpots 
-		ifTrue: [ self setWinner: player ]
+		ifTrue: [ self addPlayerToLeaderBoard: player ]
 ]
 
 { #category : #accessing }
@@ -48,12 +60,7 @@ Game >> players [
 	^ players
 ]
 
-{ #category : #setting }
-Game >> setWinner: player [ 
-	winner := player
-]
-
 { #category : #accessing }
 Game >> theWinnerIs [
-	^ winner
+	^ leaderBoard first
 ]
