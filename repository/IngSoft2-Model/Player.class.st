@@ -6,8 +6,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'identificationNumber',
-		'position',
-		'players'
+		'position'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,8 +14,7 @@ Class {
 { #category : #'instance creation' }
 Player class >> withNumber: playerIdentificationNumber [ 
 	self assert: playerIdentificationNumber > 0 description: 'Invalid Identification number'.
-	^self new
-		initializeWith: playerIdentificationNumber 
+	^self new initializeWith: playerIdentificationNumber 
 ]
 
 { #category : #playing }
