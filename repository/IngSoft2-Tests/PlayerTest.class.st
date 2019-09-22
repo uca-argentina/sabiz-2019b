@@ -30,7 +30,7 @@ PlayerTest >> testPlayerHasWon [
 	player := Player withNumber: 1.
 	game addPlayer: player.
 	game makeMoveByPlayer: player advancing: dice roll.
-	self assert: game theWinnerIs == player 
+	self assert: (game leaderBoard first) == player 
 ]
 
 { #category : #tests }

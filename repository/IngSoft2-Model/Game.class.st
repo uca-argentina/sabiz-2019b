@@ -6,19 +6,19 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSpots',
-		'winner',
+		'dices',
 		'players',
-		'dices'
+		'leaderBoard'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 Game class >> withSpots: numberOfSpots [
+  
 	self assert: numberOfSpots > 0 description: 'Number of spots invalid'.
 	^self new
-		initializeWith: numberOfSpots 
-
+		initializeWith: numberOfSpots
 ]
 
 { #category : #adding }
@@ -28,7 +28,8 @@ Game >> addDice: dice [
 ]
 
 { #category : #setting }
-Game >> addPlayer: player [ 
+Game >> addPlayer: player [
+  
 	players add: player
 ]
 
@@ -38,36 +39,49 @@ Game >> dices [
 		^dices
 ]
 
+{ #category : #setting }
+Game >> addPlayerToLeaderBoard: player [
+  
+	leaderBoard add: player
+]
+
 { #category : #initialization }
 Game >> initializeWith: spotAmount [
+  
 	numberOfSpots := spotAmount.
 	players := OrderedCollection new.
 	dices := OrderedCollection new.
+	leaderBoard := OrderedCollection new.
+]
+
+{ #category : #accessing }
+Game >> leaderBoard [
+  
+	^leaderBoard
 ]
 
 { #category : #playing }
-Game >> makeMoveByPlayer: player advancing: rollResult [ 
+Game >> makeMoveByPlayer: player advancing: rollResult [
+  
 	player advance: rollResult.
 	player position >= self numberOfSpots 
-		ifTrue: [ self setWinner: player ]
+		ifTrue: [ self addPlayerToLeaderBoard: player ]
 ]
 
 { #category : #accessing }
 Game >> numberOfSpots [
+  
 	^numberOfSpots
 ]
 
 { #category : #accessing }
 Game >> players [
+  
 	^ players
-]
-
-{ #category : #setting }
-Game >> setWinner: player [ 
-	winner := player
 ]
 
 { #category : #accessing }
 Game >> theWinnerIs [
-	^ winner
+  
+	^ leaderBoard first
 ]
