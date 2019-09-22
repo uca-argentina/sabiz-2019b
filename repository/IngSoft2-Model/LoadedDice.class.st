@@ -24,5 +24,6 @@ LoadedDice >> initializeLoadedWith: loadedFace [
 
 { #category : #roll }
 LoadedDice >> roll [
+
 	^ loadValue 
 ]

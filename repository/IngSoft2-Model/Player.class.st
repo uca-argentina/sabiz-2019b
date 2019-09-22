@@ -14,8 +14,7 @@ Class {
 { #category : #'instance creation' }
 Player class >> withNumber: playerIdentificationNumber [ 
 	self assert: playerIdentificationNumber > 0 description: 'Invalid Identification number'.
-	^self new
-		initializeWith: playerIdentificationNumber 
+	^self new initializeWith: playerIdentificationNumber 
 ]
 
 { #category : #playing }

@@ -38,13 +38,21 @@ GameTest >> testCantAddPlayerWithDupplicateIdNumber [
 	| player1A player1B game |
 	player1A := Player withNumber: 1.
 	player1B := Player withNumber: 1.
-	game := game standard.
+	game := Game standard.
 	game addPlayer: player1A.
-	self should: [  ] raise: Error.
+	self should: [ game addPlayer: player1B. ] raise: Error.
 ]
 
 { #category : #tests }
 GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
+
+	| game player |
+	game := Game standard.
+	player := Player withNumber: 1.
+	game addPlayer: player.
+	game playout.
+	
+	self should: [ game playOneRound. ] raise: Error.
 ]
 
 { #category : #tests }
@@ -64,7 +72,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 	player := Player withNumber: 1.
 	game := Game withSpots: 10.
 	game addPlayer: player.
-	self assert: (game players size == 1) description: 'Game does have correct number of players'
+	self assert: (game players size = 1) description: 'Game does have correct number of players'
 ]
 
 { #category : #tests }
@@ -72,7 +80,7 @@ GameTest >> testGameHasGivenNumberOfSpots [
 
 	| board |
 	board := Game withSpots: 20.
-	self assert: board numberOfSpots == 20 description: 'Game has incorrect number of spots'
+	self assert: board numberOfSpots = 20 description: 'Game has incorrect number of spots'
 ]
 
 { #category : #tests }
@@ -103,6 +111,14 @@ GameTest >> testGameHasGivenSetOfDices [
 
 { #category : #tests }
 GameTest >> testPlayerCantMoveOnceOverTheEndLine [
+
+	| game player |
+	game := Game standard.
+	player := Player withNumber: 1.
+	game addPlayer: player.
+	game playout.
+	
+	self should: [ game makePlayerMove: player. ] raise: Error.
 ]
 
 { #category : #tests }
@@ -115,7 +131,7 @@ GameTest >> testPlayerOneWonTheGame [
 	game addPlayer: player.
 	game addDice: dice.
 	game playOneRound.
-	self assert: (game leaderBoard first) == player 
+	self assert: (game leaderBoard first) == player
 ]
 
 { #category : #tests }

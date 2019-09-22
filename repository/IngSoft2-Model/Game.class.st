@@ -48,7 +48,10 @@ Game >> addDice: dice [
 
 { #category : #setting }
 Game >> addPlayer: player [
-  
+
+	players do: [ :each |
+		self assert: each identificationNumber ~= player identificationNumber description: 'A player with that ID is already in the game'.
+	].
 	players add: player
 ]
 
@@ -82,6 +85,7 @@ Game >> leaderBoard [
 { #category : #playing }
 Game >> makePlayerMove: player [
 
+	self assert: player position < numberOfSpots.
 	dices do: [ :dice |
 		player advance: dice roll.
 	].
@@ -98,6 +102,7 @@ Game >> numberOfSpots [
 { #category : #playing }
 Game >> playOneRound [
 
+	self assert: players size > leaderBoard size description: 'Game is already over'.
 	players do: [ :player |
 		( player position < self numberOfSpots ) ifTrue: [ self makePlayerMove: player. ].
 	].
@@ -115,7 +120,7 @@ Game >> playout [
 	"Checkeos"
 	self assert: players isNotEmpty description: 'Game cannot start without any players'.
 	self assert: dices isNotEmpty description: 'Game cannot start without dice/s'.
- 
+
 	"Juego"
 	[ players size > leaderBoard size ] whileTrue: [
 		self playOneRound.
