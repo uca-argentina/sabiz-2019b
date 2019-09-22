@@ -1,3 +1,6 @@
+"
+This class contains tests about dices
+"
 Class {
 	#name : #DiceTest,
 	#superclass : #TestCase,

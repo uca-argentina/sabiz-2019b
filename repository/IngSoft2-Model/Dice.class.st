@@ -1,3 +1,6 @@
+"
+A Dice superclass
+"
 Class {
 	#name : #Dice,
 	#superclass : #Object,

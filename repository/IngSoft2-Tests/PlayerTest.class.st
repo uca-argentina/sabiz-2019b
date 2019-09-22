@@ -1,3 +1,6 @@
+"
+This class contains tests about the players
+"
 Class {
 	#name : #PlayerTest,
 	#superclass : #TestCase,

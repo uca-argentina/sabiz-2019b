@@ -1,3 +1,6 @@
+"
+A good old classic dice
+"
 Class {
 	#name : #RandomDice,
 	#superclass : #Dice,

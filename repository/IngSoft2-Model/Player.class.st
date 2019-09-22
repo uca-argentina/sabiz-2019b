@@ -1,3 +1,6 @@
+"
+A potential player for the game
+"
 Class {
 	#name : #Player,
 	#superclass : #Object,
