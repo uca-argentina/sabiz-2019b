@@ -58,10 +58,19 @@ GameTest >> testGameHasGivenSetOfDices [
 
 { #category : #tests }
 GameTest >> testPlayerOneWonTheGame [
+
+	| dice player game |
+	game := Game withSpots: 10.
+	dice := LoadedDice loadedWith: 10.
+	player := Player withNumber: 1.
+	game addPlayer: player.
+	game makeMoveByPlayer: player advancing: dice roll.
+	self assert: (game leaderBoard first) == player 
 ]
 
 { #category : #tests }
 GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
+
 	self
 		should: [ Game withSpots: 0 ] raise: Error;
 		should: [ Game withSpots: self negativeNumberOfSpots ]
@@ -70,6 +79,7 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 
 { #category : #tests }
 GameTest >> testRiggedGameEndsAsExpected [
+
 	| player1 player2 player3 game dice |
 	dice := LoadedDice loadedWith: 10.
 	game := Game withSpots: 10.

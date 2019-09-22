@@ -23,18 +23,8 @@ PlayerTest >> testPlayerAdvancesWhenDiceIsRolled [
 ]
 
 { #category : #tests }
-PlayerTest >> testPlayerHasWon [
-	| dice player game |
-	game := Game withSpots: 10.
-	dice := LoadedDice loadedWith: 10.
-	player := Player withNumber: 1.
-	game addPlayer: player.
-	game makeMoveByPlayer: player advancing: dice roll.
-	self assert: (game leaderBoard first) == player 
-]
-
-{ #category : #tests }
 PlayerTest >> testPlayerStartsAtPositionOne [
+
 	| player |
 	player := Player withNumber: 1.
 	self assert: player position equals: 1.
@@ -42,6 +32,7 @@ PlayerTest >> testPlayerStartsAtPositionOne [
 
 { #category : #tests }
 PlayerTest >> testProhibitsCreatingPlayerWithWrongIdentificationNumber [
+
 	self
 		should: [ Player withNumber: 0 ] raise: Error;
 		should: [ Game withSpots: self negativeNumbers ] raise: Error
