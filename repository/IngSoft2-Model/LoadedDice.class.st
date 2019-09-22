@@ -16,7 +16,7 @@ LoadedDice class >> loadedWith: loadedValue [
 	^ self new initializeLoadedWith: loadedValue
 ]
 
-{ #category : #iniatialization }
+{ #category : #initialization }
 LoadedDice >> initializeLoadedWith: loadedFace [
 	
 	loadValue := loadedFace 

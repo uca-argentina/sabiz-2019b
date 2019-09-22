@@ -58,7 +58,8 @@ Game >> addPlayer: player [
 { #category : #setting }
 Game >> addPlayerToLeaderBoard: player [
   
-	leaderBoard add: player
+	leaderBoard add: player.
+	player reachingTheFinalSpotSetsPlayerFinalPosition: self numberOfSpots
 ]
 
 { #category : #playing }
@@ -86,6 +87,11 @@ Game >> initializeWith: spotAmount [
 	leaderBoard := OrderedCollection new.
 ]
 
+{ #category : #playing }
+Game >> isNotOver [
+	^ self players size > self leaderBoard size
+]
+
 { #category : #accessing }
 Game >> leaderBoard [
   
@@ -111,13 +117,12 @@ Game >> numberOfSpots [
 
 { #category : #playing }
 Game >> playOneRound [
-
 	self checkThereAreEnoughPlayersAndDicesToPlay.
-	
-	self assert: players size > (self leaderBoard size) description: 'Game is already over'.
-	players do: [ :player |
-		( player position < self numberOfSpots ) ifTrue: [ self makePlayerMove: player. ].
-	].
+	self assert: self isNotOver description: 'Game is already over'.
+	players
+		do: [ :player | 
+			player position < self numberOfSpots
+				ifTrue: [ self makePlayerMove: player ] ]
 ]
 
 { #category : #accessing }
@@ -133,8 +138,7 @@ Game >> playout [
 	self checkThereAreEnoughPlayersAndDicesToPlay.
 	
 	"Games"
-	self checkThereAreEnoughPlayersAndDicesToPlay.
-	[ players size > self leaderBoard size ]
+	[ self isNotOver ]
 		whileTrue: [ self playOneRound ]
 ]
 
