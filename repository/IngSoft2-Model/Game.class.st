@@ -58,7 +58,8 @@ Game >> addPlayer: player [
 { #category : #setting }
 Game >> addPlayerToLeaderBoard: player [
   
-	leaderBoard add: player
+	leaderBoard add: player.
+	player reachingTheFinalSpotSetsPlayerFinalPosition: self numberOfSpots
 ]
 
 { #category : #playing }
