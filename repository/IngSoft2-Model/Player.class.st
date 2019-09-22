@@ -6,8 +6,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'identificationNumber',
-		'position',
-		'players'
+		'position'
 	],
 	#category : #'IngSoft2-Model'
 }

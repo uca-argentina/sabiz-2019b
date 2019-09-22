@@ -1,3 +1,6 @@
+"
+BaseClass for repository support
+"
 Class {
 	#name : #BaselineOfIngSoft2,
 	#superclass : #BaselineOf,
