@@ -138,7 +138,6 @@ Game >> playout [
 	self checkThereAreEnoughPlayersAndDicesToPlay.
 	
 	"Games"
-	self checkThereAreEnoughPlayersAndDicesToPlay.
 	[ self isNotOver ]
 		whileTrue: [ self playOneRound ]
 ]
