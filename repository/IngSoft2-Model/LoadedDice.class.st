@@ -1,3 +1,6 @@
+"
+A dice that always rolls the same number
+"
 Class {
 	#name : #LoadedDice,
 	#superclass : #Dice,

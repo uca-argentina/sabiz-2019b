@@ -1,3 +1,6 @@
+"
+A good old classic dice
+"
 Class {
 	#name : #RandomDice,
 	#superclass : #Dice,
@@ -9,7 +12,7 @@ Class {
 }
 
 { #category : #initialization }
-RandomDice class >> with: faces [
+RandomDice class >> withFaces: faces [
 
 	self assert: faces > 3 description: 'Number of Faces should be greater than three'.
 	^self new initializeWith: faces
