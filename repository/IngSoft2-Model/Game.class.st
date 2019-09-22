@@ -6,7 +6,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSpots',
-		'winner',
 		'players',
 		'leaderBoard'
 	],
