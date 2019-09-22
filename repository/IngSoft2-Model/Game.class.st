@@ -61,6 +61,16 @@ Game >> addPlayerToLeaderBoard: player [
 	leaderBoard add: player
 ]
 
+{ #category : #playing }
+Game >> checkThereAreEnoughPlayersAndDicesToPlay [
+	self
+		assert: players isNotEmpty
+		description: 'Game cannot start without any players'.	
+	self
+		assert: dices isNotEmpty
+		description: 'Game cannot start without dice/s'
+]
+
 { #category : #accessing }
 Game >> dices [
 
@@ -85,7 +95,7 @@ Game >> leaderBoard [
 { #category : #playing }
 Game >> makePlayerMove: player [
 
-	self assert: player position < numberOfSpots.
+	self assert: (player position < self numberOfSpots) description: 'Player already reached the final spot'.
 	dices do: [ :dice |
 		player advance: dice roll.
 	].
@@ -102,7 +112,9 @@ Game >> numberOfSpots [
 { #category : #playing }
 Game >> playOneRound [
 
-	self assert: players size > leaderBoard size description: 'Game is already over'.
+	self checkThereAreEnoughPlayersAndDicesToPlay.
+	
+	self assert: players size > (self leaderBoard size) description: 'Game is already over'.
 	players do: [ :player |
 		( player position < self numberOfSpots ) ifTrue: [ self makePlayerMove: player. ].
 	].
@@ -117,14 +129,13 @@ Game >> players [
 { #category : #playing }
 Game >> playout [
 
-	"Checkeos"
-	self assert: players isNotEmpty description: 'Game cannot start without any players'.
-	self assert: dices isNotEmpty description: 'Game cannot start without dice/s'.
-
-	"Juego"
-	[ players size > leaderBoard size ] whileTrue: [
-		self playOneRound.
-	].
+	"Checks"
+	self checkThereAreEnoughPlayersAndDicesToPlay.
+	
+	"Games"
+	self checkThereAreEnoughPlayersAndDicesToPlay.
+	[ players size > self leaderBoard size ]
+		whileTrue: [ self playOneRound ]
 ]
 
 { #category : #accessing }

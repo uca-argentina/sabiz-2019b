@@ -28,7 +28,7 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 				playOneRound.
 
 		game players do: [ :player |
-			self assert: player position > 0.
+			self assert: player position > 1.
 		]
 ]
 
@@ -72,15 +72,15 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 	player := Player withNumber: 1.
 	game := Game withSpots: 10.
 	game addPlayer: player.
-	self assert: (game players size = 1) description: 'Game does have correct number of players'
+	self assert: game players size equals: 1
 ]
 
 { #category : #tests }
 GameTest >> testGameHasGivenNumberOfSpots [
 
-	| board |
-	board := Game withSpots: 20.
-	self assert: board numberOfSpots = 20 description: 'Game has incorrect number of spots'
+	| game |
+	game := Game withSpots: 20.
+	self assert: game numberOfSpots equals: 20
 ]
 
 { #category : #tests }
@@ -90,7 +90,7 @@ GameTest >> testGameHasGivenPlayer [
 	player := Player withNumber: 1.
 	game := Game withSpots: 10.
 	game addPlayer: player.
-	self assert: (game players includes: player) description: 'Game does not include added player'
+	self assert: (game players includes: player)
 ]
 
 { #category : #tests }
@@ -105,7 +105,7 @@ GameTest >> testGameHasGivenSetOfDices [
 	dice := LoadedDice loadedWith: 4.
 	game addDice: dice.
 	dices add: dice.
-	self assert: ((game dices includesAll: dices) and: (dices includesAll: game dices)) description: 'Game does not contain given set of dices'
+	self assert: ((game dices includesAll: dices) and: (dices includesAll: game dices))
 	
 ]
 
@@ -131,7 +131,7 @@ GameTest >> testPlayerOneWonTheGame [
 	game addPlayer: player.
 	game addDice: dice.
 	game playOneRound.
-	self assert: (game leaderBoard first) == player
+	self assert: (game leaderBoard first) equals: player
 ]
 
 { #category : #tests }
