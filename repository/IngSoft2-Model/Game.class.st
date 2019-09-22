@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'numberOfSpots',
 		'winner',
-		'players'
+		'players',
+		'dices'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,15 +21,28 @@ Game class >> withSpots: numberOfSpots [
 
 ]
 
+{ #category : #adding }
+Game >> addDice: dice [
+			
+	dices add: dice.
+]
+
 { #category : #setting }
 Game >> addPlayer: player [ 
 	players add: player
+]
+
+{ #category : #accessing }
+Game >> dices [
+
+		^dices
 ]
 
 { #category : #initialization }
 Game >> initializeWith: spotAmount [
 	numberOfSpots := spotAmount.
 	players := OrderedCollection new.
+	dices := OrderedCollection new.
 ]
 
 { #category : #playing }
