@@ -12,4 +12,6 @@ smalltalk:
 matrix:
   allow_failures:
   - smalltalk: Pharo64-alpha
+  - smalltalk: Pharo64-8.0
+  - smalltalk: Pharo-8.0
   fast_finish: true
