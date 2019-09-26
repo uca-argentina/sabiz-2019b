@@ -141,7 +141,7 @@ GameTest >> testPlayerOneWonTheGame [
 	game addPlayer: player.
 	game addDice: dice.
 	game playOneRound.
-	self assert: (game leaderBoard first) equals: player
+	self assert: (game winner) equals: player
 ]
 
 { #category : #tests }

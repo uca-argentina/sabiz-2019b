@@ -143,7 +143,7 @@ Game >> playout [
 ]
 
 { #category : #accessing }
-Game >> theWinnerIs [
+Game >> winner [
   
 	^ leaderBoard first
 ]
