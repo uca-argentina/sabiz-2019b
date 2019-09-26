@@ -3,7 +3,6 @@ sudo: false
 os:
   - linux
 smalltalk:
-  - Pharo-8.0
   - Pharo64-8.0
   - Pharo-7.0
   - Pharo64-7.0
@@ -13,5 +12,4 @@ matrix:
   allow_failures:
   - smalltalk: Pharo64-alpha
   - smalltalk: Pharo64-8.0
-  - smalltalk: Pharo-8.0
   fast_finish: true
