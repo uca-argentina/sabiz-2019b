@@ -34,35 +34,31 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 
 { #category : #tests }
 GameTest >> testCantAddPlayerWithDupplicateIdNumber [
-
 	| player1A player1B game |
 	player1A := Player withNumber: 1.
 	player1B := Player withNumber: 1.
 	game := Game standard.
 	game addPlayer: player1A.
-	self should: [ game addPlayer: player1B. ] raise: Error.
+	self should: [ game addPlayer: player1B ] raise: AssertionFailure
 ]
 
 { #category : #tests }
 GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
-
 	| game player |
 	game := Game standard.
 	player := Player withNumber: 1.
 	game addPlayer: player.
 	game playout.
-	
-	self should: [ game playOneRound. ] raise: Error.
+	self should: [ game playOneRound ] raise: AssertionFailure
 ]
 
 { #category : #tests }
 GameTest >> testGameCantStartWithoutDiceOrPlayers [
-
 	| game |
 	game := Game withSpots: 10.
-	self should: [ game playout. ] raise: Error.
+	self should: [ game playout ] raise: AssertionFailure.
 	game addPlayer: (Player withNumber: 1).
-	self should: [ game playout. ] raise: Error.
+	self should: [ game playout ] raise: AssertionFailure
 ]
 
 { #category : #tests }
@@ -121,14 +117,12 @@ GameTest >> testGameIsOver [
 
 { #category : #tests }
 GameTest >> testPlayerCantMoveOnceOverTheEndLine [
-
 	| game player |
 	game := Game standard.
 	player := Player withNumber: 1.
 	game addPlayer: player.
 	game playout.
-	
-	self should: [ game makePlayerMove: player. ] raise: Error.
+	self should: [ game makePlayerMove: player ] raise: AssertionFailure
 ]
 
 { #category : #tests }
@@ -146,11 +140,10 @@ GameTest >> testPlayerOneWonTheGame [
 
 { #category : #tests }
 GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
-
 	self
-		should: [ Game withSpots: 0 ] raise: Error;
+		should: [ Game withSpots: 0 ] raise: AssertionFailure;
 		should: [ Game withSpots: self negativeNumberOfSpots ]
-			raise: Error
+			raise: AssertionFailure
 ]
 
 { #category : #tests }
