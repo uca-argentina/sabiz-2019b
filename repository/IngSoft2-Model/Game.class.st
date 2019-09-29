@@ -15,17 +15,17 @@ Class {
 
 { #category : #'instance creation' }
 Game class >> standard [
-	
-	| standardGame |
-	standardGame := self new initializeWith: self standardSpotAmount.
-	standardGame addDice: self standardDice.
-	^standardGame.
+	^self withNumberOfSpots: self standardSpotAmount playedBy: self standardSetOfPlayers throwing: self standardSetOfDices
 ]
 
 { #category : #standardValues }
-Game class >> standardDice [
+Game class >> standardSetOfDices [
+	^ {(RandomDice withFaces: 6)}
+]
 
-	^RandomDice withFaces: 6.
+{ #category : #standardValues }
+Game class >> standardSetOfPlayers [
+	^{ Player withNumber: 1. Player withNumber: 2. Player withNumber: 3 }
 ]
 
 { #category : #standardValues }
@@ -34,25 +34,23 @@ Game class >> standardSpotAmount [
 ]
 
 { #category : #'instance creation' }
-Game class >> withSpots: numberOfSpots [
-  
-	self assert: numberOfSpots > 0 description: 'Number of spots invalid'.
-	^self new initializeWith: numberOfSpots
-]
-
-{ #category : #setting }
-Game >> addDice: dice [
-			
-	dices add: dice.
-]
-
-{ #category : #setting }
-Game >> addPlayer: player [
-
-	players do: [ :each |
-		self assert: each identificationNumber ~= player identificationNumber description: 'A player with that ID is already in the game'.
-	].
-	players add: player
+Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices [
+	| gamePlayers |
+	gamePlayers := OrderedCollection new.
+	self assert: numberOfSpots > 0 description: 'Invalid number of spots'.
+	self
+		assert: players isNotEmpty
+		description: 'Not enough players to initialize game'.
+	self
+		assert: dices isNotEmpty
+		description: 'Tried to initialize a game with an invalid set of Dices'.
+	players
+		do:
+			[ :each | gamePlayers addIfNotPresent: each ifPresentDo: [ self error: Error ] ].
+	^ self new
+		initializeWithSpots: numberOfSpots
+		players: gamePlayers
+		andDices: dices
 ]
 
 { #category : #setting }
@@ -62,16 +60,6 @@ Game >> addPlayerToLeaderBoard: player [
 	player reachingTheFinalSpotSetsPlayerFinalPosition: self numberOfSpots
 ]
 
-{ #category : #playing }
-Game >> checkThereAreEnoughPlayersAndDicesToPlay [
-	self
-		assert: players isNotEmpty
-		description: 'Game cannot start without any players'.	
-	self
-		assert: dices isNotEmpty
-		description: 'Game cannot start without dice/s'
-]
-
 { #category : #accessing }
 Game >> dices [
 
@@ -79,11 +67,10 @@ Game >> dices [
 ]
 
 { #category : #initialization }
-Game >> initializeWith: spotAmount [
-  
+Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
 	numberOfSpots := spotAmount.
-	players := OrderedCollection new.
-	dices := OrderedCollection new.
+	players := gamePlayers asOrderedCollection.
+	dices := gameDices asOrderedCollection.
 	leaderBoard := OrderedCollection new.
 ]
 
@@ -117,7 +104,6 @@ Game >> numberOfSpots [
 
 { #category : #playing }
 Game >> playOneRound [
-	self checkThereAreEnoughPlayersAndDicesToPlay.
 	self assert: self isNotOver description: 'Game is already over'.
 	players
 		do: [ :player | 
