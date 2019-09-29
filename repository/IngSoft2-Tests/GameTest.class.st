@@ -14,22 +14,10 @@ GameTest >> negativeNumberOfSpots [
 
 { #category : #tests }
 GameTest >> testAllPlayersAdvancedAfterOneRound [
-
-		| game player1 player2 dice |
-
-		game 		:= Game withSpots: 10.
-		player1 	:= Player withNumber: 1.
-		player2 	:= Player withNumber: 2.
-		dice 		:= RandomDice withFaces: 6.
-
-		game 	addPlayer: 	player1;
-				addPlayer: 	player2;
-				addDice: 		dice;
-				playOneRound.
-
-		game players do: [ :player |
-			self assert: player position > 1.
-		]
+	| game |
+	game := Game standard.
+	game playOneRound.
+	game players do: [ :player | self assert: player position > 1 ]
 ]
 
 { #category : #tests }
@@ -39,7 +27,7 @@ GameTest >> testCantAddPlayerWithDupplicateIdNumber [
 	player1B := Player withNumber: 1.
 	game := Game standard.
 	game addPlayer: player1A.
-	self should: [ game addPlayer: player1B ] raise: AssertionFailure
+	self should: [ Game withNumberOfSpots: 20 playedBy: { Player withNumber: 1. Player withNumber: 1 } throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
 ]
 
 { #category : #tests }
