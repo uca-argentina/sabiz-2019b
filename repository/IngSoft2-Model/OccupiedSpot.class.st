@@ -14,15 +14,14 @@ Class {
 }
 
 { #category : #initialization }
-OccupiedSpot class >> byPlayers: playersToEnterTheSpot [ 
+OccupiedSpot class >> byPlayers: playersToEnterTheSpot [
 	players := OrderedCollection new.
-	^self new spotOccupiedBy: playersToEnterTheSpot .
+	^ self new spotOccupiedBy: playersToEnterTheSpot
 ]
 
 { #category : #accessing }
 OccupiedSpot >> players [
-
-^ players
+	^ players
 ]
 
 { #category : #accessing }
@@ -31,6 +30,6 @@ OccupiedSpot >> quantityOfPlayers [
 ]
 
 { #category : #initialization }
-OccupiedSpot >> spotOccupiedBy: playersToEnterTheSpot [ 
-	players := playersToEnterTheSpot 
+OccupiedSpot >> spotOccupiedBy: playersToEnterTheSpot [
+	players := playersToEnterTheSpot
 ]

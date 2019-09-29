@@ -8,16 +8,17 @@ Class {
 }
 
 { #category : #initialization }
-Spot class >> empty [ 
-	^ EmptySpot new.
+Spot class >> empty [
+	^ EmptySpot new
 ]
 
 { #category : #initialization }
 Spot class >> occupiedBy: players [
 	| playersToEnterTheSpot |
-	playersToEnterTheSpot  := OrderedCollection new.
-	players do: [ :player | playersToEnterTheSpot  addIfNotPresent: player ].
-	^ OccupiedSpot byPlayers: playersToEnterTheSpot 
+	playersToEnterTheSpot := OrderedCollection new.
+	players
+		do: [ :player | playersToEnterTheSpot addIfNotPresent: player ].
+	^ OccupiedSpot byPlayers: playersToEnterTheSpot
 ]
 
 { #category : #accessing }

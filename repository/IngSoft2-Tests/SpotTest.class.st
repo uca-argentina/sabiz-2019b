@@ -8,11 +8,17 @@ Class {
 }
 
 { #category : #tests }
-SpotTest >> testSpotIsEmpty [
+SpotTest >> testSpotIgnoresRepeatedPlayers [
+	| spot |
+	spot := Spot occupiedBy: {#player1 . #player2 . #player1}.
+	self assert: spot quantityOfPlayers equals: 2
+]
 
-| spot |
-spot := Spot empty.
-self assert: spot quantityOfPlayers equals: 0.
+{ #category : #tests }
+SpotTest >> testSpotIsEmpty [
+	| spot |
+	spot := Spot empty.
+	self assert: spot quantityOfPlayers equals: 0
 ]
 
 { #category : #tests }
