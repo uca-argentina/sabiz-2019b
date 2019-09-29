@@ -19,3 +19,11 @@ BoardTest >> testBoardInitializesWithAllSpotsEmpty [
 	board spots
 		do: [ :spot | self assert: spot quantityOfPlayers equals: 0 ]
 ]
+
+{ #category : #tests }
+BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
+	self
+		should: [ Board withSpots: 0 ] raise: Error;
+		should: [ Board withSpots: -1 ]
+			raise: Error
+]

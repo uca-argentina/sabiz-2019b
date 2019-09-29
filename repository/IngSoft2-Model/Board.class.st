@@ -12,12 +12,13 @@ Class {
 
 { #category : #initialization }
 Board class >> withSpots: spotsAmmount [
+	self assert: spotsAmmount > 0 description: 'Number of spots invalid'.
 	^ self new initializeWithSpots: spotsAmmount
 ]
 
 { #category : #initialization }
 Board >> initializeWithSpots: spotsAmmount [
-	spots := Array new: spotsAmmount  withAll: Spot empty
+	spots := Array  new: spotsAmmount  withAll: Spot empty
 ]
 
 { #category : #accessing }
