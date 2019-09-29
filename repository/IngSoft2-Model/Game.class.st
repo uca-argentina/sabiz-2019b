@@ -87,13 +87,12 @@ Game >> leaderBoard [
 ]
 
 { #category : #playing }
-Game >> makePlayerMove: player [
-
-	self assert: (player position < self numberOfSpots) description: 'Player already reached the final spot'.
-	dices do: [ :dice |
-		player advance: dice roll.
-	].
-	player position >= self numberOfSpots 
+Game >> movePlayer: player [
+	self
+		assert: player position < self numberOfSpots
+		description: 'Player already reached the final spot'.
+	dices do: [ :dice | player advance: dice roll ].
+	player position >= self numberOfSpots
 		ifTrue: [ self addPlayerToLeaderBoard: player ]
 ]
 
@@ -109,7 +108,7 @@ Game >> playOneRound [
 	players
 		do: [ :player | 
 			player position < self numberOfSpots
-				ifTrue: [ self makePlayerMove: player ] ]
+				ifTrue: [ self movePlayer: player ] ]
 ]
 
 { #category : #accessing }
@@ -120,13 +119,7 @@ Game >> players [
 
 { #category : #playing }
 Game >> playout [
-
-	"Checks"
-	self checkThereAreEnoughPlayersAndDicesToPlay.
-	
-	"Games"
-	[ self isNotOver ]
-		whileTrue: [ self playOneRound ]
+	[ self isNotOver ] whileTrue: [ self playOneRound ]
 ]
 
 { #category : #accessing }
