@@ -7,9 +7,7 @@ smalltalk:
   - Pharo-7.0
   - Pharo64-7.0
   - Pharo64-stable
-  - Pharo64-alpha
 matrix:
   allow_failures:
-  - smalltalk: Pharo64-alpha
   - smalltalk: Pharo64-8.0
   fast_finish: true
