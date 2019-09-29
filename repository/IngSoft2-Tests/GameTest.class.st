@@ -21,12 +21,7 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 ]
 
 { #category : #tests }
-GameTest >> testCantAddPlayerWithDupplicateIdNumber [
-	| player1A player1B game |
-	player1A := Player withNumber: 1.
-	player1B := Player withNumber: 1.
-	game := Game standard.
-	game addPlayer: player1A.
+GameTest >> testCantHaveDupplicatedPlayers [
 	self should: [ Game withNumberOfSpots: 20 playedBy: { Player withNumber: 1. Player withNumber: 1 } throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
 ]
 

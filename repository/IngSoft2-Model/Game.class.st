@@ -37,16 +37,17 @@ Game class >> standardSpotAmount [
 Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices [
 	| gamePlayers |
 	gamePlayers := OrderedCollection new.
+	players do: [ :each | gamePlayers addIfNotPresent: each ].
 	self assert: numberOfSpots > 0 description: 'Invalid number of spots'.
 	self
-		assert: players isNotEmpty
+		assert: gamePlayers isNotEmpty
 		description: 'Not enough players to initialize game'.
 	self
 		assert: dices isNotEmpty
 		description: 'Tried to initialize a game with an invalid set of Dices'.
-	players
-		do:
-			[ :each | gamePlayers addIfNotPresent: each ifPresentDo: [ self error: Error ] ].
+	self
+		assert: players size = gamePlayers size
+		description: 'Tried to initialize game with a duplicated player'.
 	^ self new
 		initializeWithSpots: numberOfSpots
 		players: gamePlayers

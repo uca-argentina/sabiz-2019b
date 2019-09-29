@@ -17,6 +17,11 @@ Player class >> withNumber: playerIdentificationNumber [
 	^self new initializeWith: playerIdentificationNumber 
 ]
 
+{ #category : #comparing }
+Player >> = otherplayer [
+	^ self identificationNumber = otherplayer identificationNumber
+]
+
 { #category : #playing }
 Player >> advance: numberOfSpotsToAdvance [ 
 	position := (self position) + numberOfSpotsToAdvance 
