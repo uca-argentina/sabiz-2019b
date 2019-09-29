@@ -17,11 +17,7 @@ DiceTest >> testDiceLoadedWithFiveReturnFiveWhenItIsRolled [
 
 { #category : #tests }
 DiceTest >> testRandomDiceCreationFailsWhenGivenNumberOfFacesIsLessThanFour [
-
-	self
-		should: [ RandomDice withFaces: 2 ]
-		raise: Error 
-	
+	self should: [ RandomDice withFaces: 2 ] raise: AssertionFailure
 ]
 
 { #category : #tests }
