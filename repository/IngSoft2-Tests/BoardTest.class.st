@@ -20,8 +20,28 @@ BoardTest >> testBoardInitializesWithAllSpotsEmpty [
 ]
 
 { #category : #tests }
+BoardTest >> testGivenPlayerIsOnBoard [
+]
+
+{ #category : #tests }
+BoardTest >> testPlayerAdvancedSuccessfully [
+]
+
+{ #category : #tests }
+BoardTest >> testPlayersAreAddedSuccessfullyAndStartAtTheBegining [
+]
+
+{ #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
 		should: [ Board withSpots: 0 ] raise: AssertionFailure;
 		should: [ Board withSpots: -1 ] raise: AssertionFailure
+]
+
+{ #category : #tests }
+BoardTest >> testWhereIsGivenPlayer [
+]
+
+{ #category : #tests }
+BoardTest >> testWhoIsInAGivenSpot [
 ]
