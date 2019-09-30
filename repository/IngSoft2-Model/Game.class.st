@@ -63,8 +63,7 @@ Game >> addPlayerToLeaderBoard: player [
 
 { #category : #accessing }
 Game >> dices [
-
-		^dices
+	^ dices copy
 ]
 
 { #category : #initialization }
@@ -82,8 +81,7 @@ Game >> isNotOver [
 
 { #category : #accessing }
 Game >> leaderBoard [
-  
-	^leaderBoard
+	^ leaderBoard copy
 ]
 
 { #category : #playing }
@@ -124,6 +122,8 @@ Game >> playout [
 
 { #category : #accessing }
 Game >> winner [
-  
+	self
+		assert: leaderBoard isNotEmpty
+		description: 'No one has reached the end yet'.
 	^ leaderBoard first
 ]

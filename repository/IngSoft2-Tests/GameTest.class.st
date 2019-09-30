@@ -27,7 +27,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 
 { #category : #tests }
 GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
-	| game player |
+	| game |
 	game := Game standard.
 	game playout.
 	self should: [ game playOneRound ] raise: AssertionFailure

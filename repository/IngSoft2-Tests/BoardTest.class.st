@@ -16,14 +16,12 @@ BoardTest >> testBoardHasGivenNumberOfSpots [
 BoardTest >> testBoardInitializesWithAllSpotsEmpty [
 	| board |
 	board := Board withSpots: 4.
-	board spots
-		do: [ :spot | self assert: spot quantityOfPlayers equals: 0 ]
+	self assert: board players size equals: 0
 ]
 
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ Board withSpots: 0 ] raise: Error;
-		should: [ Board withSpots: -1 ]
-			raise: Error
+		should: [ Board withSpots: 0 ] raise: AssertionFailure;
+		should: [ Board withSpots: -1 ] raise: AssertionFailure
 ]
