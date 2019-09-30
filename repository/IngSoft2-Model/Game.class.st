@@ -15,17 +15,17 @@ Class {
 
 { #category : #'instance creation' }
 Game class >> standard [
-	
-	| standardGame |
-	standardGame := self new initializeWith: self standardSpotAmount.
-	standardGame addDice: self standardDice.
-	^standardGame.
+	^self withNumberOfSpots: self standardSpotAmount playedBy: self standardSetOfPlayers throwing: self standardSetOfDices
 ]
 
 { #category : #standardValues }
-Game class >> standardDice [
+Game class >> standardSetOfDices [
+	^ {(RandomDice withFaces: 6)}
+]
 
-	^RandomDice withFaces: 6.
+{ #category : #standardValues }
+Game class >> standardSetOfPlayers [
+	^{ Player withNumber: 1. Player withNumber: 2. Player withNumber: 3 }
 ]
 
 { #category : #standardValues }
@@ -34,25 +34,24 @@ Game class >> standardSpotAmount [
 ]
 
 { #category : #'instance creation' }
-Game class >> withSpots: numberOfSpots [
-  
-	self assert: numberOfSpots > 0 description: 'Number of spots invalid'.
-	^self new initializeWith: numberOfSpots
-]
-
-{ #category : #setting }
-Game >> addDice: dice [
-			
-	dices add: dice.
-]
-
-{ #category : #setting }
-Game >> addPlayer: player [
-
-	players do: [ :each |
-		self assert: each identificationNumber ~= player identificationNumber description: 'A player with that ID is already in the game'.
-	].
-	players add: player
+Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices [
+	| gamePlayers |
+	gamePlayers := OrderedCollection new.
+	players do: [ :each | gamePlayers addIfNotPresent: each ].
+	self assert: numberOfSpots > 0 description: 'Invalid number of spots'.
+	self
+		assert: gamePlayers isNotEmpty
+		description: 'Not enough players to initialize game'.
+	self
+		assert: dices isNotEmpty
+		description: 'Tried to initialize a game with an invalid set of Dices'.
+	self
+		assert: players size = gamePlayers size
+		description: 'Tried to initialize game with a duplicated player'.
+	^ self new
+		initializeWithSpots: numberOfSpots
+		players: gamePlayers
+		andDices: dices
 ]
 
 { #category : #setting }
@@ -62,28 +61,16 @@ Game >> addPlayerToLeaderBoard: player [
 	player reachingTheFinalSpotSetsPlayerFinalPosition: self numberOfSpots
 ]
 
-{ #category : #playing }
-Game >> checkThereAreEnoughPlayersAndDicesToPlay [
-	self
-		assert: players isNotEmpty
-		description: 'Game cannot start without any players'.	
-	self
-		assert: dices isNotEmpty
-		description: 'Game cannot start without dice/s'
-]
-
 { #category : #accessing }
 Game >> dices [
-
-		^dices
+	^ dices copy
 ]
 
 { #category : #initialization }
-Game >> initializeWith: spotAmount [
-  
+Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
 	numberOfSpots := spotAmount.
-	players := OrderedCollection new.
-	dices := OrderedCollection new.
+	players := gamePlayers asOrderedCollection.
+	dices := gameDices asOrderedCollection.
 	leaderBoard := OrderedCollection new.
 ]
 
@@ -94,18 +81,16 @@ Game >> isNotOver [
 
 { #category : #accessing }
 Game >> leaderBoard [
-  
-	^leaderBoard
+	^ leaderBoard copy
 ]
 
 { #category : #playing }
-Game >> makePlayerMove: player [
-
-	self assert: (player position < self numberOfSpots) description: 'Player already reached the final spot'.
-	dices do: [ :dice |
-		player advance: dice roll.
-	].
-	player position >= self numberOfSpots 
+Game >> movePlayer: player [
+	self
+		assert: player position < self numberOfSpots
+		description: 'Player already reached the final spot'.
+	dices do: [ :dice | player advance: dice roll ].
+	player position >= self numberOfSpots
 		ifTrue: [ self addPlayerToLeaderBoard: player ]
 ]
 
@@ -117,12 +102,11 @@ Game >> numberOfSpots [
 
 { #category : #playing }
 Game >> playOneRound [
-	self checkThereAreEnoughPlayersAndDicesToPlay.
 	self assert: self isNotOver description: 'Game is already over'.
 	players
 		do: [ :player | 
 			player position < self numberOfSpots
-				ifTrue: [ self makePlayerMove: player ] ]
+				ifTrue: [ self movePlayer: player ] ]
 ]
 
 { #category : #accessing }
@@ -133,17 +117,13 @@ Game >> players [
 
 { #category : #playing }
 Game >> playout [
-
-	"Checks"
-	self checkThereAreEnoughPlayersAndDicesToPlay.
-	
-	"Games"
-	[ self isNotOver ]
-		whileTrue: [ self playOneRound ]
+	[ self isNotOver ] whileTrue: [ self playOneRound ]
 ]
 
 { #category : #accessing }
 Game >> winner [
-  
+	self
+		assert: leaderBoard isNotEmpty
+		description: 'No one has reached the end yet'.
 	^ leaderBoard first
 ]

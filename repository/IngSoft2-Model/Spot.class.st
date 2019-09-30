@@ -15,10 +15,17 @@ Spot class >> empty [
 { #category : #initialization }
 Spot class >> occupiedBy: players [
 	| playersToEnterTheSpot |
+	"Filter Duplicates"
 	playersToEnterTheSpot := OrderedCollection new.
 	players
 		do: [ :player | playersToEnterTheSpot addIfNotPresent: player ].
-	^ OccupiedSpot byPlayers: playersToEnterTheSpot
+	"Check its all symbols"
+	"playersToEnterTheSpot
+		do: [ :player | 
+			self
+				assert: player isSymbol
+				description: 'Spots only contains players as symbols' ]."
+	^ OccupiedSpot new occupiedBy: playersToEnterTheSpot
 ]
 
 { #category : #accessing }

@@ -7,34 +7,20 @@ Class {
 	#instVars : [
 		'players'
 	],
-	#classInstVars : [
-		'players'
-	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-OccupiedSpot class >> byPlayers: playersToEnterTheSpot [
-	players := OrderedCollection new.
-	playersToEnterTheSpot
-		do: [ :player | 
-			self
-				assert: player isSymbol
-				description: 'Spots only contains players as symbols' ].
-	^ self new spotOccupiedBy: playersToEnterTheSpot
+OccupiedSpot >> occupiedBy: playersToEnterTheSpot [
+	players := playersToEnterTheSpot
 ]
 
 { #category : #accessing }
 OccupiedSpot >> players [
-	^ players
+	^ players copy
 ]
 
 { #category : #accessing }
 OccupiedSpot >> quantityOfPlayers [
 	^ players size
-]
-
-{ #category : #initialization }
-OccupiedSpot >> spotOccupiedBy: playersToEnterTheSpot [
-	players := playersToEnterTheSpot
 ]

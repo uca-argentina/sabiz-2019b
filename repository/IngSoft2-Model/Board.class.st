@@ -18,7 +18,7 @@ Board class >> withSpots: spotsAmmount [
 
 { #category : #initialization }
 Board >> initializeWithSpots: spotsAmmount [
-	spots := Array  new: spotsAmmount  withAll: Spot empty
+	spots := Array new: spotsAmmount withAll: Spot empty
 ]
 
 { #category : #accessing }
@@ -27,6 +27,12 @@ Board >> numberOfSpots [
 ]
 
 { #category : #accessing }
-Board >> spots [
-	^ spots
+Board >> players [
+	| players |
+	players := OrderedCollection new.
+	spots
+		do: [ :each | 
+			each quantityOfPlayers > 0
+				ifTrue: [ players addAll: each players ] ].
+	^ players
 ]

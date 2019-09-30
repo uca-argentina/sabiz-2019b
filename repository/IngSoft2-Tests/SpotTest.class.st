@@ -31,13 +31,13 @@ SpotTest >> testSpotIsOccupied [
 { #category : #tests }
 SpotTest >> testSpotIsOccupiedByGivenPlayer [
 	| spot |
-	spot := Spot occupiedBy: { #player1 }.
-	self assert: ((spot players first) == #player1)
+	spot := Spot occupiedBy: {#player1}.
+	self assert: (spot players includes: #player1)
 ]
 
 { #category : #tests }
 SpotTest >> testSpotProhibitsAddingObjectsDifferentThanSymbols [
 	self
-		should: [ Spot occupiedBy: { 0 . Board withSpots: 3 } ]
-			raise: Error
+		should: [ Spot occupiedBy: {'Not a symbol'} ]
+		raise: AssertionFailure
 ]

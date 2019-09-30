@@ -32,8 +32,5 @@ PlayerTest >> testPlayerStartsAtPositionOne [
 
 { #category : #tests }
 PlayerTest >> testProhibitsCreatingPlayerWithWrongIdentificationNumber [
-
-	self
-		should: [ Player withNumber: 0 ] raise: Error;
-		should: [ Game withSpots: self negativeNumbers ] raise: Error
+	self should: [ Player withNumber: 0 ] raise: AssertionFailure
 ]
