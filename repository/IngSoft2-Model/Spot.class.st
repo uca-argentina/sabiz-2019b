@@ -20,11 +20,11 @@ Spot class >> occupiedBy: players [
 	players
 		do: [ :player | playersToEnterTheSpot addIfNotPresent: player ].
 	"Check its all symbols"
-	"playersToEnterTheSpot
+	playersToEnterTheSpot
 		do: [ :player | 
 			self
 				assert: player isSymbol
-				description: 'Spots only contains players as symbols' ]."
+				description: 'Spots only contains players as symbols' ].
 	^ OccupiedSpot new occupiedBy: playersToEnterTheSpot
 ]
 
