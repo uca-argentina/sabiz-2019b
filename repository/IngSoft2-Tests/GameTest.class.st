@@ -18,7 +18,7 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 	game := Game standard.
 	game playOneRound.
 	game players
-		do: [ :player | self assert: (game board positionOfPlayer: player) > 1 ]
+		do: [ :player | self assert: (game positionOfPlayer: player) > 1 ]
 ]
 
 { #category : #tests }
@@ -46,7 +46,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 		withNumberOfSpots: 10
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: game players size equals: 1
+	self assert: game quantityOfPlayers equals: 1
 ]
 
 { #category : #tests }
@@ -66,7 +66,7 @@ GameTest >> testGameHasGivenPlayer [
 		withNumberOfSpots: 20
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: (game players includes: #player1)
+	self assert: (game includesPlayer: #player1)
 ]
 
 { #category : #tests }
@@ -95,8 +95,8 @@ GameTest >> testGameInitializesWithAllPlayerAtFirstSpot [
 		withNumberOfSpots: 5
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: (game board positionOfPlayer: #player1) equals: 1.
-	self assert: (game board positionOfPlayer: #player2) equals: 1
+	self assert: (game positionOfPlayer: #player1) equals: 1.
+	self assert: (game positionOfPlayer: #player2) equals: 1
 ]
 
 { #category : #tests }

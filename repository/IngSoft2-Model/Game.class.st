@@ -62,13 +62,13 @@ Game >> addPlayerToLeaderBoard: player [
 ]
 
 { #category : #accessing }
-Game >> board [
-	^ board copy
-]
-
-{ #category : #accessing }
 Game >> dices [
 	^ dices copy
+]
+
+{ #category : #testing }
+Game >> includesPlayer: aPlayer [
+	^ self players includes: aPlayer
 ]
 
 { #category : #initialization }
@@ -120,6 +120,16 @@ Game >> playOneRound [
 { #category : #accessing }
 Game >> players [
 	^ board players
+]
+
+{ #category : #accessing }
+Game >> positionOfPlayer: aPlayer [
+	^ board positionOfPlayer: aPlayer
+]
+
+{ #category : #accessing }
+Game >> quantityOfPlayers [
+	^ self players size
 ]
 
 { #category : #accessing }
