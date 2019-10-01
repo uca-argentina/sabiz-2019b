@@ -8,26 +8,16 @@ Class {
 }
 
 { #category : #initialization }
-EmptySpot class >> newEmpty [
-	^ EmptySpot new emptySpot
-]
-
-{ #category : #initialization }
-EmptySpot class >> newEmptySpot [
-	self shouldBeImplemented.
-]
-
-{ #category : #initialization }
 EmptySpot >> emptySpot [
-	players := OrderedCollection new.
+	players := OrderedCollection new
 ]
 
 { #category : #accessing }
 EmptySpot >> players [
-	^ OrderedCollection new.
+	^ OrderedCollection new
 ]
 
 { #category : #accessing }
 EmptySpot >> quantityOfPlayers [
-	^ 0
+	^ players size
 ]

@@ -21,12 +21,12 @@ Board class >> withSpots: spotsAmmount withPlayers: playersToEnterTheGame [
 { #category : #initialization }
 Board >> initializeWithSpots: spotsAmmount withPlayers: playersToEnterTheGame [
 	spots := Array new: spotsAmmount withAll: Spot empty.
-	spots atWrap: 1 put: (Spot occupiedBy:playersToEnterTheGame )
+	spots atWrap: 1 put: (Spot occupiedBy: playersToEnterTheGame)
 ]
 
 { #category : #accessing }
 Board >> numberOfSpots [
-	^ spots size 
+	^ spots size
 ]
 
 { #category : #'private - moving' }
@@ -59,7 +59,7 @@ Board >> players [
 		do: [ :each | 
 			each quantityOfPlayers > 0
 				ifTrue: [ players addAll: each players ] ].
-	^ players 
+	^ players
 ]
 
 { #category : #accessing }

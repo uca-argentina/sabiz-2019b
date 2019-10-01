@@ -12,5 +12,5 @@ Class {
 
 { #category : #roll }
 Dice >> roll [
-	self subclassResponsibility 
+	self subclassResponsibility
 ]

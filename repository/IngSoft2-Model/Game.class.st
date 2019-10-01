@@ -14,7 +14,10 @@ Class {
 
 { #category : #'instance creation' }
 Game class >> standard [
-	^self withNumberOfSpots: self standardSpotAmount playedBy: self standardSetOfPlayers throwing: self standardSetOfDices
+	^ self
+		withNumberOfSpots: self standardSpotAmount
+		playedBy: self standardSetOfPlayers
+		throwing: self standardSetOfDices
 ]
 
 { #category : #standardValues }
@@ -24,12 +27,12 @@ Game class >> standardSetOfDices [
 
 { #category : #standardValues }
 Game class >> standardSetOfPlayers [
-	^{ #player1. #player2. #player3}
+	^ {#player1 . #player2 . #player3}
 ]
 
 { #category : #standardValues }
 Game class >> standardSpotAmount [
-	^24.
+	^ 24
 ]
 
 { #category : #'instance creation' }
@@ -55,8 +58,7 @@ Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices
 
 { #category : #private }
 Game >> addPlayerToLeaderBoard: player [
-  
-	leaderBoard add: player.
+	leaderBoard add: player
 ]
 
 { #category : #accessing }
@@ -73,7 +75,7 @@ Game >> dices [
 Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
 	dices := gameDices asOrderedCollection.
 	leaderBoard := OrderedCollection new.
-	board := Board withSpots: spotAmount withPlayers: gamePlayers.
+	board := Board withSpots: spotAmount withPlayers: gamePlayers
 ]
 
 { #category : #playing }
@@ -91,7 +93,7 @@ Game >> movePlayer: player [
 	self
 		assert: (board positionOfPlayer: player) < self numberOfSpots
 		description: 'Player already reached the final spot'.
-	dices do: [ :dice | board player: player  advances: dice roll ].
+	dices do: [ :dice | board player: player advances: dice roll ].
 	(board positionOfPlayer: player) >= self numberOfSpots
 		ifTrue: [ self addPlayerToLeaderBoard: player ]
 ]
@@ -117,7 +119,6 @@ Game >> playOneRound [
 
 { #category : #accessing }
 Game >> players [
-  
 	^ board players
 ]
 

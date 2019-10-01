@@ -23,7 +23,12 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 
 { #category : #tests }
 GameTest >> testCantHaveDupplicatedPlayers [
-	self should: [ Game withNumberOfSpots: 20 playedBy: {#player1.#player1} throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
+	self
+		should: [ Game
+				withNumberOfSpots: 20
+				playedBy: {#player1 . #player1}
+				throwing: {(RandomDice withFaces: 6)} ]
+		raise: AssertionFailure
 ]
 
 { #category : #tests }
@@ -86,9 +91,12 @@ GameTest >> testGameHasGivenSetOfDices [
 { #category : #tests }
 GameTest >> testGameInitializesWithAllPlayerAtFirstSpot [
 	| game |
-	game := Game withNumberOfSpots: 5 playedBy:{#player1.#player2}  throwing:{RandomDice withFaces: 6}. 
-	self assert: ((game board) positionOfPlayer: #player1) equals: 1.
-	self assert: ((game board) positionOfPlayer: #player2) equals: 1.
+	game := Game
+		withNumberOfSpots: 5
+		playedBy: {#player1 . #player2}
+		throwing: {(RandomDice withFaces: 6)}.
+	self assert: (game board positionOfPlayer: #player1) equals: 1.
+	self assert: (game board positionOfPlayer: #player2) equals: 1
 ]
 
 { #category : #tests }

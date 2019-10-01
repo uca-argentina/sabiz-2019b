@@ -12,7 +12,7 @@ Class {
 
 { #category : #initialization }
 Spot class >> empty [
-	^ EmptySpot newEmpty
+	^ EmptySpot new emptySpot
 ]
 
 { #category : #initialization }
@@ -32,8 +32,8 @@ Spot class >> occupiedBy: players [
 ]
 
 { #category : #accessing }
-Spot >> players [ 
-	self subclassResponsibility 
+Spot >> players [
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
