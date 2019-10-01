@@ -17,12 +17,13 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 	| game |
 	game := Game standard.
 	game playOneRound.
-	game players do: [ :player | self assert: player position > 1 ]
+	game players
+		do: [ :player | self assert: (game board positionOfPlayer: player) > 1 ]
 ]
 
 { #category : #tests }
 GameTest >> testCantHaveDupplicatedPlayers [
-	self should: [ Game withNumberOfSpots: 20 playedBy: { Player withNumber: 1. Player withNumber: 1 } throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
+	self should: [ Game withNumberOfSpots: 20 playedBy: {#player1.#player1} throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
 ]
 
 { #category : #tests }
@@ -38,7 +39,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
-		playedBy: {(Player withNumber: 1)}
+		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
 	self assert: game players size equals: 1
 ]

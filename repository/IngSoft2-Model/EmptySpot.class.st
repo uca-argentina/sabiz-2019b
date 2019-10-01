@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+EmptySpot >> players [
+	^ OrderedCollection new.
+]
+
+{ #category : #accessing }
 EmptySpot >> quantityOfPlayers [
 	^ 0
 ]

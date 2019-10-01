@@ -9,14 +9,20 @@ Class {
 
 { #category : #tests }
 BoardTest >> testBoardHasGivenNumberOfSpots [
-	self assert: (Board withSpots: 3) numberOfSpots equals: 3
+	| game |
+	game := Game
+		withNumberOfSpots: 3
+		playedBy: {#player1 . #player2}
+		throwing: {(RandomDice withFaces: 6)}.
+	self assert: game board numberOfSpots equals: 3
 ]
 
 { #category : #tests }
-BoardTest >> testBoardInitializesWithAllSpotsEmpty [
-	| board |
-	board := Board withSpots: 4.
-	self assert: board players size equals: 0
+BoardTest >> testBoardInitializesWithAllPlayerAtFirstSpot [
+	| game |
+	game := Game withNumberOfSpots: 5 playedBy:{#player1.#player2}  throwing:{RandomDice withFaces: 6}. 
+	self assert: ((game board) positionOfPlayer: #player1) equals: 1.
+	self assert: ((game board) positionOfPlayer: #player2) equals: 1.
 ]
 
 { #category : #tests }
@@ -34,8 +40,10 @@ BoardTest >> testPlayersAreAddedSuccessfullyAndStartAtTheBegining [
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ Board withSpots: 0 ] raise: AssertionFailure;
-		should: [ Board withSpots: -1 ] raise: AssertionFailure
+		should: [ Board withSpots: 0 withPlayers: {#player1} ]
+			raise: AssertionFailure;
+		should: [ Board withSpots: -1 withPlayers: {#player1} ]
+			raise: AssertionFailure
 ]
 
 { #category : #tests }

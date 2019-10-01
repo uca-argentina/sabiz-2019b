@@ -24,7 +24,7 @@ Spot class >> occupiedBy: players [
 		do: [ :player | 
 			self
 				assert: player isSymbol
-				description: 'Spots only contains players as symbols' ].
+				description: 'Spots can only contain players as symbols' ].
 	^ OccupiedSpot new occupiedBy: playersToEnterTheSpot
 ]
 

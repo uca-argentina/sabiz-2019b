@@ -42,8 +42,3 @@ Player >> initializeWith: playerIdentificationNumber [
 Player >> position [
 	^ position
 ]
-
-{ #category : #setting }
-Player >> reachingTheFinalSpotSetsPlayerFinalPosition: finalPosition [ 
-	position := finalPosition 
-]
