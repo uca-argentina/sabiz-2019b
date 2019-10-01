@@ -4,12 +4,15 @@ A class used to create the board spots occupied or not by the players of the gam
 Class {
 	#name : #Spot,
 	#superclass : #Object,
+	#instVars : [
+		'players'
+	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
 Spot class >> empty [
-	^ EmptySpot new
+	^ EmptySpot newEmpty
 ]
 
 { #category : #initialization }
@@ -26,6 +29,11 @@ Spot class >> occupiedBy: players [
 				assert: player isSymbol
 				description: 'Spots can only contain players as symbols' ].
 	^ OccupiedSpot new occupiedBy: playersToEnterTheSpot
+]
+
+{ #category : #accessing }
+Spot >> players [ 
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }

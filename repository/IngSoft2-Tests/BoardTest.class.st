@@ -18,14 +18,6 @@ BoardTest >> testBoardHasGivenNumberOfSpots [
 ]
 
 { #category : #tests }
-BoardTest >> testBoardInitializesWithAllPlayerAtFirstSpot [
-	| game |
-	game := Game withNumberOfSpots: 5 playedBy:{#player1.#player2}  throwing:{RandomDice withFaces: 6}. 
-	self assert: ((game board) positionOfPlayer: #player1) equals: 1.
-	self assert: ((game board) positionOfPlayer: #player2) equals: 1.
-]
-
-{ #category : #tests }
 BoardTest >> testGivenPlayerIsOnBoard [
 ]
 

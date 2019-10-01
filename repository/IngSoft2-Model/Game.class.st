@@ -102,6 +102,11 @@ Game >> numberOfSpots [
 ]
 
 { #category : #playing }
+Game >> playAnEntireGame [
+	[ self isNotOver ] whileTrue: [ self playOneRound ]
+]
+
+{ #category : #playing }
 Game >> playOneRound [
 	self assert: self isNotOver description: 'Game is already over'.
 	self players
@@ -114,11 +119,6 @@ Game >> playOneRound [
 Game >> players [
   
 	^ board players
-]
-
-{ #category : #playing }
-Game >> playout [
-	[ self isNotOver ] whileTrue: [ self playOneRound ]
 ]
 
 { #category : #accessing }

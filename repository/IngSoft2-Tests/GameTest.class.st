@@ -30,7 +30,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 	| game |
 	game := Game standard.
-	game playout.
+	game playAnEntireGame.
 	self should: [ game playOneRound ] raise: AssertionFailure
 ]
 
@@ -84,10 +84,18 @@ GameTest >> testGameHasGivenSetOfDices [
 ]
 
 { #category : #tests }
+GameTest >> testGameInitializesWithAllPlayerAtFirstSpot [
+	| game |
+	game := Game withNumberOfSpots: 5 playedBy:{#player1.#player2}  throwing:{RandomDice withFaces: 6}. 
+	self assert: ((game board) positionOfPlayer: #player1) equals: 1.
+	self assert: ((game board) positionOfPlayer: #player2) equals: 1.
+]
+
+{ #category : #tests }
 GameTest >> testGameIsOver [
 	| game |
 	game := Game standard.
-	game playout.
+	game playAnEntireGame.
 	self assert: game isNotOver equals: false
 ]
 
@@ -98,7 +106,7 @@ GameTest >> testPlayerCantMoveOnceOverTheEndLine [
 		withNumberOfSpots: 10
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	game playout.
+	game playAnEntireGame.
 	self should: [ game movePlayer: #player1 ] raise: AssertionFailure
 ]
 
@@ -135,7 +143,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 		withNumberOfSpots: 10
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {dice}.
-	game playout.
+	game playAnEntireGame.
 	self assert: #player1 equals: game leaderBoard first.
 	self assert: #player2 equals: game leaderBoard second.
 	self assert: #player3 equals: game leaderBoard third
