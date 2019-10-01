@@ -68,7 +68,7 @@ Game >> dices [
 
 { #category : #testing }
 Game >> includesPlayer: aPlayer [
-	^ self players includes: aPlayer
+	^ board includesPlayer: aPlayer
 ]
 
 { #category : #initialization }

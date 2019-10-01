@@ -18,10 +18,15 @@ Board class >> withSpots: spotsAmmount withPlayers: playersToEnterTheGame [
 		withPlayers: playersToEnterTheGame
 ]
 
+{ #category : #testing }
+Board >> includesPlayer: aPlayer [
+	^ self players includes: aPlayer
+]
+
 { #category : #initialization }
 Board >> initializeWithSpots: spotsAmmount withPlayers: playersToEnterTheGame [
 	spots := Array new: spotsAmmount withAll: Spot empty.
-	spots atWrap: 1 put: (Spot occupiedBy: playersToEnterTheGame)
+	spots at: 1 put: (Spot occupiedBy: playersToEnterTheGame)
 ]
 
 { #category : #accessing }
@@ -31,11 +36,17 @@ Board >> numberOfSpots [
 
 { #category : #'private - moving' }
 Board >> player: player advances: rollResult [
-	| newPosition actualPosition playersAtActualPosition playersAtNewPosition |
-	playersAtActualPosition := OrderedCollection new.
+	| newPosition actualPosition |
 	actualPosition := self positionOfPlayer: player.
 	newPosition := actualPosition + rollResult.
 	newPosition := self numberOfSpots min: newPosition.
+	self player: player movesFromSpotAt: actualPosition to: newPosition
+]
+
+{ #category : #'private - moving' }
+Board >> player: player movesFromSpotAt: actualPosition to: newPosition [
+	| playersAtActualPosition playersAtNewPosition |
+	playersAtActualPosition := OrderedCollection new.
 	playersAtActualPosition := (spots atWrap: actualPosition) players.
 	playersAtNewPosition := (spots atWrap: newPosition) players.
 	playersAtActualPosition remove: player.
@@ -52,13 +63,12 @@ Board >> player: player advances: rollResult [
 
 { #category : #accessing }
 Board >> players [
-	| players |
-	players := OrderedCollection new.
-	spots
-		do: [ :each | 
-			each quantityOfPlayers > 0
-				ifTrue: [ players addAll: each players ] ].
-	^ players
+	^ spots
+		inject: OrderedCollection new
+		into: [ :result :eachSpot | 
+			result
+				addAll: eachSpot players;
+				yourself ]
 ]
 
 { #category : #accessing }
