@@ -35,8 +35,7 @@ Board >> player: player advances: rollResult [
 	playersAtActualPosition := OrderedCollection new.
 	actualPosition := self positionOfPlayer: player.
 	newPosition := actualPosition + rollResult.
-	newPosition > self numberOfSpots
-		ifTrue: [ newPosition := self numberOfSpots ].
+	newPosition := self numberOfSpots min: newPosition.
 	playersAtActualPosition := (spots atWrap: actualPosition) players.
 	playersAtNewPosition := (spots atWrap: newPosition) players.
 	playersAtActualPosition remove: player.
