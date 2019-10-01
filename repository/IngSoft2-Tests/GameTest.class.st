@@ -17,19 +17,25 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 	| game |
 	game := Game standard.
 	game playOneRound.
-	game players do: [ :player | self assert: player position > 1 ]
+	game players
+		do: [ :player | self assert: (game board positionOfPlayer: player) > 1 ]
 ]
 
 { #category : #tests }
 GameTest >> testCantHaveDupplicatedPlayers [
-	self should: [ Game withNumberOfSpots: 20 playedBy: { Player withNumber: 1. Player withNumber: 1 } throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
+	self
+		should: [ Game
+				withNumberOfSpots: 20
+				playedBy: {#player1 . #player1}
+				throwing: {(RandomDice withFaces: 6)} ]
+		raise: AssertionFailure
 ]
 
 { #category : #tests }
 GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 	| game |
 	game := Game standard.
-	game playout.
+	game playAnEntireGame.
 	self should: [ game playOneRound ] raise: AssertionFailure
 ]
 
@@ -38,7 +44,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
-		playedBy: {(Player withNumber: 1)}
+		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
 	self assert: game players size equals: 1
 ]
@@ -48,20 +54,19 @@ GameTest >> testGameHasGivenNumberOfSpots [
 	| game |
 	game := Game
 		withNumberOfSpots: 20
-		playedBy: {(Player withNumber: 1)}
+		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
 	self assert: game numberOfSpots equals: 20
 ]
 
 { #category : #tests }
 GameTest >> testGameHasGivenPlayer [
-	| game player |
-	player := Player withNumber: 1.
+	| game |
 	game := Game
 		withNumberOfSpots: 20
-		playedBy: {player}
+		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: (game players includes: player)
+	self assert: (game players includes: #player1)
 ]
 
 { #category : #tests }
@@ -71,7 +76,7 @@ GameTest >> testGameHasGivenSetOfDices [
 	dice2 := LoadedDice loadedWith: 4.
 	game := Game
 		withNumberOfSpots: 10
-		playedBy: {(Player withNumber: 1)}
+		playedBy: {#player1}
 		throwing:
 			{dice1.
 			dice2}.
@@ -80,73 +85,74 @@ GameTest >> testGameHasGivenSetOfDices [
 			(game dices
 				includesAll:
 					{dice1.
-					dice2} asOrderedCollection)
+					dice2})
+]
+
+{ #category : #tests }
+GameTest >> testGameInitializesWithAllPlayerAtFirstSpot [
+	| game |
+	game := Game
+		withNumberOfSpots: 5
+		playedBy: {#player1 . #player2}
+		throwing: {(RandomDice withFaces: 6)}.
+	self assert: (game board positionOfPlayer: #player1) equals: 1.
+	self assert: (game board positionOfPlayer: #player2) equals: 1
 ]
 
 { #category : #tests }
 GameTest >> testGameIsOver [
-	| game player |
+	| game |
 	game := Game standard.
-	game playout.
+	game playAnEntireGame.
 	self assert: game isNotOver equals: false
 ]
 
 { #category : #tests }
 GameTest >> testPlayerCantMoveOnceOverTheEndLine [
-	| game player |
-	player := Player withNumber: 1.
+	| game |
 	game := Game
 		withNumberOfSpots: 10
-		playedBy: {player}
+		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	game playout.
-	self should: [ game movePlayer: player ] raise: AssertionFailure
+	game playAnEntireGame.
+	self should: [ game movePlayer: #player1 ] raise: AssertionFailure
 ]
 
 { #category : #tests }
 GameTest >> testPlayerOneWonTheGame [
-	| player game |
-	player := Player withNumber: 1.
+	| game |
 	game := Game
 		withNumberOfSpots: 10
-		playedBy: {player}
+		playedBy: {#player1}
 		throwing: {(LoadedDice loadedWith: 10)}.
 	game playOneRound.
-	self assert: game winner equals: player
+	self assert: game winner equals: #player1
 ]
 
 { #category : #tests }
 GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
-	| player dice |
-	player := Player withNumber: 1.
+	| dice |
 	dice := RandomDice withFaces: 6.
 	self
-		should:
-				[ Game withNumberOfSpots: 0 playedBy: {player} throwing: {dice} ]
+		should: [ Game withNumberOfSpots: 0 playedBy: {#player1} throwing: {dice} ]
 			raise: AssertionFailure;
 		should: [ Game
 				withNumberOfSpots: self negativeNumberOfSpots
-				playedBy: {player}
+				playedBy: {#player1}
 				throwing: {dice} ]
 			raise: AssertionFailure
 ]
 
 { #category : #tests }
 GameTest >> testRiggedGameEndsAsExpected [
-	| player1 player2 player3 game dice |
+	| game dice |
 	dice := LoadedDice loadedWith: 10.
-	player1 := Player withNumber: 1.
-	player2 := Player withNumber: 2.
-	player3 := Player withNumber: 3.
 	game := Game
 		withNumberOfSpots: 10
-		playedBy:
-			{player1.
-			player2.
-			player3}
+		playedBy: {#player1 . #player2 . #player3}
 		throwing: {dice}.
-	game playout.
-	self assert: player1 equals: game leaderBoard first.
-	self assert: player2 equals: game leaderBoard second.
-	self assert: player3 equals: game leaderBoard third
+	game playAnEntireGame.
+	self assert: #player1 equals: game leaderBoard first.
+	self assert: #player2 equals: game leaderBoard second.
+	self assert: #player3 equals: game leaderBoard third
 ]

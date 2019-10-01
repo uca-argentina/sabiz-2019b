@@ -7,7 +7,17 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #initialization }
+EmptySpot >> emptySpot [
+	players := OrderedCollection new
+]
+
+{ #category : #accessing }
+EmptySpot >> players [
+	^ OrderedCollection new
+]
+
 { #category : #accessing }
 EmptySpot >> quantityOfPlayers [
-	^ 0
+	^ players size
 ]

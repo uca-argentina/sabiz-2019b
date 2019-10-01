@@ -13,19 +13,20 @@ Class {
 
 { #category : #initialization }
 RandomDice class >> withFaces: faces [
-
-	self assert: faces > 3 description: 'Number of Faces should be greater than three'.
-	^self new initializeWith: faces
+	self
+		assert: faces > 3
+		description: 'Number of Faces should be greater than three'.
+	^ self new initializeWith: faces
 ]
 
 { #category : #initialization }
 RandomDice >> initializeWith: faces [
 	numberOfFaces := faces.
-	random := Random new 
+	random := Random new
 ]
 
 { #category : #rolling }
 RandomDice >> roll [
 	rollResult := random nextInt: numberOfFaces.
-	^ rollResult 
+	^ rollResult
 ]

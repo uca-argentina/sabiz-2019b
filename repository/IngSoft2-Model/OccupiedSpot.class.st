@@ -4,9 +4,6 @@ Class that represents a spot with at least one player on it.
 Class {
 	#name : #OccupiedSpot,
 	#superclass : #Spot,
-	#instVars : [
-		'players'
-	],
 	#category : #'IngSoft2-Model'
 }
 
