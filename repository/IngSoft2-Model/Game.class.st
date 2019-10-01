@@ -113,8 +113,13 @@ Game >> playOneRound [
 	self assert: self isNotOver description: 'Game is already over'.
 	self players
 		do: [ :player | 
-			(board positionOfPlayer: player) < self numberOfSpots
+			(self playerHasFinished: player)
 				ifTrue: [ self movePlayer: player ] ]
+]
+
+{ #category : #playing }
+Game >> playerHasFinished: player [
+	^ (board positionOfPlayer: player) < self numberOfSpots
 ]
 
 { #category : #accessing }

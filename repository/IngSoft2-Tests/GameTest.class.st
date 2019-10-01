@@ -22,6 +22,18 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 ]
 
 { #category : #tests }
+GameTest >> testCantCreateGameWithoutDices [
+	| game |
+	self should: [ game := Game withNumberOfSpots: 20 playedBy: { #player1 } throwing: {  } ] raise: AssertionFailure
+]
+
+{ #category : #tests }
+GameTest >> testCantCreateGameWithoutPlayers [
+	| game |
+	self should: [ game := Game withNumberOfSpots: 20 playedBy: {  } throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
+]
+
+{ #category : #tests }
 GameTest >> testCantHaveDupplicatedPlayers [
 	self
 		should: [ Game
@@ -104,7 +116,7 @@ GameTest >> testGameIsOver [
 	| game |
 	game := Game standard.
 	game playAnEntireGame.
-	self assert: game isNotOver equals: false
+	self deny: game isNotOver
 ]
 
 { #category : #tests }
