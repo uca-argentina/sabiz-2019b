@@ -44,21 +44,29 @@ Board >> player: player advances: rollResult [
 ]
 
 { #category : #'private - moving' }
-Board >> player: player movesFromSpotAt: actualPosition to: newPosition [
-	| playersAtActualPosition playersAtNewPosition |
-	playersAtActualPosition := OrderedCollection new.
-	playersAtActualPosition := (spots atWrap: actualPosition) players.
-	playersAtNewPosition := (spots atWrap: newPosition) players.
-	playersAtActualPosition remove: player.
+Board >> player: player entersSpotAt: newPosition [
+	| playersAtNewPosition |
+	playersAtNewPosition := (spots at: newPosition) players.
 	playersAtNewPosition add: player.
+	spots at: newPosition put: (Spot occupiedBy: playersAtNewPosition)
+]
+
+{ #category : #'private - moving' }
+Board >> player: player leavesSpotAt: actualPosition [
+	| playersAtActualPosition |
+	playersAtActualPosition := (spots at: actualPosition) players.
+	playersAtActualPosition remove: player.
 	playersAtActualPosition isEmpty
-		ifTrue: [ spots atWrap: actualPosition put: Spot empty ]
+		ifTrue: [ spots at: actualPosition put: Spot empty ]
 		ifFalse: [ spots
-				atWrap: actualPosition
+				at: actualPosition
 				put: (Spot occupiedBy: playersAtActualPosition) ].
-	spots
-		atWrap: newPosition
-		put: (Spot occupiedBy: playersAtNewPosition)
+]
+
+{ #category : #'private - moving' }
+Board >> player: player movesFromSpotAt: actualPosition to: newPosition [
+	self player: player leavesSpotAt: actualPosition.
+	self player: player entersSpotAt: newPosition
 ]
 
 { #category : #accessing }
@@ -73,6 +81,9 @@ Board >> players [
 
 { #category : #accessing }
 Board >> positionOfPlayer: player [
+	self
+		assert: (self includesPlayer: player)
+		description: 'That player is not in the game'.
 	spots
 		do: [ :eachSpot | 
 			(eachSpot players includes: player)

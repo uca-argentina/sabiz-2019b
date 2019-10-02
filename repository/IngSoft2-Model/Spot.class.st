@@ -18,7 +18,6 @@ Spot class >> empty [
 { #category : #initialization }
 Spot class >> occupiedBy: players [
 	| playersToEnterTheSpot |
-	"Filter Duplicates"
 	playersToEnterTheSpot := OrderedCollection new.
 	players
 		do: [ :player | playersToEnterTheSpot addIfNotPresent: player ].

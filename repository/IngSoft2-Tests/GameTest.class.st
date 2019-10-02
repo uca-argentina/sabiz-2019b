@@ -22,9 +22,21 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 ]
 
 { #category : #tests }
+GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
+	| game |
+	game := Game standard.
+	self
+		should: [ self assert: (game positionOfPlayer: #PlayerFromAnotherGame) ]
+		raise: AssertionFailure
+]
+
+{ #category : #tests }
 GameTest >> testCantCreateGameWithoutDices [
 	| game |
-	self should: [ game := Game withNumberOfSpots: 20 playedBy: { #player1 } throwing: {  } ] raise: AssertionFailure
+	self
+		should:
+			[ game := Game withNumberOfSpots: 20 playedBy: {#player1} throwing: {} ]
+		raise: AssertionFailure
 ]
 
 { #category : #tests }
