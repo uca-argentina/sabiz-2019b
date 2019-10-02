@@ -10,7 +10,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 Board class >> withSpots: spotsAmmount withPlayers: playersToEnterTheGame [
 	self assert: spotsAmmount > 0 description: 'Invalid number of spots'.
 	^ self new

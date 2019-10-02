@@ -11,7 +11,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 RandomDice class >> withFaces: faces [
 	self
 		assert: faces > 3
