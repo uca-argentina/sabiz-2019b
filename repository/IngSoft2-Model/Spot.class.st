@@ -10,12 +10,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 Spot class >> empty [
 	^ EmptySpot new emptySpot
 ]
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 Spot class >> occupiedBy: players [
 	| playersToEnterTheSpot |
 	playersToEnterTheSpot := OrderedCollection new.
