@@ -74,7 +74,7 @@ Game >> includesPlayer: aPlayer [
 { #category : #initialization }
 Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
 	dices := gameDices asOrderedCollection.
-	leaderBoard := OrderedCollection new.
+	leaderBoard := LeaderBoard freshLeaderBoard.
 	board := Board withSpots: spotAmount withPlayers: gamePlayers
 ]
 

@@ -52,6 +52,11 @@ LeaderBoard >> freshLeaderBoard [
 	elements := OrderedCollection new
 ]
 
+{ #category : #testing }
+LeaderBoard >> isNotEmpty [
+	^ elements isNotEmpty
+]
+
 { #category : #accessing }
 LeaderBoard >> ninth [
 	^ elements ninth copy
