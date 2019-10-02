@@ -27,10 +27,3 @@ SpotTest >> testSpotIsOccupiedByGivenPlayer [
 	spot := Spot occupiedBy: {#player1}.
 	self assert: (spot players includes: #player1)
 ]
-
-{ #category : #tests }
-SpotTest >> testSpotProhibitsAddingObjectsDifferentThanSymbols [
-	self
-		should: [ Spot occupiedBy: {'Not a symbol'} ]
-		raise: AssertionFailure
-]
