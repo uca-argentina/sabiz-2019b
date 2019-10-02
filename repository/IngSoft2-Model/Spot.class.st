@@ -12,7 +12,7 @@ Class {
 
 { #category : #'instance creation' }
 Spot class >> empty [
-	^ EmptySpot new emptySpot
+	^ self new emptySpot
 ]
 
 { #category : #'instance creation' }
@@ -21,21 +21,25 @@ Spot class >> occupiedBy: players [
 	playersToEnterTheSpot := OrderedCollection new.
 	players
 		do: [ :player | playersToEnterTheSpot addIfNotPresent: player ].
-	"Check its all symbols"
-	playersToEnterTheSpot
-		do: [ :player | 
-			self
-				assert: player isSymbol
-				description: 'Spots can only contain players as symbols' ].
-	^ OccupiedSpot new occupiedBy: playersToEnterTheSpot
+	^ self new occupiedBy: playersToEnterTheSpot
+]
+
+{ #category : #initialization }
+Spot >> emptySpot [
+	players := OrderedCollection new
+]
+
+{ #category : #initialization }
+Spot >> occupiedBy: playersToEnterTheSpot [
+	players := playersToEnterTheSpot
 ]
 
 { #category : #accessing }
 Spot >> players [
-	self subclassResponsibility
+	^ players copy
 ]
 
 { #category : #accessing }
 Spot >> quantityOfPlayers [
-	self subclassResponsibility
+	^ players size
 ]
