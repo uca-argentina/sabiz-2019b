@@ -11,8 +11,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-LeaderBoard class >> freshLeaderBoard [
-	^ self new freshLeaderBoard
+LeaderBoard class >> initialize [
+	^ self new initializeLeaderBoard
 ]
 
 { #category : #adding }
@@ -48,7 +48,7 @@ LeaderBoard >> fourth [
 ]
 
 { #category : #initialization }
-LeaderBoard >> freshLeaderBoard [
+LeaderBoard >> initializeLeaderBoard [
 	elements := OrderedCollection new
 ]
 

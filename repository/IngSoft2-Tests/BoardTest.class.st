@@ -10,8 +10,6 @@ Class {
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ Board withSpots: 0 withPlayers: {#player1} ]
-			raise: AssertionFailure;
-		should: [ Board withSpots: -1 withPlayers: {#player1} ]
-			raise: AssertionFailure
+		should: [ Board withSpots: 0 ] raise: AssertionFailure;
+		should: [ Board withSpots: -1 ] raise: AssertionFailure
 ]

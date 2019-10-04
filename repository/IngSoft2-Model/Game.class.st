@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'dices',
 		'leaderBoard',
-		'board'
+		'board',
+		'state'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -42,23 +43,18 @@ Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices
 	gamePlayers := OrderedCollection new.
 	players do: [ :each | gamePlayers addIfNotPresent: each ].
 	self
-		assert: gamePlayers isNotEmpty
+		assert: [ gamePlayers isNotEmpty ]
 		description: 'Not enough players to initialize game'.
 	self
-		assert: dices isNotEmpty
+		assert: [ dices isNotEmpty ]
 		description: 'Tried to initialize a game with an invalid set of Dices'.
 	self
-		assert: players size = gamePlayers size
+		assert: [ players size = gamePlayers size ]
 		description: 'Tried to initialize game with a duplicated player'.
 	^ self new
 		initializeWithSpots: numberOfSpots
 		players: gamePlayers
 		andDices: dices
-]
-
-{ #category : #private }
-Game >> addPlayerToLeaderBoard: player [
-	leaderBoard add: player
 ]
 
 { #category : #accessing }
@@ -68,14 +64,15 @@ Game >> dices [
 
 { #category : #testing }
 Game >> includesPlayer: aPlayer [
-	^ board includesPlayer: aPlayer
+	^ state includesPlayer: aPlayer
 ]
 
 { #category : #initialization }
 Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
 	dices := gameDices asOrderedCollection.
-	leaderBoard := LeaderBoard freshLeaderBoard.
-	board := Board withSpots: spotAmount withPlayers: gamePlayers
+	leaderBoard := LeaderBoard initialize.
+	board := Board withSpots: spotAmount.
+	state := GameState newGamePlayedBy: gamePlayers onBoard: board throwing: dices
 ]
 
 { #category : #playing }
@@ -88,14 +85,17 @@ Game >> leaderBoard [
 	^ leaderBoard copy
 ]
 
-{ #category : #private }
+{ #category : #'private - moving' }
 Game >> movePlayer: player [
+	| diceSum |
+	diceSum := 0.
 	self
-		assert: (board positionOfPlayer: player) < self numberOfSpots
+		assert: [ (state positionOfPlayer: player) < self numberOfSpots ]
 		description: 'Player already reached the final spot'.
-	dices do: [ :dice | board player: player advances: dice roll ].
-	(board positionOfPlayer: player) >= self numberOfSpots
-		ifTrue: [ self addPlayerToLeaderBoard: player ]
+	dices do: [ :dice | diceSum := diceSum + dice roll ].
+	state player: player advances: diceSum.
+	(state positionOfPlayer: player) >= self numberOfSpots
+		ifTrue: [ leaderBoard add: player ]
 ]
 
 { #category : #accessing }
@@ -110,26 +110,26 @@ Game >> playAnEntireGame [
 
 { #category : #playing }
 Game >> playOneRound [
-	self assert: self isNotOver description: 'Game is already over'.
+	self assert: [ self isNotOver ] description: 'Game is already over'.
 	self players
 		do: [ :player | 
-			(self playerHasFinished: player)
+			(self playerHasNotFinished: player)
 				ifTrue: [ self movePlayer: player ] ]
 ]
 
 { #category : #playing }
-Game >> playerHasFinished: player [
-	^ (board positionOfPlayer: player) < self numberOfSpots
+Game >> playerHasNotFinished: player [
+	^ (state positionOfPlayer: player) < self numberOfSpots
 ]
 
 { #category : #accessing }
 Game >> players [
-	^ board players
+	^ state players
 ]
 
 { #category : #accessing }
 Game >> positionOfPlayer: aPlayer [
-	^ board positionOfPlayer: aPlayer
+	^ state positionOfPlayer: aPlayer
 ]
 
 { #category : #accessing }
@@ -138,9 +138,14 @@ Game >> quantityOfPlayers [
 ]
 
 { #category : #accessing }
+Game >> rowOfPlayer: player [
+	^ state rowOfPlayer: player
+]
+
+{ #category : #accessing }
 Game >> winner [
 	self
-		assert: leaderBoard isNotEmpty
+		assert: [ leaderBoard isNotEmpty ]
 		description: 'No one has reached the end yet'.
 	^ leaderBoard first
 ]

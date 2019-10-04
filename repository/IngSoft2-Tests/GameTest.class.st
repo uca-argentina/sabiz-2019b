@@ -18,7 +18,7 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 	game := Game standard.
 	game playOneRound.
 	game players
-		do: [ :player | self assert: (game positionOfPlayer: player) > 1 ]
+		do: [ :player | self assert: [ (game positionOfPlayer: player) > 1 ] ]
 ]
 
 { #category : #tests }
@@ -26,7 +26,7 @@ GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	| game |
 	game := Game standard.
 	self
-		should: [ self assert: (game positionOfPlayer: #PlayerFromAnotherGame) ]
+		should: [ self assert: [ game positionOfPlayer: #PlayerFromAnotherGame ] ]
 		raise: AssertionFailure
 ]
 
@@ -70,7 +70,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 		withNumberOfSpots: 10
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: game quantityOfPlayers equals: 1
+	self assert: [ game quantityOfPlayers = 1 ]
 ]
 
 { #category : #tests }
@@ -80,7 +80,7 @@ GameTest >> testGameHasGivenNumberOfSpots [
 		withNumberOfSpots: 20
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: game numberOfSpots equals: 20
+	self assert: [ game numberOfSpots = 20 ]
 ]
 
 { #category : #tests }
@@ -90,7 +90,7 @@ GameTest >> testGameHasGivenPlayer [
 		withNumberOfSpots: 20
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}.
-	self assert: (game includesPlayer: #player1)
+	self assert: [ game includesPlayer: #player1 ]
 ]
 
 { #category : #tests }
@@ -105,30 +105,10 @@ GameTest >> testGameHasGivenSetOfDices [
 			{dice1.
 			dice2}.
 	self
-		assert:
-			(game dices
+		assert: [ game dices
 				includesAll:
 					{dice1.
-					dice2})
-]
-
-{ #category : #tests }
-GameTest >> testGameInitializesWithAllPlayerAtFirstSpot [
-	| game |
-	game := Game
-		withNumberOfSpots: 5
-		playedBy: {#player1 . #player2}
-		throwing: {(RandomDice withFaces: 6)}.
-	self assert: (game positionOfPlayer: #player1) equals: 1.
-	self assert: (game positionOfPlayer: #player2) equals: 1
-]
-
-{ #category : #tests }
-GameTest >> testGameIsOver [
-	| game |
-	game := Game standard.
-	game playAnEntireGame.
-	self deny: game isNotOver
+					dice2} ]
 ]
 
 { #category : #tests }
@@ -150,7 +130,7 @@ GameTest >> testPlayerOneWonTheGame [
 		playedBy: {#player1}
 		throwing: {(LoadedDice loadedWith: 10)}.
 	game playOneRound.
-	self assert: game winner equals: #player1
+	self assert: [ game winner = #player1 ]
 ]
 
 { #category : #tests }
@@ -176,7 +156,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {dice}.
 	game playAnEntireGame.
-	self assert: #player1 equals: game leaderBoard first.
-	self assert: #player2 equals: game leaderBoard second.
-	self assert: #player3 equals: game leaderBoard third
+	self assert: [ #player1 = game leaderBoard first ].
+	self assert: [ #player2 = game leaderBoard second ].
+	self assert: [ #player3 = game leaderBoard third ]
 ]

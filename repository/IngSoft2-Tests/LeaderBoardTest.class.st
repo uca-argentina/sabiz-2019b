@@ -10,7 +10,7 @@ Class {
 { #category : #tests }
 LeaderBoardTest >> testCantAddDuplicatedValuesToLeaderBoard [
 	| leaderboard |
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: 'element'.
 	self should: [ leaderboard add: 'element' ] raise: AssertionFailure
 ]
@@ -18,19 +18,19 @@ LeaderBoardTest >> testCantAddDuplicatedValuesToLeaderBoard [
 { #category : #tests }
 LeaderBoardTest >> testCantModifyElementsAlreadyInLeaderboard [
 	| leaderboard element |
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: OrderedCollection new.
 	element := leaderboard first.
 	element
 		add: 'Trying to change element that is already in LeaderBoard'.
-	self assert: leaderboard first isEmpty
+	self assert: [ leaderboard first isEmpty ]
 ]
 
 { #category : #tests }
 LeaderBoardTest >> testElementsAreInsertedAsCopies [
 	| leaderboard element |
 	element := OrderedCollection new.
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: element.
 	element add: 'change object after adding'.
 	self deny: element size = leaderboard first size
@@ -39,7 +39,7 @@ LeaderBoardTest >> testElementsAreInsertedAsCopies [
 { #category : #tests }
 LeaderBoardTest >> testElementsInLeaderBoardRespectAdditionOrder [
 	| leaderboard |
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: 1.
 	leaderboard add: 2.
 	leaderboard add: 3.
@@ -51,16 +51,16 @@ LeaderBoardTest >> testElementsInLeaderBoardRespectAdditionOrder [
 	leaderboard add: 9.
 	leaderboard add: 10.
 	leaderboard add: 11.
-	self assert: leaderboard size equals: 11.
-	self assert: leaderboard first equals: 1.
-	self assert: leaderboard second equals: 2.
-	self assert: leaderboard third equals: 3.
-	self assert: leaderboard fourth equals: 4.
-	self assert: leaderboard fifth equals: 5.
-	self assert: leaderboard sixth equals: 6.
-	self assert: leaderboard seventh equals: 7.
-	self assert: leaderboard eighth equals: 8.
-	self assert: leaderboard ninth equals: 9.
-	self assert: (leaderboard at: 10) equals: 10.
-	self assert: leaderboard last equals: 11.
+	self assert: [ leaderboard size = 11 ].
+	self assert: [ leaderboard first = 1 ].
+	self assert: [ leaderboard second = 2 ].
+	self assert: [ leaderboard third = 3 ].
+	self assert: [ leaderboard fourth = 4 ].
+	self assert: [ leaderboard fifth = 5 ].
+	self assert: [ leaderboard sixth = 6 ].
+	self assert: [ leaderboard seventh = 7 ].
+	self assert: [ leaderboard eighth = 8 ].
+	self assert: [ leaderboard ninth = 9 ].
+	self assert: [ (leaderboard at: 10) = 10 ].
+	self assert: [ leaderboard last = 11 ]
 ]
