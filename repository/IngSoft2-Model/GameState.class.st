@@ -4,5 +4,10 @@ This class represent the state of a game, containing a collection of the states 
 Class {
 	#name : #GameState,
 	#superclass : #Object,
+	#instVars : [
+		'playerStates',
+		'board',
+		'dices'
+	],
 	#category : #'IngSoft2-Model-Manifest'
 }
