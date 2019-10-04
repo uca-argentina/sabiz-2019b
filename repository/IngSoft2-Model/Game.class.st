@@ -137,7 +137,7 @@ Game >> quantityOfPlayers [
 	^ self players size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> rowOfPlayer: player [
 	^ state rowOfPlayer: player
 ]

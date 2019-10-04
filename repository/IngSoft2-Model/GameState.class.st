@@ -61,7 +61,7 @@ GameState >> positionOfPlayer: player [
 		last position
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GameState >> rowOfPlayer: player [
 	^ (playerStates at: player) last rowNumber
 ]

@@ -23,6 +23,16 @@ DiceTest >> testDiceLoadedWithFiveReturnFiveWhenItIsRolled [
 ]
 
 { #category : #tests }
+DiceTest >> testLoadedDiceCreationFailsWhenLoadedValueIsLessThanFour [
+	self should: [ LoadedDice loadedWith: (-4) ] raise: AssertionFailure
+]
+
+{ #category : #tests }
+DiceTest >> testNegativeLoadedDiceCreationFailsWhenTheLoadedValueIsBiggerThanNegative4 [
+	self should: [ NegativeLoadedDice loadedWith: 2 ] raise: AssertionFailure 
+]
+
+{ #category : #tests }
 DiceTest >> testRandomDiceCreationFailsWhenGivenNumberOfFacesIsLessThanFour [
 	self should: [ RandomDice withFaces: 2 ] raise: AssertionFailure
 ]
