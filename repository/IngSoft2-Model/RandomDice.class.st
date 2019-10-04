@@ -5,6 +5,7 @@ Class {
 	#name : #RandomDice,
 	#superclass : #Dice,
 	#instVars : [
+		'numberOfFaces',
 		'rollResult',
 		'random'
 	],
