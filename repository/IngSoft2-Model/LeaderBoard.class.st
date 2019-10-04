@@ -58,6 +58,11 @@ LeaderBoard >> isNotEmpty [
 ]
 
 { #category : #accessing }
+LeaderBoard >> last [
+	^ elements last copy
+]
+
+{ #category : #accessing }
 LeaderBoard >> ninth [
 	^ elements ninth copy
 ]
