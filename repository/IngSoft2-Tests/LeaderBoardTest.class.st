@@ -23,7 +23,7 @@ LeaderBoardTest >> testCantModifyElementsAlreadyInLeaderboard [
 	element := leaderboard first.
 	element
 		add: 'Trying to change element that is already in LeaderBoard'.
-	self assert: leaderboard first isEmpty
+	self assert: [ leaderboard first isEmpty ]
 ]
 
 { #category : #tests }
@@ -51,16 +51,16 @@ LeaderBoardTest >> testElementsInLeaderBoardRespectAdditionOrder [
 	leaderboard add: 9.
 	leaderboard add: 10.
 	leaderboard add: 11.
-	self assert: leaderboard size equals: 11.
-	self assert: leaderboard first equals: 1.
-	self assert: leaderboard second equals: 2.
-	self assert: leaderboard third equals: 3.
-	self assert: leaderboard fourth equals: 4.
-	self assert: leaderboard fifth equals: 5.
-	self assert: leaderboard sixth equals: 6.
-	self assert: leaderboard seventh equals: 7.
-	self assert: leaderboard eighth equals: 8.
-	self assert: leaderboard ninth equals: 9.
-	self assert: (leaderboard at: 10) equals: 10.
-	self assert: leaderboard last equals: 11.
+	self assert: [ leaderboard size = 11 ].
+	self assert: [ leaderboard first = 1 ].
+	self assert: [ leaderboard second = 2 ].
+	self assert: [ leaderboard third = 3 ].
+	self assert: [ leaderboard fourth = 4 ].
+	self assert: [ leaderboard fifth = 5 ].
+	self assert: [ leaderboard sixth = 6 ].
+	self assert: [ leaderboard seventh = 7 ].
+	self assert: [ leaderboard eighth = 8 ].
+	self assert: [ leaderboard ninth = 9 ].
+	self assert: [ (leaderboard at: 10) = 10 ].
+	self assert: [ leaderboard last = 11 ]
 ]

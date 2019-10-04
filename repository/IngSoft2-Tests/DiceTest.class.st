@@ -18,7 +18,7 @@ DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 DiceTest >> testDiceLoadedWithFiveReturnFiveWhenItIsRolled [
 	| dice |
 	dice := LoadedDice loadedWith: 5.
-	self assert: dice roll equals: 5
+	self assert: [ dice roll = 5 ]
 ]
 
 { #category : #tests }
@@ -51,7 +51,7 @@ DiceTest >> testRandomDiceRollsValidNumber [
 	faces := 6.
 	dice := RandomDice withFaces: faces.
 	result := dice roll.
-	self assert: (result > 0 and: result <= faces)
+	self assert: [ result > 0 and: result <= faces ]
 ]
 
 { #category : #tests }
@@ -64,5 +64,5 @@ DiceTest >> testSequentialDiceRollsExpectedSequence [
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
-	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 4 . 1}
+	self assert: [ rolledSequence asArray = {1 . 2 . 3 . 4 . 1} ]
 ]
