@@ -12,9 +12,6 @@ Class {
 
 { #category : #'instance creation' }
 LoadedDice class >> loadedWith: loadedValue [
-	self
-		assert: loadedValue > 0
-		description: 'LoadedValue cannot be negative or zero'.
 	^ self new initializeLoadedWith: loadedValue
 ]
 
