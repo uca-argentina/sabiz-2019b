@@ -50,7 +50,8 @@ LeaderBoardTest >> testElementsInLeaderBoardRespectAdditionOrder [
 	leaderboard add: 8.
 	leaderboard add: 9.
 	leaderboard add: 10.
-	self assert: leaderboard size equals: 10.
+	leaderboard add: 11.
+	self assert: leaderboard size equals: 11.
 	self assert: leaderboard first equals: 1.
 	self assert: leaderboard second equals: 2.
 	self assert: leaderboard third equals: 3.
@@ -60,5 +61,6 @@ LeaderBoardTest >> testElementsInLeaderBoardRespectAdditionOrder [
 	self assert: leaderboard seventh equals: 7.
 	self assert: leaderboard eighth equals: 8.
 	self assert: leaderboard ninth equals: 9.
-	self assert: (leaderboard at: 10) equals: 10
+	self assert: (leaderboard at: 10) equals: 10.
+	self assert: leaderboard last equals: 11.
 ]
