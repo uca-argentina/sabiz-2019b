@@ -113,25 +113,6 @@ GameTest >> testGameHasGivenSetOfDices [
 ]
 
 { #category : #tests }
-GameTest >> testGameInitializesWithAllPlayerAtFirstSpot [
-	| game |
-	game := Game
-		withNumberOfSpots: 5
-		playedBy: {#player1 . #player2}
-		throwing: {(RandomDice withFaces: 6)}.
-	self assert: (game positionOfPlayer: #player1) equals: 1.
-	self assert: (game positionOfPlayer: #player2) equals: 1
-]
-
-{ #category : #tests }
-GameTest >> testGameIsOver [
-	| game |
-	game := Game standard.
-	game playAnEntireGame.
-	self deny: game isNotOver
-]
-
-{ #category : #tests }
 GameTest >> testPlayerCantMoveOnceOverTheEndLine [
 	| game |
 	game := Game
