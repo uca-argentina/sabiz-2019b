@@ -1,5 +1,5 @@
 "
-A class used to create the board spots occupied or not by the players of the game
+A class used to create the board spots of the game
 "
 Class {
 	#name : #Spot,
@@ -11,35 +11,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-Spot class >> empty [
-	^ self new emptySpot
+Spot class >> random [
+	self assert: false description: 'Need to implement this!'
 ]
 
-{ #category : #'instance creation' }
-Spot class >> occupiedBy: players [
-	| playersToEnterTheSpot |
-	playersToEnterTheSpot := OrderedCollection new.
-	players
-		do: [ :player | playersToEnterTheSpot addIfNotPresent: player ].
-	^ self new occupiedBy: playersToEnterTheSpot
-]
-
-{ #category : #initialization }
-Spot >> emptySpot [
-	players := OrderedCollection new
-]
-
-{ #category : #initialization }
-Spot >> occupiedBy: playersToEnterTheSpot [
-	players := playersToEnterTheSpot
-]
-
-{ #category : #accessing }
-Spot >> players [
-	^ players copy
-]
-
-{ #category : #accessing }
-Spot >> quantityOfPlayers [
-	^ players size
+{ #category : #effect }
+Spot >> applyEffecton: gameState triggeredBy: player [
+	self subclassResponsibility
 ]
