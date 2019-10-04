@@ -43,13 +43,13 @@ Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices
 	gamePlayers := OrderedCollection new.
 	players do: [ :each | gamePlayers addIfNotPresent: each ].
 	self
-		assert: gamePlayers isNotEmpty
+		assert: [ gamePlayers isNotEmpty ]
 		description: 'Not enough players to initialize game'.
 	self
-		assert: dices isNotEmpty
+		assert: [ dices isNotEmpty ]
 		description: 'Tried to initialize a game with an invalid set of Dices'.
 	self
-		assert: players size = gamePlayers size
+		assert: [ players size = gamePlayers size ]
 		description: 'Tried to initialize game with a duplicated player'.
 	^ self new
 		initializeWithSpots: numberOfSpots
@@ -70,9 +70,9 @@ Game >> includesPlayer: aPlayer [
 { #category : #initialization }
 Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
 	dices := gameDices asOrderedCollection.
-	leaderBoard := LeaderBoard freshLeaderBoard.
+	leaderBoard := LeaderBoard initialize.
 	board := Board withSpots: spotAmount.
-	state := GameState freshGamePlayedBy: gamePlayers onBoard: board throwing: dices
+	state := GameState newGamePlayedBy: gamePlayers onBoard: board throwing: dices
 ]
 
 { #category : #playing }
@@ -90,7 +90,7 @@ Game >> movePlayer: player [
 	| diceSum |
 	diceSum := 0.
 	self
-		assert: (state positionOfPlayer: player) < self numberOfSpots
+		assert: [ (state positionOfPlayer: player) < self numberOfSpots ]
 		description: 'Player already reached the final spot'.
 	dices do: [ :dice | diceSum := diceSum + dice roll ].
 	state player: player advances: diceSum.
@@ -110,7 +110,7 @@ Game >> playAnEntireGame [
 
 { #category : #playing }
 Game >> playOneRound [
-	self assert: self isNotOver description: 'Game is already over'.
+	self assert: [ self isNotOver ] description: 'Game is already over'.
 	self players
 		do: [ :player | 
 			(self playerHasNotFinished: player)
@@ -145,7 +145,7 @@ Game >> rowOfPlayer: player [
 { #category : #accessing }
 Game >> winner [
 	self
-		assert: leaderBoard isNotEmpty
+		assert: [ leaderBoard isNotEmpty ]
 		description: 'No one has reached the end yet'.
 	^ leaderBoard first
 ]

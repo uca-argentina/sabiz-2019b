@@ -10,7 +10,7 @@ Class {
 { #category : #tests }
 LeaderBoardTest >> testCantAddDuplicatedValuesToLeaderBoard [
 	| leaderboard |
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: 'element'.
 	self should: [ leaderboard add: 'element' ] raise: AssertionFailure
 ]
@@ -18,7 +18,7 @@ LeaderBoardTest >> testCantAddDuplicatedValuesToLeaderBoard [
 { #category : #tests }
 LeaderBoardTest >> testCantModifyElementsAlreadyInLeaderboard [
 	| leaderboard element |
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: OrderedCollection new.
 	element := leaderboard first.
 	element
@@ -30,7 +30,7 @@ LeaderBoardTest >> testCantModifyElementsAlreadyInLeaderboard [
 LeaderBoardTest >> testElementsAreInsertedAsCopies [
 	| leaderboard element |
 	element := OrderedCollection new.
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: element.
 	element add: 'change object after adding'.
 	self deny: element size = leaderboard first size
@@ -39,7 +39,7 @@ LeaderBoardTest >> testElementsAreInsertedAsCopies [
 { #category : #tests }
 LeaderBoardTest >> testElementsInLeaderBoardRespectAdditionOrder [
 	| leaderboard |
-	leaderboard := LeaderBoard freshLeaderBoard.
+	leaderboard := LeaderBoard initialize.
 	leaderboard add: 1.
 	leaderboard add: 2.
 	leaderboard add: 3.

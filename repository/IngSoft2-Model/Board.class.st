@@ -12,7 +12,9 @@ Class {
 
 { #category : #'instance creation' }
 Board class >> withSpots: spotsAmmount [
-	self assert: spotsAmmount > 0 description: 'Invalid number of spots'.
+	self
+		assert: [ spotsAmmount > 0 ]
+		description: 'Invalid number of spots'.
 	^ self new initializeWithSpots: spotsAmmount
 ]
 

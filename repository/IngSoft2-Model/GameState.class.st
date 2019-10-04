@@ -13,12 +13,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-GameState class >> freshGamePlayedBy: players onBoard: board throwing: dices [
-	^ self new freshGamePlayedBy: players onBoard: board throwing: dices
+GameState class >> newGamePlayedBy: players onBoard: board throwing: dices [
+	^ self new newGamePlayedBy: players onBoard: board throwing: dices
+]
+
+{ #category : #testing }
+GameState >> includesPlayer: player [
+	^ playerStates keys includes: player
 ]
 
 { #category : #initialization }
-GameState >> freshGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices [
+GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices [
 	| startPlayerStatesCollection |
 	startPlayerStatesCollection := OrderedCollection new.
 	startPlayerStatesCollection
@@ -28,11 +33,6 @@ GameState >> freshGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDic
 	playerStates := Dictionary new.
 	gamePlayers
 		do: [ :each | playerStates at: each put: startPlayerStatesCollection copy ]
-]
-
-{ #category : #testing }
-GameState >> includesPlayer: player [
-	^ playerStates keys includes: player
 ]
 
 { #category : #'private - moving' }
@@ -56,7 +56,7 @@ GameState >> positionOfPlayer: player [
 	^ (playerStates
 		at: player
 		ifAbsent: [ self
-				assert: false
+				assert: [ false ]
 				description: 'Asked for the position of a player that is not in game' ])
 		last position
 ]
