@@ -7,12 +7,12 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'additional methods' }
 GameTest >> negativeNumberOfSpots [
 	^ -1
 ]
 
-{ #category : #tests }
+{ #category : #'test - playing' }
 GameTest >> testAllPlayersAdvancedAfterOneRound [
 	| game |
 	game := Game standard.
@@ -21,7 +21,7 @@ GameTest >> testAllPlayersAdvancedAfterOneRound [
 		do: [ :player | self assert: [ (game positionOfPlayer: player) > 1 ] ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	| game |
 	game := Game standard.
@@ -30,7 +30,7 @@ GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 		raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
 	self
 		should: [ Game
@@ -41,7 +41,7 @@ GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
 		raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutDices [
 	| game |
 	self
@@ -53,7 +53,7 @@ GameTest >> testCantCreateGameWithoutDices [
 		raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutPlayers [
 	| game |
 	self
@@ -65,7 +65,7 @@ GameTest >> testCantCreateGameWithoutPlayers [
 		raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 GameTest >> testCantHaveDupplicatedPlayers [
 	self
 		should: [ Game
@@ -76,7 +76,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 		raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'test - playing' }
 GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 	| game |
 	game := Game standard.
@@ -84,7 +84,7 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 	self should: [ game playOneRound ] raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfLaps [
 	| game |
 	game := Game
@@ -95,7 +95,7 @@ GameTest >> testGameHasGivenNumberOfLaps [
 	self assert: [ game numberOfLaps = 2 ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfPlayers [
 	| game |
 	game := Game
@@ -106,7 +106,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 	self assert: [ game quantityOfPlayers = 1 ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfSpots [
 	| game |
 	game := Game
@@ -117,7 +117,7 @@ GameTest >> testGameHasGivenNumberOfSpots [
 	self assert: [ game numberOfSpots = 20 ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenPlayer [
 	| game |
 	game := Game
@@ -128,7 +128,7 @@ GameTest >> testGameHasGivenPlayer [
 	self assert: [ game includesPlayer: #player1 ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenSetOfDices [
 	| game dice1 dice2 |
 	dice1 := RandomDice withFaces: 6.
@@ -147,19 +147,33 @@ GameTest >> testGameHasGivenSetOfDices [
 					dice2} ]
 ]
 
-{ #category : #tests }
-GameTest >> testPlayerCantMoveOnceOverTheEndLine [
+{ #category : #'test - playing' }
+GameTest >> testPlayerCompletesALapAfterReachingTheLastSpot [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
 		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}
-		withLapsToComplete: 2.
-	game playAnEntireGame.
-	self should: [ game movePlayer: #player1 ] raise: AssertionFailure
+		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
+		withLapsToComplete: 5.
+	game playOneRound.
+	game playOneRound.
+	self assert: [ (game lapOfPlayer: #player1) = 1 ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - playing' }
+GameTest >> testPlayerLosesALapIfHeGoesBackBeyondTheFirstPoint [
+	| game |
+	game := Game
+		withNumberOfSpots: 10
+		playedBy: {#player1}
+		throwing: {(NegativeLoadedDice loadedWith: -4)}
+		withLapsToComplete: 5.
+	game playOneRound.
+	game playOneRound.
+	self assert: [ (game lapOfPlayer: #player1) = -1 ]
+]
+
+{ #category : #'test - playing' }
 GameTest >> testPlayerOneWonTheGame [
 	| game |
 	game := Game
@@ -171,7 +185,7 @@ GameTest >> testPlayerOneWonTheGame [
 	self assert: [ game winner = #player1 ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 	| dice |
 	dice := RandomDice withFaces: 6.
@@ -190,7 +204,7 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 			raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice |
 	dice := LoadedDice loadedWith: 10.
