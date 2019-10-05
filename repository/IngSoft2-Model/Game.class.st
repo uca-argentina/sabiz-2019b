@@ -72,12 +72,20 @@ Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices
 	dices := gameDices asOrderedCollection.
 	leaderBoard := LeaderBoard initialize.
 	board := Board withSpots: spotAmount.
-	state := GameState newGamePlayedBy: gamePlayers onBoard: board throwing: dices
+	state := GameState
+		newGamePlayedBy: gamePlayers
+		onBoard: board
+		throwing: dices
 ]
 
 { #category : #playing }
 Game >> isNotOver [
 	^ self players size > self leaderBoard size
+]
+
+{ #category : #accessing }
+Game >> lapOfPlayer: player [
+	^ state lapOfPlayer: player
 ]
 
 { #category : #accessing }
@@ -135,11 +143,6 @@ Game >> positionOfPlayer: aPlayer [
 { #category : #accessing }
 Game >> quantityOfPlayers [
 	^ self players size
-]
-
-{ #category : #accessing }
-Game >> rowOfPlayer: player [
-	^ state rowOfPlayer: player
 ]
 
 { #category : #accessing }
