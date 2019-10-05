@@ -81,7 +81,7 @@ Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices
 	board := Board withSpots: spotAmount andNumberOfLaps: numberOfLaps.
 	state := GameState
 		newGamePlayedBy: gamePlayers
-		onBoard: board
+		onBoard: board copy
 		throwing: dices
 ]
 

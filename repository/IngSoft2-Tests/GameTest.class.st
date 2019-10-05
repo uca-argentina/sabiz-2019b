@@ -148,6 +148,19 @@ GameTest >> testGameHasGivenSetOfDices [
 ]
 
 { #category : #'test - playing' }
+GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
+	| game |
+	game := Game
+		withNumberOfSpots: 10
+		playedBy: {#player1}
+		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
+		withLapsToComplete: 5.
+	game playOneRound.
+	game playOneRound.
+	self assert: [ (game lapOfPlayer: #player1) = -1 ]
+]
+
+{ #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game |
 	game := Game
@@ -227,7 +240,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 		throwing: {(LoadedDice loadedWith: 9)}
 		withLapsToComplete: 5.
 	game playOneRound.
-	self assert: [ (game lapOfPlayer: #player1) = 1 ]
+	self assert: [ (game lapOfPlayer: #player1) = 0 ]
 ]
 
 { #category : #'test - playing' }
