@@ -105,11 +105,11 @@ Game >> movePlayer: player [
 	| diceSum |
 	diceSum := 0.
 	self
-		assert: [ (state positionOfPlayer: player) < self numberOfSpots ]
-		description: 'Player already reached the final spot'.
+		assert: [ (state lapOfPlayer: player) < self numberOfLaps ]
+		description: 'Player already reached completed the game'.
 	dices do: [ :dice | diceSum := diceSum + dice roll ].
 	state player: player advances: diceSum.
-	(state positionOfPlayer: player) >= self numberOfSpots
+	(state lapOfPlayer: player) >= self numberOfLaps
 		ifTrue: [ leaderBoard add: player ]
 ]
 
@@ -139,7 +139,7 @@ Game >> playOneRound [
 
 { #category : #playing }
 Game >> playerHasNotFinished: player [
-	^ (state positionOfPlayer: player) < self numberOfSpots
+	^ (state lapOfPlayer: player) < self numberOfLaps
 ]
 
 { #category : #accessing }

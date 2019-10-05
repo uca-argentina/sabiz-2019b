@@ -148,7 +148,7 @@ GameTest >> testGameHasGivenSetOfDices [
 ]
 
 { #category : #'test - playing' }
-GameTest >> testPlayerCompletesALapAfterReachingTheLastSpot [
+GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
@@ -161,7 +161,7 @@ GameTest >> testPlayerCompletesALapAfterReachingTheLastSpot [
 ]
 
 { #category : #'test - playing' }
-GameTest >> testPlayerLosesALapIfHeGoesBackBeyondTheFirstPoint [
+GameTest >> testPlayerLosesALapIfHeGoesBackBeyondTheFirstSpot [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
@@ -180,9 +180,23 @@ GameTest >> testPlayerOneWonTheGame [
 		withNumberOfSpots: 10
 		playedBy: {#player1}
 		throwing: {(LoadedDice loadedWith: 10)}
-		withLapsToComplete: 2.
+		withLapsToComplete: 1.
 	game playOneRound.
 	self assert: [ game winner = #player1 ]
+]
+
+{ #category : #'test - playing' }
+GameTest >> testPositionOfPlayerIsCorrectAfterCompletingOrLosingALap [
+	| game |
+	game := Game
+		withNumberOfSpots: 10
+		playedBy: {#player1}
+		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
+		withLapsToComplete: 5.
+	game playOneRound.
+	self assert: [ (game positionOfPlayer: #player1) = 7 ].
+	game playOneRound.
+	self assert: [ (game positionOfPlayer: #player1) = 1 ]
 ]
 
 { #category : #'tests - instance creation' }
@@ -202,6 +216,18 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 				throwing: {dice}
 				withLapsToComplete: 2 ]
 			raise: AssertionFailure
+]
+
+{ #category : #'test - playing' }
+GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
+	| game |
+	game := Game
+		withNumberOfSpots: 10
+		playedBy: {#player1}
+		throwing: {(LoadedDice loadedWith: 9)}
+		withLapsToComplete: 5.
+	game playOneRound.
+	self assert: [ (game lapOfPlayer: #player1) = 1 ]
 ]
 
 { #category : #'test - playing' }
