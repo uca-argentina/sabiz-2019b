@@ -10,7 +10,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 NegativeLoadedDice class >> loadedWith: loadedValue [
 	self assert: [ loadedValue <= -4 ].
 	^ self new initializeLoadedWith: loadedValue

@@ -6,28 +6,28 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'position',
-		'rowNumber'
+		'lapNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-PlayerState class >> onPosition: position onRowNumber: rowNumber [
-	^ self new onPosition: position onRowNumber: rowNumber
+PlayerState class >> onPosition: position onLapNumber: lapNumber [
+	^ self new onPosition: position onLapNumber: lapNumber
+]
+
+{ #category : #accesing }
+PlayerState >> lapNumber [
+	^ lapNumber copy
 ]
 
 { #category : #initialization }
-PlayerState >> onPosition: currentPosition onRowNumber: currentRowNumber [
+PlayerState >> onPosition: currentPosition onLapNumber: currentLapNumber [
 	position := currentPosition copy.
-	rowNumber := currentRowNumber copy
+	lapNumber := currentLapNumber copy
 ]
 
 { #category : #accesing }
 PlayerState >> position [
 	^ position copy
-]
-
-{ #category : #accesing }
-PlayerState >> rowNumber [
-	^ rowNumber copy
 ]

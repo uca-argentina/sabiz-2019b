@@ -31,18 +31,38 @@ GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 ]
 
 { #category : #tests }
+GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
+	self
+		should: [ Game
+				withNumberOfSpots: 10
+				playedBy: {#player1}
+				throwing: {(LoadedDice loadedWith: 6)}
+				withLapsToComplete: 0 ]
+		raise: AssertionFailure
+]
+
+{ #category : #tests }
 GameTest >> testCantCreateGameWithoutDices [
 	| game |
 	self
-		should:
-			[ game := Game withNumberOfSpots: 20 playedBy: {#player1} throwing: {} ]
+		should: [ game := Game
+				withNumberOfSpots: 20
+				playedBy: {#player1}
+				throwing: {}
+				withLapsToComplete: 2 ]
 		raise: AssertionFailure
 ]
 
 { #category : #tests }
 GameTest >> testCantCreateGameWithoutPlayers [
 	| game |
-	self should: [ game := Game withNumberOfSpots: 20 playedBy: {  } throwing: { RandomDice withFaces: 6 } ] raise: AssertionFailure
+	self
+		should: [ game := Game
+				withNumberOfSpots: 20
+				playedBy: {}
+				throwing: {(RandomDice withFaces: 6)}
+				withLapsToComplete: 2 ]
+		raise: AssertionFailure
 ]
 
 { #category : #tests }
@@ -51,7 +71,8 @@ GameTest >> testCantHaveDupplicatedPlayers [
 		should: [ Game
 				withNumberOfSpots: 20
 				playedBy: {#player1 . #player1}
-				throwing: {(RandomDice withFaces: 6)} ]
+				throwing: {(RandomDice withFaces: 6)}
+				withLapsToComplete: 2 ]
 		raise: AssertionFailure
 ]
 
@@ -64,12 +85,24 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 ]
 
 { #category : #tests }
+GameTest >> testGameHasGivenNumberOfLaps [
+	| game |
+	game := Game
+		withNumberOfSpots: 20
+		playedBy: {#player1}
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
+	self assert: [ game numberOfLaps = 2 ]
+]
+
+{ #category : #tests }
 GameTest >> testGameHasGivenNumberOfPlayers [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
 		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}.
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
 	self assert: [ game quantityOfPlayers = 1 ]
 ]
 
@@ -79,7 +112,8 @@ GameTest >> testGameHasGivenNumberOfSpots [
 	game := Game
 		withNumberOfSpots: 20
 		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}.
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
 	self assert: [ game numberOfSpots = 20 ]
 ]
 
@@ -89,7 +123,8 @@ GameTest >> testGameHasGivenPlayer [
 	game := Game
 		withNumberOfSpots: 20
 		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}.
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
 	self assert: [ game includesPlayer: #player1 ]
 ]
 
@@ -103,7 +138,8 @@ GameTest >> testGameHasGivenSetOfDices [
 		playedBy: {#player1}
 		throwing:
 			{dice1.
-			dice2}.
+			dice2}
+		withLapsToComplete: 2.
 	self
 		assert: [ game dices
 				includesAll:
@@ -117,7 +153,8 @@ GameTest >> testPlayerCantMoveOnceOverTheEndLine [
 	game := Game
 		withNumberOfSpots: 10
 		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}.
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
 	game playAnEntireGame.
 	self should: [ game movePlayer: #player1 ] raise: AssertionFailure
 ]
@@ -128,7 +165,8 @@ GameTest >> testPlayerOneWonTheGame [
 	game := Game
 		withNumberOfSpots: 10
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 10)}.
+		throwing: {(LoadedDice loadedWith: 10)}
+		withLapsToComplete: 2.
 	game playOneRound.
 	self assert: [ game winner = #player1 ]
 ]
@@ -138,12 +176,17 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 	| dice |
 	dice := RandomDice withFaces: 6.
 	self
-		should: [ Game withNumberOfSpots: 0 playedBy: {#player1} throwing: {dice} ]
+		should: [ Game
+				withNumberOfSpots: 0
+				playedBy: {#player1}
+				throwing: {dice}
+				withLapsToComplete: 2 ]
 			raise: AssertionFailure;
 		should: [ Game
 				withNumberOfSpots: self negativeNumberOfSpots
 				playedBy: {#player1}
-				throwing: {dice} ]
+				throwing: {dice}
+				withLapsToComplete: 2 ]
 			raise: AssertionFailure
 ]
 
@@ -154,7 +197,8 @@ GameTest >> testRiggedGameEndsAsExpected [
 	game := Game
 		withNumberOfSpots: 10
 		playedBy: {#player1 . #player2 . #player3}
-		throwing: {dice}.
+		throwing: {dice}
+		withLapsToComplete: 2.
 	game playAnEntireGame.
 	self assert: [ #player1 = game leaderBoard first ].
 	self assert: [ #player2 = game leaderBoard second ].

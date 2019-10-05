@@ -22,12 +22,17 @@ GameState >> includesPlayer: player [
 	^ playerStates keys includes: player
 ]
 
+{ #category : #accessing }
+GameState >> lapOfPlayer: player [
+	^ (playerStates at: player) last lapNumber
+]
+
 { #category : #initialization }
 GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices [
 	| startPlayerStatesCollection |
 	startPlayerStatesCollection := OrderedCollection new.
 	startPlayerStatesCollection
-		add: (PlayerState onPosition: 1 onRowNumber: 0).
+		add: (PlayerState onPosition: 1 onLapNumber: 0).
 	board := gameBoard.
 	dices := gameDices.
 	playerStates := Dictionary new.
@@ -43,7 +48,7 @@ GameState >> player: player advances: rollResult [
 	newPosition := board numberOfSpots min: newPosition.
 	listOfPlayersStates := playerStates at: player.
 	listOfPlayersStates
-		add: (PlayerState onPosition: newPosition onRowNumber: 0)
+		add: (PlayerState onPosition: newPosition onLapNumber: 0)
 ]
 
 { #category : #accessing }
@@ -59,9 +64,4 @@ GameState >> positionOfPlayer: player [
 				assert: [ false ]
 				description: 'Asked for the position of a player that is not in game' ])
 		last position
-]
-
-{ #category : #accessing }
-GameState >> rowOfPlayer: player [
-	^ (playerStates at: player) last rowNumber
 ]
