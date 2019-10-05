@@ -19,6 +19,12 @@ Game class >> standard [
 		withNumberOfSpots: self standardSpotAmount
 		playedBy: self standardSetOfPlayers
 		throwing: self standardSetOfDices
+		withLapsToComplete: self standardLapAmmount
+]
+
+{ #category : #standardValues }
+Game class >> standardLapAmmount [
+	^ 3
 ]
 
 { #category : #standardValues }
@@ -37,7 +43,7 @@ Game class >> standardSpotAmount [
 ]
 
 { #category : #'instance creation' }
-Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices [
+Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices withLapsToComplete: numberOfLaps [
 	| gamePlayers |
 	players asOrderedCollection.
 	gamePlayers := OrderedCollection new.
@@ -55,6 +61,7 @@ Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices
 		initializeWithSpots: numberOfSpots
 		players: gamePlayers
 		andDices: dices
+		andLaps: numberOfLaps
 ]
 
 { #category : #accessing }
@@ -68,10 +75,10 @@ Game >> includesPlayer: aPlayer [
 ]
 
 { #category : #initialization }
-Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
+Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices andLaps: numberOfLaps [
 	dices := gameDices asOrderedCollection.
 	leaderBoard := LeaderBoard initialize.
-	board := Board withSpots: spotAmount.
+	board := Board withSpots: spotAmount andNumberOfLaps: numberOfLaps.
 	state := GameState
 		newGamePlayedBy: gamePlayers
 		onBoard: board
@@ -104,6 +111,11 @@ Game >> movePlayer: player [
 	state player: player advances: diceSum.
 	(state positionOfPlayer: player) >= self numberOfSpots
 		ifTrue: [ leaderBoard add: player ]
+]
+
+{ #category : #accessing }
+Game >> numberOfLaps [
+	^ board numberOfLaps
 ]
 
 { #category : #accessing }
