@@ -65,8 +65,7 @@ GameState >> players [
 GameState >> positionOfPlayer: player [
 	^ (playerStates
 		at: player
-		ifAbsent: [ self
-				assert: [ false ]
-				description: 'Asked for the position of a player that is not in game' ])
+		ifAbsent: [ AssertionFailure
+				signal: 'Asked for the position of a player that is not in game' ])
 		last position
 ]
