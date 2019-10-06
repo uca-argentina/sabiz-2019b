@@ -13,6 +13,28 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #testing }
+Game class >> addIgnoringRepeated: players [
+	| gamePlayers |
+	players asOrderedCollection.
+	gamePlayers := OrderedCollection new.
+	players do: [ :each | gamePlayers addIfNotPresent: each ].
+	^ gamePlayers
+]
+
+{ #category : #testing }
+Game class >> checkPlayers: gamePlayers checkDices: dices checkRepeatedPlayers: players [
+	self
+		assert: [ gamePlayers isNotEmpty ]
+		description: 'Not enough players to initialize game'.
+	self
+		assert: [ dices isNotEmpty ]
+		description: 'Tried to initialize a game with an invalid set of Dices'.
+	self
+		assert: [ players size = gamePlayers size ]
+		description: 'Tried to initialize game with a duplicated player'
+]
+
 { #category : #'instance creation' }
 Game class >> standard [
 	^ self
@@ -45,18 +67,11 @@ Game class >> standardSpotAmount [
 { #category : #'instance creation' }
 Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices withLapsToComplete: numberOfLaps [
 	| gamePlayers |
-	players asOrderedCollection.
-	gamePlayers := OrderedCollection new.
-	players do: [ :each | gamePlayers addIfNotPresent: each ].
+	gamePlayers := self addIgnoringRepeated: players.
 	self
-		assert: [ gamePlayers isNotEmpty ]
-		description: 'Not enough players to initialize game'.
-	self
-		assert: [ dices isNotEmpty ]
-		description: 'Tried to initialize a game with an invalid set of Dices'.
-	self
-		assert: [ players size = gamePlayers size ]
-		description: 'Tried to initialize game with a duplicated player'.
+		checkPlayers: gamePlayers
+		checkDices: dices
+		checkRepeatedPlayers: players.
 	^ self new
 		initializeWithSpots: numberOfSpots
 		players: gamePlayers
@@ -77,7 +92,7 @@ Game >> includesPlayer: aPlayer [
 { #category : #initialization }
 Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices andLaps: numberOfLaps [
 	dices := gameDices asOrderedCollection.
-	leaderBoard := LeaderBoard initialize.
+	leaderBoard := LeaderBoard newLeadBoard.
 	board := Board withSpots: spotAmount andNumberOfLaps: numberOfLaps.
 	state := GameState
 		newGamePlayedBy: gamePlayers
@@ -98,6 +113,14 @@ Game >> lapOfPlayer: player [
 { #category : #accessing }
 Game >> leaderBoard [
 	^ leaderBoard copy
+]
+
+{ #category : #playing }
+Game >> moveAllPlayers [
+	self players
+		do: [ :player | 
+			(self playerHasNotFinished: player)
+				ifTrue: [ self movePlayer: player ] ]
 ]
 
 { #category : #'private - moving' }
@@ -131,10 +154,7 @@ Game >> playAnEntireGame [
 { #category : #playing }
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
-	self players
-		do: [ :player | 
-			(self playerHasNotFinished: player)
-				ifTrue: [ self movePlayer: player ] ]
+	self moveAllPlayers
 ]
 
 { #category : #playing }

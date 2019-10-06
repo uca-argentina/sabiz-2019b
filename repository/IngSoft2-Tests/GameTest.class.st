@@ -12,15 +12,6 @@ GameTest >> negativeNumberOfSpots [
 	^ -1
 ]
 
-{ #category : #'test - playing' }
-GameTest >> testAllPlayersAdvancedAfterOneRound [
-	| game |
-	game := Game standard.
-	game playOneRound.
-	game players
-		do: [ :player | self assert: [ (game positionOfPlayer: player) > 1 ] ]
-]
-
 { #category : #'test - accessing' }
 GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	| game |
@@ -43,9 +34,8 @@ GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
 
 { #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutDices [
-	| game |
 	self
-		should: [ game := Game
+		should: [ Game
 				withNumberOfSpots: 20
 				playedBy: {#player1}
 				throwing: {}
@@ -55,9 +45,8 @@ GameTest >> testCantCreateGameWithoutDices [
 
 { #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutPlayers [
-	| game |
 	self
-		should: [ game := Game
+		should: [ Game
 				withNumberOfSpots: 20
 				playedBy: {}
 				throwing: {(RandomDice withFaces: 6)}
@@ -199,7 +188,7 @@ GameTest >> testPlayerOneWonTheGame [
 ]
 
 { #category : #'test - playing' }
-GameTest >> testPositionOfPlayerIsCorrectAfterCompletingOrLosingALap [
+GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game |
 	game := Game
 		withNumberOfSpots: 10

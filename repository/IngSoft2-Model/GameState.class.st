@@ -43,10 +43,10 @@ GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices
 { #category : #'private - moving' }
 GameState >> player: player advances: rollResult [
 	| grossNewPosition netNewPosition actualPosition listOfPlayersStates newLapNumber actualLap |
-	actualLap := self lapOfPlayer: player.
 	actualPosition := self positionOfPlayer: player.
 	grossNewPosition := actualPosition + rollResult.
-	netNewPosition := grossNewPosition \\ board numberOfSpots.
+	netNewPosition := grossNewPosition % board numberOfSpots.
+	actualLap := self lapOfPlayer: player.
 	newLapNumber := actualLap + (grossNewPosition // board numberOfSpots).
 	netNewPosition = 0
 		ifTrue: [ netNewPosition := board numberOfSpots.

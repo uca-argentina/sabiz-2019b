@@ -12,13 +12,18 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> withSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 	self
 		assert: [ spotsAmmount > 0 ]
 		description: 'Invalid number of spots'.
 	self
 		assert: [ numberOfLaps > 0 ]
-		description: 'Invalid number of laps'.
+		description: 'Invalid number of laps'
+]
+
+{ #category : #'instance creation' }
+Board class >> withSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
 	^ self new
 		initializeWithSpots: spotsAmmount
 		andNumberOfLaps: numberOfLaps
