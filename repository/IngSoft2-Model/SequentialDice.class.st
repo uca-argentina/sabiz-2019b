@@ -12,9 +12,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-SequentialDice class >> rollingSequence: sequence [
-	self assert: sequence isNotEmpty description: 'Tried to create a sequence dice with an empty sequence'.
-	^ self new rollingSequence: sequence
+SequentialDice class >> withRollingSequence: sequence [
+	self
+		assert: [ sequence isNotEmpty ]
+		description: 'Tried to create a sequence dice with an empty sequence'.
+	^ self new withRollingSequence: sequence
 ]
 
 { #category : #roll }
@@ -24,7 +26,7 @@ SequentialDice >> roll [
 ]
 
 { #category : #initialization }
-SequentialDice >> rollingSequence: sequence [
+SequentialDice >> withRollingSequence: sequence [
 	rollingSequence := sequence copy.
 	lastRolledIndex := sequence size - 1
 ]

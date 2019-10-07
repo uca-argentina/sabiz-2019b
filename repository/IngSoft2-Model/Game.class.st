@@ -7,10 +7,33 @@ Class {
 	#instVars : [
 		'dices',
 		'leaderBoard',
-		'board'
+		'board',
+		'state'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #testing }
+Game class >> addIgnoringRepeated: players [
+	| gamePlayers |
+	players asOrderedCollection.
+	gamePlayers := OrderedCollection new.
+	players do: [ :each | gamePlayers addIfNotPresent: each ].
+	^ gamePlayers
+]
+
+{ #category : #testing }
+Game class >> checkPlayers: gamePlayers checkDices: dices checkRepeatedPlayers: players [
+	self
+		assert: [ gamePlayers isNotEmpty ]
+		description: 'Not enough players to initialize game'.
+	self
+		assert: [ dices isNotEmpty ]
+		description: 'Tried to initialize a game with an invalid set of Dices'.
+	self
+		assert: [ players size = gamePlayers size ]
+		description: 'Tried to initialize game with a duplicated player'
+]
 
 { #category : #'instance creation' }
 Game class >> standard [
@@ -18,6 +41,12 @@ Game class >> standard [
 		withNumberOfSpots: self standardSpotAmount
 		playedBy: self standardSetOfPlayers
 		throwing: self standardSetOfDices
+		withLapsToComplete: self standardLapAmmount
+]
+
+{ #category : #standardValues }
+Game class >> standardLapAmmount [
+	^ 3
 ]
 
 { #category : #standardValues }
@@ -36,29 +65,23 @@ Game class >> standardSpotAmount [
 ]
 
 { #category : #'instance creation' }
-Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices [
+Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices withLapsToComplete: numberOfLaps [
 	| gamePlayers |
-	players asOrderedCollection.
-	gamePlayers := OrderedCollection new.
-	players do: [ :each | gamePlayers addIfNotPresent: each ].
+	gamePlayers := self addIgnoringRepeated: players.
 	self
-		assert: gamePlayers isNotEmpty
-		description: 'Not enough players to initialize game'.
-	self
-		assert: dices isNotEmpty
-		description: 'Tried to initialize a game with an invalid set of Dices'.
-	self
-		assert: players size = gamePlayers size
-		description: 'Tried to initialize game with a duplicated player'.
+		checkPlayers: gamePlayers
+		checkDices: dices
+		checkRepeatedPlayers: players.
 	^ self new
 		initializeWithSpots: numberOfSpots
 		players: gamePlayers
 		andDices: dices
+		andLaps: numberOfLaps
 ]
 
-{ #category : #private }
-Game >> addPlayerToLeaderBoard: player [
-	leaderBoard add: player
+{ #category : #accessing }
+Game >> currentPlaces [
+	^ state currentPlaces
 ]
 
 { #category : #accessing }
@@ -68,14 +91,18 @@ Game >> dices [
 
 { #category : #testing }
 Game >> includesPlayer: aPlayer [
-	^ board includesPlayer: aPlayer
+	^ state includesPlayer: aPlayer
 ]
 
 { #category : #initialization }
-Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices [
+Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices andLaps: numberOfLaps [
 	dices := gameDices asOrderedCollection.
-	leaderBoard := LeaderBoard freshLeaderBoard.
-	board := Board withSpots: spotAmount withPlayers: gamePlayers
+	leaderBoard := LeaderBoard newLeadBoard.
+	board := Board emptyWithSpots: spotAmount andNumberOfLaps: numberOfLaps.
+	state := GameState
+		newGamePlayedBy: gamePlayers
+		onBoard: board copy
+		throwing: dices
 ]
 
 { #category : #playing }
@@ -84,18 +111,39 @@ Game >> isNotOver [
 ]
 
 { #category : #accessing }
+Game >> lapOfPlayer: player [
+	^ state lapOfPlayer: player
+]
+
+{ #category : #accessing }
 Game >> leaderBoard [
 	^ leaderBoard copy
 ]
 
-{ #category : #private }
+{ #category : #playing }
+Game >> moveAllPlayers [
+	self players
+		do: [ :player | 
+			(self playerHasNotFinished: player)
+				ifTrue: [ self movePlayer: player ] ]
+]
+
+{ #category : #'private - moving' }
 Game >> movePlayer: player [
+	| diceSum |
+	diceSum := 0.
 	self
-		assert: (board positionOfPlayer: player) < self numberOfSpots
-		description: 'Player already reached the final spot'.
-	dices do: [ :dice | board player: player advances: dice roll ].
-	(board positionOfPlayer: player) >= self numberOfSpots
-		ifTrue: [ self addPlayerToLeaderBoard: player ]
+		assert: [ self playerHasNotFinished: player ]
+		description: 'Player already reached completed the game'.
+	dices do: [ :dice | diceSum := diceSum + dice roll ].
+	state player: player advances: diceSum.
+	(state lapOfPlayer: player) >= self numberOfLaps
+		ifTrue: [ leaderBoard add: player ]
+]
+
+{ #category : #accessing }
+Game >> numberOfLaps [
+	^ board numberOfLaps
 ]
 
 { #category : #accessing }
@@ -110,26 +158,23 @@ Game >> playAnEntireGame [
 
 { #category : #playing }
 Game >> playOneRound [
-	self assert: self isNotOver description: 'Game is already over'.
-	self players
-		do: [ :player | 
-			(self playerHasFinished: player)
-				ifTrue: [ self movePlayer: player ] ]
+	self assert: [ self isNotOver ] description: 'Game is already over'.
+	self moveAllPlayers
 ]
 
 { #category : #playing }
-Game >> playerHasFinished: player [
-	^ (board positionOfPlayer: player) < self numberOfSpots
+Game >> playerHasNotFinished: player [
+	^ (state lapOfPlayer: player) < self numberOfLaps
 ]
 
 { #category : #accessing }
 Game >> players [
-	^ board players
+	^ state players
 ]
 
 { #category : #accessing }
 Game >> positionOfPlayer: aPlayer [
-	^ board positionOfPlayer: aPlayer
+	^ state positionOfPlayer: aPlayer
 ]
 
 { #category : #accessing }
@@ -140,7 +185,7 @@ Game >> quantityOfPlayers [
 { #category : #accessing }
 Game >> winner [
 	self
-		assert: leaderBoard isNotEmpty
+		assert: [ leaderBoard isNotEmpty ]
 		description: 'No one has reached the end yet'.
 	^ leaderBoard first
 ]

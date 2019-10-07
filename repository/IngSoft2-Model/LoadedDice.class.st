@@ -12,6 +12,7 @@ Class {
 
 { #category : #'instance creation' }
 LoadedDice class >> loadedWith: loadedValue [
+	self assert: [ loadedValue >= 4 ] description: 'loadedValue cant be lesser than 4'.
 	^ self new initializeLoadedWith: loadedValue
 ]
 

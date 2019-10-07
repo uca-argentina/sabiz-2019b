@@ -11,15 +11,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-LeaderBoard class >> freshLeaderBoard [
-	^ self new freshLeaderBoard
+LeaderBoard class >> newLeadBoard [
+	^ self new initializeLeaderBoard
 ]
 
 { #category : #adding }
 LeaderBoard >> add: anElement [
 	elements
 		addIfNotPresent: anElement copy
-		ifPresentDo: [ self assert: false ]
+		ifPresentDo: [ AssertionFailure signal ]
 ]
 
 { #category : #accessing }
@@ -48,7 +48,7 @@ LeaderBoard >> fourth [
 ]
 
 { #category : #initialization }
-LeaderBoard >> freshLeaderBoard [
+LeaderBoard >> initializeLeaderBoard [
 	elements := OrderedCollection new
 ]
 

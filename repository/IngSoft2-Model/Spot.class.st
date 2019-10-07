@@ -4,9 +4,6 @@ A class used to create the board spots of the game
 Class {
 	#name : #Spot,
 	#superclass : #Object,
-	#instVars : [
-		'players'
-	],
 	#category : #'IngSoft2-Model'
 }
 

@@ -9,9 +9,8 @@ Class {
 
 { #category : #tests }
 DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
-	| dice |
 	self
-		should: [ SequentialDice rollingSequence: {} ]
+		should: [ SequentialDice withRollingSequence: {} ]
 		raise: AssertionFailure
 ]
 
@@ -19,7 +18,26 @@ DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 DiceTest >> testDiceLoadedWithFiveReturnFiveWhenItIsRolled [
 	| dice |
 	dice := LoadedDice loadedWith: 5.
-	self assert: dice roll equals: 5
+	self assert: [ dice roll = 5 ]
+]
+
+{ #category : #tests }
+DiceTest >> testDiceLoadedWithNegativeFiveReturnsNegativeFiveWhenItIsRolled [
+	| dice |
+	dice := NegativeLoadedDice loadedWith: -5.
+	self assert: [ dice roll = -5 ]
+]
+
+{ #category : #tests }
+DiceTest >> testLoadedDiceCreationFailsWhenLoadedValueIsLessThanFour [
+	self should: [ LoadedDice loadedWith: 2 ] raise: AssertionFailure
+]
+
+{ #category : #tests }
+DiceTest >> testNegativeLoadedDiceCreationFailsWhenTheLoadedValueIsBiggerThanNegative4 [
+	self
+		should: [ NegativeLoadedDice loadedWith: -2 ]
+		raise: AssertionFailure
 ]
 
 { #category : #tests }
@@ -33,18 +51,18 @@ DiceTest >> testRandomDiceRollsValidNumber [
 	faces := 6.
 	dice := RandomDice withFaces: faces.
 	result := dice roll.
-	self assert: (result > 0 and: result <= faces)
+	self assert: [ result > 0 and: result <= faces ]
 ]
 
 { #category : #tests }
 DiceTest >> testSequentialDiceRollsExpectedSequence [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
-	dice := SequentialDice rollingSequence: {1 . 2 . 3 . 4}.
+	dice := SequentialDice withRollingSequence: {1 . 2 . 3 . 4}.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
-	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 4 . 1}
+	self assert: [ rolledSequence asArray = {1 . 2 . 3 . 4 . 1} ]
 ]
