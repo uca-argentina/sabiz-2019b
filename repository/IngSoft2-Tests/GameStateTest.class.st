@@ -13,20 +13,22 @@ GameStateTest >> testAllPlayersStartAtFirstSpot [
 	game := Game
 		withNumberOfSpots: 5
 		playedBy: {#player1 . #player2}
-		throwing: {(RandomDice withFaces: 6)}.
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
 	self assert: [ (game positionOfPlayer: #player1) = 1 ].
 	self assert: [ (game positionOfPlayer: #player2) = 1 ]
 ]
 
 { #category : #tests }
-GameStateTest >> testAllPlayersStartAtRowZero [
+GameStateTest >> testAllPlayersStartAtLapZero [
 	| game |
 	game := Game
 		withNumberOfSpots: 5
 		playedBy: {#player1 . #player2}
-		throwing: {(RandomDice withFaces: 6)}.
-	self assert: [ (game rowOfPlayer: #player1) = 0 ].
-	self assert: [ (game rowOfPlayer: #player2) = 0 ]
+		throwing: {(RandomDice withFaces: 6)}
+		withLapsToComplete: 2.
+	self assert: [ (game lapOfPlayer: #player1) = 0 ].
+	self assert: [ (game lapOfPlayer: #player2) = 0 ]
 ]
 
 { #category : #tests }

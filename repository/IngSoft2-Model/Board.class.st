@@ -5,22 +5,39 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'spots'
+		'spots',
+		'numberOfLaps'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Board class >> withSpots: spotsAmmount [
+Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 	self
 		assert: [ spotsAmmount > 0 ]
 		description: 'Invalid number of spots'.
-	^ self new initializeWithSpots: spotsAmmount
+	self
+		assert: [ numberOfLaps > 0 ]
+		description: 'Invalid number of laps'
+]
+
+{ #category : #'instance creation' }
+Board class >> withSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
+	^ self new
+		initializeWithSpots: spotsAmmount
+		andNumberOfLaps: numberOfLaps
 ]
 
 { #category : #initialization }
-Board >> initializeWithSpots: spotsAmmount [
+Board >> initializeWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
 	spots := Array new: spotsAmmount withAll: Spot new.
+	numberOfLaps := lapsAmmount
+]
+
+{ #category : #accessing }
+Board >> numberOfLaps [
+	^ numberOfLaps
 ]
 
 { #category : #accessing }

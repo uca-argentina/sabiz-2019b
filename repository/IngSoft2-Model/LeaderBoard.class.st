@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-LeaderBoard class >> initialize [
+LeaderBoard class >> newLeadBoard [
 	^ self new initializeLeaderBoard
 ]
 
@@ -19,7 +19,7 @@ LeaderBoard class >> initialize [
 LeaderBoard >> add: anElement [
 	elements
 		addIfNotPresent: anElement copy
-		ifPresentDo: [ self assert: false ]
+		ifPresentDo: [ AssertionFailure signal ]
 ]
 
 { #category : #accessing }

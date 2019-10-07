@@ -22,12 +22,17 @@ GameState >> includesPlayer: player [
 	^ playerStates keys includes: player
 ]
 
+{ #category : #accessing }
+GameState >> lapOfPlayer: player [
+	^ (playerStates at: player) last lapNumber
+]
+
 { #category : #initialization }
 GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices [
 	| startPlayerStatesCollection |
 	startPlayerStatesCollection := OrderedCollection new.
 	startPlayerStatesCollection
-		add: (PlayerState onPosition: 1 onRowNumber: 0).
+		add: (PlayerState onPosition: 1 onLapNumber: 0).
 	board := gameBoard.
 	dices := gameDices.
 	playerStates := Dictionary new.
@@ -37,13 +42,18 @@ GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices
 
 { #category : #'private - moving' }
 GameState >> player: player advances: rollResult [
-	| newPosition actualPosition listOfPlayersStates |
+	| grossNewPosition netNewPosition actualPosition listOfPlayersStates newLapNumber actualLap |
 	actualPosition := self positionOfPlayer: player.
-	newPosition := actualPosition + rollResult.
-	newPosition := board numberOfSpots min: newPosition.
+	grossNewPosition := actualPosition + rollResult.
+	netNewPosition := grossNewPosition % board numberOfSpots.
+	actualLap := self lapOfPlayer: player.
+	newLapNumber := actualLap + (grossNewPosition // board numberOfSpots).
+	netNewPosition = 0
+		ifTrue: [ netNewPosition := board numberOfSpots.
+			newLapNumber := newLapNumber - 1 ].
 	listOfPlayersStates := playerStates at: player.
 	listOfPlayersStates
-		add: (PlayerState onPosition: newPosition onRowNumber: 0)
+		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber)
 ]
 
 { #category : #accessing }
@@ -55,13 +65,7 @@ GameState >> players [
 GameState >> positionOfPlayer: player [
 	^ (playerStates
 		at: player
-		ifAbsent: [ self
-				assert: [ false ]
-				description: 'Asked for the position of a player that is not in game' ])
+		ifAbsent: [ AssertionFailure
+				signal: 'Asked for the position of a player that is not in game' ])
 		last position
-]
-
-{ #category : #accessing }
-GameState >> rowOfPlayer: player [
-	^ (playerStates at: player) last rowNumber
 ]
