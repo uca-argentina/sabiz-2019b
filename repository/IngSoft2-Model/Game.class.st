@@ -80,6 +80,11 @@ Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices
 ]
 
 { #category : #accessing }
+Game >> currentPlaces [
+	^ state currentPlaces
+]
+
+{ #category : #accessing }
 Game >> dices [
 	^ dices copy
 ]

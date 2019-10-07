@@ -163,32 +163,33 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 ]
 
 { #category : #'test - playing' }
-GameTest >> testPlayerLosesALapIfHeGoesBackBeyondTheFirstSpot [
-	| game |
-	game := Game
-		withNumberOfSpots: 10
-		playedBy: {#player1}
-		throwing: {(NegativeLoadedDice loadedWith: -4)}
-		withLapsToComplete: 5.
-	game playOneRound.
-	game playOneRound.
-	self assert: [ (game lapOfPlayer: #player1) = -1 ]
-]
-
-{ #category : #'test - playing' }
 GameTest >> testPlayerOneWonTheGame [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
-		playedBy: {#player1}
+		playedBy: {#player1 . #player2}
 		throwing: {(LoadedDice loadedWith: 10)}
-		withLapsToComplete: 1.
-	game playOneRound.
+		withLapsToComplete: 2.
+	game playAnEntireGame.
 	self assert: [ game winner = #player1 ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
+	| game |
+	game := Game
+		withNumberOfSpots: 10
+		playedBy: {#player1}
+		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
+		withLapsToComplete: 5.
+	game playOneRound.
+	self assert: [ (game positionOfPlayer: #player1) = 7 ].
+	game playOneRound.
+	self assert: [ (game positionOfPlayer: #player1) = 1 ]
+]
+
+{ #category : #'test - playing' }
+GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game |
 	game := Game
 		withNumberOfSpots: 10
