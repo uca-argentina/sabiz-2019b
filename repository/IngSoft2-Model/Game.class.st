@@ -93,7 +93,7 @@ Game >> includesPlayer: aPlayer [
 Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices andLaps: numberOfLaps [
 	dices := gameDices asOrderedCollection.
 	leaderBoard := LeaderBoard newLeadBoard.
-	board := Board withSpots: spotAmount andNumberOfLaps: numberOfLaps.
+	board := Board emptyWithSpots: spotAmount andNumberOfLaps: numberOfLaps.
 	state := GameState
 		newGamePlayedBy: gamePlayers
 		onBoard: board copy

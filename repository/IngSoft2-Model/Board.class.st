@@ -11,7 +11,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : #validation }
 Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 	self
 		assert: [ spotsAmmount > 0 ]
@@ -22,15 +22,23 @@ Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 ]
 
 { #category : #'instance creation' }
-Board class >> withSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+Board class >> emptyWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
 	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
 	^ self new
-		initializeWithSpots: spotsAmmount
+		emptyWithSpots: spotsAmmount
+		andNumberOfLaps: numberOfLaps
+]
+
+{ #category : #'instance creation' }
+Board class >> standardWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
+	^ self new
+		standardWithSpots: spotsAmmount
 		andNumberOfLaps: numberOfLaps
 ]
 
 { #category : #initialization }
-Board >> initializeWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
+Board >> emptyWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
 	spots := Array new: spotsAmmount withAll: Spot new.
 	numberOfLaps := lapsAmmount
 ]
@@ -43,4 +51,10 @@ Board >> numberOfLaps [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
+]
+
+{ #category : #initialization }
+Board >> standardWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
+	spots := Array new: spotsAmmount withAll: Spot new.
+	numberOfLaps := lapsAmmount
 ]
