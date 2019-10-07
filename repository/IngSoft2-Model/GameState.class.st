@@ -17,6 +17,14 @@ GameState class >> newGamePlayedBy: players onBoard: board throwing: dices [
 	^ self new newGamePlayedBy: players onBoard: board throwing: dices
 ]
 
+{ #category : #accessing }
+GameState >> currentPlaces [
+	^ (playerStates associations
+		sort:
+			[ :assoc1 :assoc2 | assoc1 value last position > assoc2 value last position ])
+		collect: [ :assoc | assoc key ]
+]
+
 { #category : #testing }
 GameState >> includesPlayer: player [
 	^ playerStates keys includes: player

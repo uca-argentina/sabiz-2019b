@@ -38,3 +38,16 @@ GameStateTest >> testGameIsOver [
 	game playAnEntireGame.
 	self deny: [ game isNotOver ]
 ]
+
+{ #category : #tests }
+GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDice [
+	| game |
+	game := Game
+		withNumberOfSpots: 10
+		playedBy: {#player1 . #player2 . #player3}
+		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
+		withLapsToComplete: 1.
+	game playOneRound.
+	self
+		assert: [ game currentPlaces = {#player3 . #player2 . #player1} ]
+]
