@@ -9,7 +9,20 @@ Class {
 
 { #category : #'instance creation' }
 Spot class >> random [
-	self assert: false description: 'Need to implement this!'
+	| dice roll |
+	dice := RandomDice withFaces: 100.
+	roll := dice roll.
+	roll <= 55
+		ifTrue: [ ^ Empty new ].
+	roll <= 70
+		ifTrue: [ ^ SpeedUp new ].
+	roll <= 85
+		ifTrue: [ ^ WormHole new ].
+	roll <= 90
+		ifTrue: [ ^ MoonWalk new ].
+	roll <= 98
+		ifTrue: [ ^ TimeMachine new ].
+	^ AtomicBomb new
 ]
 
 { #category : #effect }

@@ -2,7 +2,7 @@
 A regular spot with no effect
 "
 Class {
-	#name : #Regular,
+	#name : #Empty,
 	#superclass : #Spot,
 	#category : #'IngSoft2-Model'
 }

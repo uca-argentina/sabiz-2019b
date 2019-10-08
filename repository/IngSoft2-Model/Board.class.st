@@ -39,7 +39,7 @@ Board class >> standardWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
 
 { #category : #initialization }
 Board >> emptyWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
-	spots := Array new: spotsAmmount withAll: Spot new.
+	spots := Array new: spotsAmmount withAll: Empty new.
 	numberOfLaps := lapsAmmount
 ]
 
@@ -53,8 +53,16 @@ Board >> numberOfSpots [
 	^ spots size
 ]
 
+{ #category : #accessing }
+Board >> spots [
+	^ spots copy
+]
+
 { #category : #initialization }
 Board >> standardWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
-	spots := Array new: spotsAmmount withAll: Spot new.
+	| array |
+	array := OrderedCollection new.
+	spotsAmmount timesRepeat: [ array add: Spot random ].
+	spots := array asArray.
 	numberOfLaps := lapsAmmount
 ]
