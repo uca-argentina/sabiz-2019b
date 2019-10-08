@@ -6,3 +6,8 @@ Class {
 	#superclass : #Spot,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'standard values' }
+SpeedUp class >> probability [
+	^ 15
+]

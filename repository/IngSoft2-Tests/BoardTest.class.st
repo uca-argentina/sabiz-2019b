@@ -11,26 +11,9 @@ Class {
 BoardTest >> distributionCounter [
 	| distributionCounter |
 	distributionCounter := Dictionary new.
-	distributionCounter at: #AtomicBomb put: 0.
-	distributionCounter at: #Empty put: 0.
-	distributionCounter at: #MoonWalk put: 0.
-	distributionCounter at: #SpeedUp put: 0.
-	distributionCounter at: #TimeMachine put: 0.
-	distributionCounter at: #WormHole put: 0.
+	Spot idealDistribution
+		keysDo: [ :each | distributionCounter at: each put: 0 ].
 	^ distributionCounter
-]
-
-{ #category : #'additional methods' }
-BoardTest >> idealDistribution [
-	| idealDistribution |
-	idealDistribution := Dictionary new.
-	idealDistribution at: #AtomicBomb put: 2.
-	idealDistribution at: #Empty put: 55.
-	idealDistribution at: #MoonWalk put: 5.
-	idealDistribution at: #SpeedUp put: 15.
-	idealDistribution at: #TimeMachine put: 8.
-	idealDistribution at: #WormHole put: 15.
-	^ idealDistribution
 ]
 
 { #category : #tests }
@@ -71,5 +54,5 @@ BoardTest >> testStandardBoardHasExpectedSpotDistribution [
 				put: (distributionCounter at: each className asSymbol) + 1 ].
 	self
 		assert: [ (distributionCounter collect: [ :each | each / 1000 roundTo: 1 ])
-				= self idealDistribution ]
+				= Spot idealDistribution ]
 ]
