@@ -66,7 +66,11 @@ GameState >> player: player advances: rollResult [
 
 	listOfPlayersStates := playerStates at: player.
 	listOfPlayersStates
-		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber)
+		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber).
+	
+	(board spotAt: netNewPosition) applyEffectOn: self triggeredBy: player
+	
+
 ]
 
 { #category : #accessing }

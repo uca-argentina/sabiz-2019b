@@ -33,6 +33,6 @@ Spot class >> random [
 ]
 
 { #category : #effect }
-Spot >> applyEffecton: gameState triggeredBy: player [
+Spot >> applyEffectOn: gameState triggeredBy: player [
 	self subclassResponsibility
 ]

@@ -54,6 +54,11 @@ Board >> numberOfSpots [
 ]
 
 { #category : #accessing }
+Board >> spotAt: position [
+	^ spots at: position
+]
+
+{ #category : #accessing }
 Board >> spots [
 	^ spots copy
 ]
