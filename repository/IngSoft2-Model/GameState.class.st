@@ -54,23 +54,19 @@ GameState >> player: player advances: rollResult [
 	actualLap := self lapOfPlayer: player.
 	actualPosition := self positionOfPlayer: player.
 	grossNewPosition := actualPosition + rollResult.
-	
 	newLapNumber := actualLap + (grossNewPosition // board numberOfSpots).
 	netNewPosition := grossNewPosition % board numberOfSpots.
-	netNewPosition = 0	ifTrue: [
-		"If the position is at zero, it means it is in the last position of the lap, not the first position
+	netNewPosition = 0
+		ifTrue:
+			[ "If the position is at zero, it means it is in the last position of the lap, not the first position
 		therefore, we subtract 1 from the total laps since the player hasnt crossed the line just yet"
-		netNewPosition := board numberOfSpots.
-		newLapNumber := newLapNumber - 1
-	].
-
+			netNewPosition := board numberOfSpots.
+			newLapNumber := newLapNumber - 1 ].
 	listOfPlayersStates := playerStates at: player.
 	listOfPlayersStates
-		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber).
-	
-	(board spotAt: netNewPosition) applyEffectOn: self triggeredBy: player
-	
+		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber)
 
+	"(board spotAt: netNewPosition) applyEffectOn: self triggeredBy: player"
 ]
 
 { #category : #accessing }
