@@ -36,12 +36,25 @@ Game class >> checkPlayers: gamePlayers checkDices: dices checkRepeatedPlayers: 
 ]
 
 { #category : #'instance creation' }
+Game class >> playedBy: players throwing: dices using: aBoard [
+	| gamePlayers |
+	gamePlayers := self addIgnoringRepeated: players.
+	self
+		checkPlayers: gamePlayers
+		checkDices: dices
+		checkRepeatedPlayers: players.
+	^ self new players: gamePlayers dices: dices andBoard: aBoard
+]
+
+{ #category : #'instance creation' }
 Game class >> standard [
 	^ self
-		withNumberOfSpots: self standardSpotAmount
 		playedBy: self standardSetOfPlayers
 		throwing: self standardSetOfDices
-		withLapsToComplete: self standardLapAmmount
+		using:
+			(Board
+				withSpots: self standardSpotAmount
+				andNumberOfLaps: self standardLapAmmount)
 ]
 
 { #category : #standardValues }
@@ -64,21 +77,6 @@ Game class >> standardSpotAmount [
 	^ 24
 ]
 
-{ #category : #'instance creation' }
-Game class >> withNumberOfSpots: numberOfSpots playedBy: players throwing: dices withLapsToComplete: numberOfLaps [
-	| gamePlayers |
-	gamePlayers := self addIgnoringRepeated: players.
-	self
-		checkPlayers: gamePlayers
-		checkDices: dices
-		checkRepeatedPlayers: players.
-	^ self new
-		initializeWithSpots: numberOfSpots
-		players: gamePlayers
-		andDices: dices
-		andLaps: numberOfLaps
-]
-
 { #category : #accessing }
 Game >> currentPlaces [
 	^ state currentPlaces
@@ -92,17 +90,6 @@ Game >> dices [
 { #category : #testing }
 Game >> includesPlayer: aPlayer [
 	^ state includesPlayer: aPlayer
-]
-
-{ #category : #initialization }
-Game >> initializeWithSpots: spotAmount players: gamePlayers andDices: gameDices andLaps: numberOfLaps [
-	dices := gameDices asOrderedCollection.
-	leaderBoard := LeaderBoard new.
-	board := Board emptyWithSpots: spotAmount andNumberOfLaps: numberOfLaps.
-	state := GameState
-		newGamePlayedBy: gamePlayers
-		onBoard: board copy
-		throwing: dices
 ]
 
 { #category : #playing }
@@ -170,6 +157,17 @@ Game >> playerHasNotFinished: player [
 { #category : #accessing }
 Game >> players [
 	^ state players
+]
+
+{ #category : #initialization }
+Game >> players: gamePlayers dices: gameDices andBoard: aBoard [
+	dices := gameDices asOrderedCollection.
+	leaderBoard := LeaderBoard newLeadBoard.
+	board := aBoard.
+	state := GameState
+		newGamePlayedBy: gamePlayers
+		onBoard: board copy
+		throwing: dices
 ]
 
 { #category : #accessing }
