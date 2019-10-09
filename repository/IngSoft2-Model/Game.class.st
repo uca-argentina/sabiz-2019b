@@ -53,7 +53,7 @@ Game class >> standard [
 		throwing: self standardSetOfDices
 		using:
 			(Board
-				withSpots: self standardSpotAmount
+				standardWithSpots: self standardSpotAmount
 				andNumberOfLaps: self standardLapAmmount)
 ]
 
@@ -162,7 +162,7 @@ Game >> players [
 { #category : #initialization }
 Game >> players: gamePlayers dices: gameDices andBoard: aBoard [
 	dices := gameDices asOrderedCollection.
-	leaderBoard := LeaderBoard newLeadBoard.
+	leaderBoard := LeaderBoard new.
 	board := aBoard.
 	state := GameState
 		newGamePlayedBy: gamePlayers

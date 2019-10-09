@@ -27,7 +27,7 @@ GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {(LoadedDice loadedWith: 6)}
-				using: (Board withSpots: 10 andNumberOfLaps: 0) ]
+				using: (Board standardWithSpots: 10 andNumberOfLaps: 0) ]
 		raise: AssertionFailure
 ]
 
@@ -37,7 +37,7 @@ GameTest >> testCantCreateGameWithoutDices [
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {}
-				using: (Board withSpots: 10 andNumberOfLaps: 2) ]
+				using: (Board standardWithSpots: 10 andNumberOfLaps: 2) ]
 		raise: AssertionFailure
 ]
 
@@ -47,7 +47,7 @@ GameTest >> testCantCreateGameWithoutPlayers [
 		should: [ Game
 				playedBy: {}
 				throwing: {(RandomDice withFaces: 6)}
-				using: (Board withSpots: 10 andNumberOfLaps: 2) ]
+				using: (Board standardWithSpots: 10 andNumberOfLaps: 2) ]
 		raise: AssertionFailure
 ]
 
@@ -57,7 +57,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 		should: [ Game
 				playedBy: {#player1 . #player1}
 				throwing: {(RandomDice withFaces: 6)}
-				using: (Board withSpots: 10 andNumberOfLaps: 2) ]
+				using: (Board standardWithSpots: 10 andNumberOfLaps: 2) ]
 		raise: AssertionFailure
 ]
 
@@ -72,7 +72,7 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfLaps [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -83,7 +83,7 @@ GameTest >> testGameHasGivenNumberOfLaps [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfPlayers [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -94,7 +94,7 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfSpots [
 	| game board |
-	board := Board withSpots: 20 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 20 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -105,7 +105,7 @@ GameTest >> testGameHasGivenNumberOfSpots [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenPlayer [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -116,7 +116,7 @@ GameTest >> testGameHasGivenPlayer [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenSetOfDices [
 	| game dice1 dice2 board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	dice1 := RandomDice withFaces: 6.
 	dice2 := LoadedDice loadedWith: 4.
 	game := Game
@@ -135,7 +135,7 @@ GameTest >> testGameHasGivenSetOfDices [
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
@@ -148,7 +148,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
@@ -161,7 +161,7 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 { #category : #'test - playing' }
 GameTest >> testPlayerOneWonTheGame [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(LoadedDice loadedWith: 10)}
@@ -173,7 +173,7 @@ GameTest >> testPlayerOneWonTheGame [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -187,7 +187,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -206,19 +206,19 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {dice}
-				using: (Board withSpots: 0 andNumberOfLaps: 2) ]
+				using: (Board standardWithSpots: 0 andNumberOfLaps: 2) ]
 			raise: AssertionFailure;
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {dice}
-				using: (Board withSpots: self negativeNumberOfSpots andNumberOfLaps: 2) ]
+				using: (Board standardWithSpots: self negativeNumberOfSpots andNumberOfLaps: 2) ]
 			raise: AssertionFailure
 ]
 
 { #category : #'test - playing' }
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
 	| game board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(LoadedDice loadedWith: 9)}
@@ -230,7 +230,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 { #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice board |
-	board := Board withSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
 	dice := LoadedDice loadedWith: 10.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
