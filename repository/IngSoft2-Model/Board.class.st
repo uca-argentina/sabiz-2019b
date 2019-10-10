@@ -22,14 +22,6 @@ Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 ]
 
 { #category : #'instance creation' }
-Board class >> emptyWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
-	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
-	^ self new
-		emptyWithSpots: spotsAmmount
-		andNumberOfLaps: numberOfLaps
-]
-
-{ #category : #'instance creation' }
 Board class >> standardWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
 	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
 	^ self new
@@ -37,10 +29,14 @@ Board class >> standardWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
 		andNumberOfLaps: numberOfLaps
 ]
 
-{ #category : #initialization }
-Board >> emptyWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
-	spots := Array new: spotsAmmount withAll: Empty new.
-	numberOfLaps := lapsAmmount
+{ #category : #'instance creation' }
+Board class >> withSpotsCollection: spotCollection andNumberOfLaps: numberOfLaps [
+	self
+		checkNumberSpots: spotCollection size
+		checkNumberLaps: numberOfLaps.
+	^ self new
+		withSpotsCollection: spotCollection
+		andNumberOfLaps: numberOfLaps
 ]
 
 { #category : #accessing }
@@ -69,5 +65,11 @@ Board >> standardWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
 	array := OrderedCollection new.
 	spotsAmmount timesRepeat: [ array add: Spot random ].
 	spots := array asArray.
+	numberOfLaps := lapsAmmount
+]
+
+{ #category : #initialization }
+Board >> withSpotsCollection: spotsCollection andNumberOfLaps: lapsAmmount [
+	spots := spotsCollection asArray.
 	numberOfLaps := lapsAmmount
 ]

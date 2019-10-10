@@ -11,3 +11,8 @@ Class {
 SpeedUp class >> probability [
 	^ 15
 ]
+
+{ #category : #effect }
+SpeedUp >> applyEffectOn: gameState triggeredBy: player [
+
+]

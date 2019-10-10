@@ -11,3 +11,7 @@ Class {
 AtomicBomb class >> probability [
 	^ 2
 ]
+
+{ #category : #effect }
+AtomicBomb >> applyEffectOn: gameState triggeredBy: player [
+]

@@ -11,3 +11,8 @@ Class {
 WormHole class >> probability [
 	^ 15
 ]
+
+{ #category : #effect }
+WormHole >> applyEffectOn: gameState triggeredBy: player [
+
+]

@@ -17,9 +17,42 @@ BoardTest >> distributionCounter [
 ]
 
 { #category : #tests }
+BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
+	self
+		should: [ Board withSpotsCollection: {} andNumberOfLaps: 5 ]
+		raise: AssertionFailure
+]
+
+{ #category : #tests }
+BoardTest >> testCustomBoardHasParticularEffectAtGivenPosition [
+	| board |
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			MoonWalk new.
+			WormHole new.
+			TimeMachine new.
+			SpeedUp new.
+			AtomicBomb new}
+		andNumberOfLaps: 5.
+	self assert: (board spotAt: 1) className asSymbol == #Empty.
+	self assert: (board spotAt: 2) className asSymbol == #MoonWalk.
+	self assert: (board spotAt: 3) className asSymbol == #WormHole.
+	self assert: (board spotAt: 4) className asSymbol == #TimeMachine.
+	self assert: (board spotAt: 5) className asSymbol == #SpeedUp.
+	self assert: (board spotAt: 6) className asSymbol == #AtomicBomb
+]
+
+{ #category : #tests }
 BoardTest >> testEmptyBoardHasNoSpecialSpots [
 	| board |
-	board := Board emptyWithSpots: 10 andNumberOfLaps: 5.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 5.
 	board spots
 		do: [ :each | self assert: [ each className asSymbol = #Empty ] ]
 ]

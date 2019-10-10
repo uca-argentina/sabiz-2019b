@@ -11,3 +11,8 @@ Class {
 TimeMachine class >> probability [
 	^ 8
 ]
+
+{ #category : #effect }
+TimeMachine >> applyEffectOn: gameState triggeredBy: player [
+
+]

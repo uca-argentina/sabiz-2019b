@@ -11,3 +11,8 @@ Class {
 MoonWalk class >> probability [
 	^ 5
 ]
+
+{ #category : #effect }
+MoonWalk >> applyEffectOn: gameState triggeredBy: player [
+
+]

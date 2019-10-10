@@ -11,3 +11,7 @@ Class {
 Empty class >> probability [
 	^ 55
 ]
+
+{ #category : #effect }
+Empty >> applyEffectOn: gameState triggeredBy: player [
+]
