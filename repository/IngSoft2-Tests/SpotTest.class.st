@@ -15,6 +15,47 @@ SpotTest >> testAllProbabilitiesAddUpToOneHundred [
 				into: [ :sum :each | sum + each probability ]) = 100 ]
 ]
 
+{ #category : #'tests - moonwalk' }
+SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
+	| board spotsToGoBack |
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			MoonWalk new}
+		andNumberOfLaps: 2.
+	spotsToGoBack := (board spotAt: 2) numberOfSpotsToGoBack * -1.
+	self assert: [ spotsToGoBack <= 5 and: spotsToGoBack >= 1 ]
+]
+
+{ #category : #'tests - moonwalk' }
+SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTriggerIt [
+	| board game |
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			(MoonWalk newLoadedWith: 3).
+			Empty new}
+		andNumberOfLaps: 2.
+	game := Game
+		playedBy: {#player1 . #player2 . #player3}
+		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
+		using: board.
+	game playOneRound.
+	self assert: (game positionOfPlayer: #player1) equals: 2.
+	self assert: (game positionOfPlayer: #player2) equals: 3.
+	self assert: (game positionOfPlayer: #player3) equals: 4.
+	game playOneRound.
+	self assert: (game positionOfPlayer: #player1) equals: 8.
+	self assert: (game lapOfPlayer: #player1) equals: -1.
+	self assert: (game positionOfPlayer: #player2) equals: 2.
+	self assert: (game positionOfPlayer: #player3) equals: 7
+]
+
 { #category : #'tests - empty' }
 SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 	| game board |

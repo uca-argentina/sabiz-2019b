@@ -77,7 +77,7 @@ GameState >> player: player advancesApplyingEffects: rollResult [
 
 { #category : #accessing }
 GameState >> players [
-	^ playerStates keys asOrderedCollection
+	^ playerStates keys asOrderedCollection copy
 ]
 
 { #category : #accessing }
