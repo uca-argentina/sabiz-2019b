@@ -23,7 +23,8 @@ AtomicBomb >> applyEffectOn: gameState triggeredBy: player [
 AtomicBomb >> moveAll: players toFirstSpotFrom: gameState [
 	players
 		do: [ :each | 
-			gameState
-				player: each
-				advances: ((gameState positionOfPlayer: each) - 1) * -1 ]
+			(gameState playerHasNotFinished: each)
+				ifTrue: [ gameState
+						player: each
+						advances: ((gameState positionOfPlayer: each) - 1) * -1 ] ]
 ]

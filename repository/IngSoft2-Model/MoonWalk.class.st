@@ -30,8 +30,9 @@ MoonWalk >> applyEffectOn: gameState triggeredBy: player [
 	playersToApplyEffect := gameState players.
 	playersToApplyEffect remove: player.
 	playersToApplyEffect
-		do:
-			[ :each | gameState player: each advances: self numberOfSpotsToGoBack ]
+		do: [ :each | 
+			(gameState playerHasNotFinished: each)
+				ifTrue: [ gameState player: each advances: self numberOfSpotsToGoBack ] ]
 ]
 
 { #category : #initialization }

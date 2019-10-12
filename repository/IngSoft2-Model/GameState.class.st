@@ -75,6 +75,11 @@ GameState >> player: player advancesApplyingEffects: rollResult [
 	(board spotAt: position) applyEffectOn: self triggeredBy: player
 ]
 
+{ #category : #testing }
+GameState >> playerHasNotFinished: player [
+	^ (self lapOfPlayer: player) < board numberOfLaps
+]
+
 { #category : #accessing }
 GameState >> players [
 	^ playerStates keys asOrderedCollection copy
