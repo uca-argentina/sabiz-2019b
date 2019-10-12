@@ -14,5 +14,10 @@ SpeedUp class >> probability [
 
 { #category : #effect }
 SpeedUp >> applyEffectOn: gameState triggeredBy: player [
+gameState player: player advances: self numberOfSpotsGoingForward
+]
 
+{ #category : #effect }
+SpeedUp >> numberOfSpotsGoingForward [
+	^ 4
 ]
