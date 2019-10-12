@@ -14,4 +14,10 @@ Empty class >> probability [
 
 { #category : #effect }
 Empty >> applyEffectOn: gameState triggeredBy: player [
+	self isDummy
+]
+
+{ #category : #dummy }
+Empty >> isDummy [
+	^ true
 ]
