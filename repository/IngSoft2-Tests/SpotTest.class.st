@@ -15,8 +15,8 @@ SpotTest >> testAllProbabilitiesAddUpToOneHundred [
 				into: [ :sum :each | sum + each probability ]) = 100 ]
 ]
 
-{ #category : #tests }
-SpotTest >> testPlayerTriggerEmptySpot [
+{ #category : #'tests - empty' }
+SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 	| game board |
 	board := Board
 		withSpotsCollection:
@@ -34,7 +34,38 @@ SpotTest >> testPlayerTriggerEmptySpot [
 	self assert: (game positionOfPlayer: #player1) equals: 5
 ]
 
-{ #category : #tests }
+{ #category : #'tests - atomicbomb' }
+SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainingLaps [
+	| game board |
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			AtomicBomb new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 4.
+	game := Game
+		playedBy: {#player1 . #player2 . #player3}
+		throwing: {(SequentialDice withRollingSequence: {8 . 3 . 1})}
+		using: board.
+	game playOneRound.
+	self assert: (game positionOfPlayer: #player1) equals: 4.
+	self assert: (game lapOfPlayer: #player1) equals: 1.
+	self assert: (game positionOfPlayer: #player2) equals: 4.
+	self assert: (game lapOfPlayer: #player2) equals: 0.
+	self assert: (game positionOfPlayer: #player3) equals: 2.
+	self assert: (game lapOfPlayer: #player3) equals: 0.
+	game playOneRound.
+	self assert: (game positionOfPlayer: #player1) equals: 1.
+	self assert: (game lapOfPlayer: #player1) equals: 3.
+	self assert: (game positionOfPlayer: #player2) equals: 1.
+	self assert: (game lapOfPlayer: #player2) equals: 1.
+	self assert: (game positionOfPlayer: #player3) equals: 1.
+	self assert: (game lapOfPlayer: #player3) equals: 0
+]
+
+{ #category : #'tests - speedup' }
 SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 	| game board |
 	board := Board
@@ -57,7 +88,7 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 	self assert: (game positionOfPlayer: #player1) equals: 9
 ]
 
-{ #category : #tests }
+{ #category : #'tests - speedup' }
 SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
 	board := Board
@@ -79,7 +110,7 @@ SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForward
 	self assert: (game lapOfPlayer: #player1) equals: 1
 ]
 
-{ #category : #tests }
+{ #category : #'tests - wormhole' }
 SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := Board
@@ -99,7 +130,7 @@ SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	self assert: (game positionOfPlayer: #player1) equals: 2
 ]
 
-{ #category : #tests }
+{ #category : #'tests - wormhole' }
 SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := Board
