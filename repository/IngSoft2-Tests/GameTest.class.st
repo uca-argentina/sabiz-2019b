@@ -135,7 +135,19 @@ GameTest >> testGameHasGivenSetOfDices [
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
@@ -148,7 +160,19 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
@@ -173,7 +197,19 @@ GameTest >> testPlayerOneWonTheGame [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -187,7 +223,19 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -218,7 +266,19 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 { #category : #'test - playing' }
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(LoadedDice loadedWith: 9)}

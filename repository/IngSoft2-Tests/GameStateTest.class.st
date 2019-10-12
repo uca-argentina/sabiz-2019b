@@ -42,7 +42,19 @@ GameStateTest >> testGameIsOver [
 { #category : #tests }
 GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDice [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			Empty new}
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}

@@ -50,7 +50,7 @@ GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices
 
 { #category : #'private - moving' }
 GameState >> player: player advances: rollResult [
-	| grossNewPosition netNewPosition actualPosition listOfPlayersStates newLapNumber actualLap |
+	| newLapNumber actualLap actualPosition listOfPlayersStates netNewPosition grossNewPosition |
 	actualLap := self lapOfPlayer: player.
 	actualPosition := self positionOfPlayer: player.
 	grossNewPosition := actualPosition + rollResult.
@@ -65,9 +65,14 @@ GameState >> player: player advances: rollResult [
 	listOfPlayersStates := playerStates at: player.
 	listOfPlayersStates
 		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber).
-	(board spotAt: netNewPosition)
-		applyEffectOn: self
-		triggeredBy: player
+]
+
+{ #category : #'private - moving' }
+GameState >> player: player advancesApplyingEffects: rollResult [
+	| position |
+	self player: player advances: rollResult.
+	position := self positionOfPlayer: player.
+	(board spotAt: position) applyEffectOn: self triggeredBy: player
 ]
 
 { #category : #accessing }

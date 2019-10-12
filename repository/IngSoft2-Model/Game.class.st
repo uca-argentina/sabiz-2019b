@@ -123,7 +123,7 @@ Game >> movePlayer: player [
 		assert: [ self playerHasNotFinished: player ]
 		description: 'Player already reached completed the game'.
 	dices do: [ :dice | diceSum := diceSum + dice roll ].
-	state player: player advances: diceSum.
+	state player: player advancesApplyingEffects: diceSum.
 	(state lapOfPlayer: player) >= self numberOfLaps
 		ifTrue: [ leaderBoard add: player ]
 ]
