@@ -22,10 +22,10 @@ Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 ]
 
 { #category : #'instance creation' }
-Board class >> standardWithSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+Board class >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
 	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
 	^ self new
-		standardWithSpots: spotsAmmount
+		standardWithNumberOfSpots: spotsAmmount
 		andNumberOfLaps: numberOfLaps
 ]
 
@@ -49,7 +49,7 @@ Board >> numberOfSpots [
 	^ spots size
 ]
 
-{ #category : #accessing }
+{ #category : #'private - accessing' }
 Board >> spotAt: position [
 	^ spots at: position
 ]
@@ -60,7 +60,7 @@ Board >> spots [
 ]
 
 { #category : #initialization }
-Board >> standardWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
+Board >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
 	| array |
 	array := OrderedCollection new.
 	spotsAmmount timesRepeat: [ array add: Spot random ].

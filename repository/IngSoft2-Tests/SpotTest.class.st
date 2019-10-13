@@ -39,7 +39,7 @@ SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTrigg
 			Empty new.
 			Empty new.
 			(MoonWalk newLoadedWith: 3).
-			Empty new}
+			SpeedUp new}
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
@@ -221,10 +221,10 @@ SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := Board
 		withSpotsCollection:
-			{Empty new.
+			{SpeedUp new.
+			AtomicBomb  new.
 			Empty new.
-			Empty new.
-			Empty new.
+			WormHole new.
 			TimeMachine new.
 			Empty new}
 		andNumberOfLaps: 2.

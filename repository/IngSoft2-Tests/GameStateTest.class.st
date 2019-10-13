@@ -10,7 +10,7 @@ Class {
 { #category : #tests }
 GameStateTest >> testAllPlayersStartAtFirstSpot [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
@@ -22,7 +22,7 @@ GameStateTest >> testAllPlayersStartAtFirstSpot [
 { #category : #tests }
 GameStateTest >> testAllPlayersStartAtLapZero [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.	
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.	
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}

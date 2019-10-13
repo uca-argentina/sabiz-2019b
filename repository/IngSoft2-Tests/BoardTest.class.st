@@ -60,18 +60,18 @@ BoardTest >> testEmptyBoardHasNoSpecialSpots [
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
-		should: [ Board standardWithSpots: 10 andNumberOfLaps: 0 ]
+		should: [ Board standardWithNumberOfSpots: 10 andNumberOfLaps: 0 ]
 			raise: AssertionFailure;
-		should: [ Board standardWithSpots: 10 andNumberOfLaps: -1 ]
+		should: [ Board standardWithNumberOfSpots: 10 andNumberOfLaps: -1 ]
 			raise: AssertionFailure
 ]
 
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ Board standardWithSpots: 0 andNumberOfLaps: 2 ]
+		should: [ Board standardWithNumberOfSpots: 0 andNumberOfLaps: 2 ]
 			raise: AssertionFailure;
-		should: [ Board standardWithSpots: -1 andNumberOfLaps: 2 ]
+		should: [ Board standardWithNumberOfSpots: -1 andNumberOfLaps: 2 ]
 			raise: AssertionFailure
 ]
 
@@ -79,7 +79,7 @@ BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 BoardTest >> testStandardBoardHasExpectedSpotDistribution [
 	| board distributionCounter |
 	distributionCounter := self distributionCounter.
-	board := Board standardWithSpots: 100000 andNumberOfLaps: 1.
+	board := Board standardWithNumberOfSpots: 100000 andNumberOfLaps: 1.
 	board spots
 		do: [ :each | 
 			distributionCounter

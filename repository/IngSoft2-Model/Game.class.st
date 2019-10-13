@@ -53,7 +53,7 @@ Game class >> standard [
 		throwing: self standardSetOfDices
 		using:
 			(Board
-				standardWithSpots: self standardSpotAmount
+				standardWithNumberOfSpots: self standardSpotAmount
 				andNumberOfLaps: self standardLapAmmount)
 ]
 
@@ -133,6 +133,11 @@ Game >> numberOfLaps [
 ]
 
 { #category : #accessing }
+Game >> numberOfPlayers [
+	^ self players size
+]
+
+{ #category : #accessing }
 Game >> numberOfSpots [
 	^ board numberOfSpots
 ]
@@ -172,11 +177,6 @@ Game >> players: gamePlayers dices: gameDices andBoard: aBoard [
 { #category : #accessing }
 Game >> positionOfPlayer: aPlayer [
 	^ state positionOfPlayer: aPlayer
-]
-
-{ #category : #accessing }
-Game >> quantityOfPlayers [
-	^ self players size
 ]
 
 { #category : #accessing }

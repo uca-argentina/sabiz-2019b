@@ -27,7 +27,7 @@ GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {(LoadedDice loadedWith: 6)}
-				using: (Board standardWithSpots: 10 andNumberOfLaps: 0) ]
+				using: (Board standardWithNumberOfSpots: 10 andNumberOfLaps: 0) ]
 		raise: AssertionFailure
 ]
 
@@ -37,7 +37,7 @@ GameTest >> testCantCreateGameWithoutDices [
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {}
-				using: (Board standardWithSpots: 10 andNumberOfLaps: 2) ]
+				using: (Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2) ]
 		raise: AssertionFailure
 ]
 
@@ -47,7 +47,7 @@ GameTest >> testCantCreateGameWithoutPlayers [
 		should: [ Game
 				playedBy: {}
 				throwing: {(RandomDice withFaces: 6)}
-				using: (Board standardWithSpots: 10 andNumberOfLaps: 2) ]
+				using: (Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2) ]
 		raise: AssertionFailure
 ]
 
@@ -57,7 +57,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 		should: [ Game
 				playedBy: {#player1 . #player1}
 				throwing: {(RandomDice withFaces: 6)}
-				using: (Board standardWithSpots: 10 andNumberOfLaps: 2) ]
+				using: (Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2) ]
 		raise: AssertionFailure
 ]
 
@@ -72,7 +72,7 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfLaps [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -83,18 +83,18 @@ GameTest >> testGameHasGivenNumberOfLaps [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfPlayers [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
 		using: board.
-	self assert: [ game quantityOfPlayers = 1 ]
+	self assert: [ game numberOfPlayers = 1 ]
 ]
 
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfSpots [
 	| game board |
-	board := Board standardWithSpots: 20 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 20 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -105,7 +105,7 @@ GameTest >> testGameHasGivenNumberOfSpots [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenPlayer [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
@@ -116,7 +116,7 @@ GameTest >> testGameHasGivenPlayer [
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenSetOfDices [
 	| game dice1 dice2 board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	dice1 := RandomDice withFaces: 6.
 	dice2 := LoadedDice loadedWith: 4.
 	game := Game
@@ -185,7 +185,7 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 { #category : #'test - playing' }
 GameTest >> testPlayerOneWonTheGame [
 	| game board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(LoadedDice loadedWith: 10)}
@@ -254,12 +254,12 @@ GameTest >> testProhibitsCreatingGameWithInvalidNumberOfSpots [
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {dice}
-				using: (Board standardWithSpots: 0 andNumberOfLaps: 2) ]
+				using: (Board standardWithNumberOfSpots: 0 andNumberOfLaps: 2) ]
 			raise: AssertionFailure;
 		should: [ Game
 				playedBy: {#player1}
 				throwing: {dice}
-				using: (Board standardWithSpots: self negativeNumberOfSpots andNumberOfLaps: 2) ]
+				using: (Board standardWithNumberOfSpots: self negativeNumberOfSpots andNumberOfLaps: 2) ]
 			raise: AssertionFailure
 ]
 
@@ -290,7 +290,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 { #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice board |
-	board := Board standardWithSpots: 10 andNumberOfLaps: 2.
+	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	dice := LoadedDice loadedWith: 10.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
