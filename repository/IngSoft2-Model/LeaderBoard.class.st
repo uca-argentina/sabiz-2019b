@@ -12,9 +12,7 @@ Class {
 
 { #category : #adding }
 LeaderBoard >> add: anElement [
-	elements
-		addIfNotPresent: anElement copy
-		ifPresentDo: [ AssertionFailure signal ]
+	elements addIfNotPresent: anElement copy
 ]
 
 { #category : #accessing }

@@ -14,14 +14,13 @@ TimeMachine class >> probability [
 
 { #category : #effect }
 TimeMachine >> applyEffectOn: gameState triggeredBy: player [
-	(gameState playerHasNotFinished: player)
-		ifTrue: [ (gameState sizeOfPlayerStateForPlayer: player) = 2
-				ifTrue: [ gameState
-						saveStateOfPlayer: player
-						withNewLapNumber: 0
-						andNewPosition: 1 ]
-				ifFalse: [ gameState
-						saveStateOfPlayer: player
-						withNewLapNumber: (gameState previousLapOfPlayer: player)
-						andNewPosition: (gameState previousPositionOfPlayer: player) ] ]
+	(gameState sizeOfPlayerStateForPlayer: player) = 2
+		ifTrue: [ gameState
+				saveStateOfPlayer: player
+				withNewLapNumber: 0
+				andNewPosition: 1 ]
+		ifFalse: [ gameState
+				saveStateOfPlayer: player
+				withNewLapNumber: (gameState previousLapOfPlayer: player)
+				andNewPosition: (gameState previousPositionOfPlayer: player) ]
 ]

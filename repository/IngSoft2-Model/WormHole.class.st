@@ -14,8 +14,7 @@ WormHole class >> probability [
 
 { #category : #effect }
 WormHole >> applyEffectOn: gameState triggeredBy: player [
-	(gameState playerHasNotFinished: player)
-		ifTrue: [ gameState player: player advances: self numberOfSpotsToGoBack ]
+	gameState player: player advances: self numberOfSpotsToGoBack
 ]
 
 { #category : #effect }

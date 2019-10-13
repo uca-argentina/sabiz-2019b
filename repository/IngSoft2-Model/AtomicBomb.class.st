@@ -16,15 +16,14 @@ AtomicBomb class >> probability [
 AtomicBomb >> applyEffectOn: gameState triggeredBy: player [
 	| players |
 	players := gameState players.
-	self moveAll: players toFirstSpotFrom: gameState
+	self moveAll: players toFirstSpotUpdating: gameState
 ]
 
 { #category : #effect }
-AtomicBomb >> moveAll: players toFirstSpotFrom: gameState [
+AtomicBomb >> moveAll: players toFirstSpotUpdating: gameState [
 	players
 		do: [ :each | 
-			(gameState playerHasNotFinished: each)
-				ifTrue: [ gameState
-						player: each
-						advances: ((gameState positionOfPlayer: each) - 1) * -1 ] ]
+			gameState
+				player: each
+				advances: ((gameState positionOfPlayer: each) - 1) * -1 ]
 ]

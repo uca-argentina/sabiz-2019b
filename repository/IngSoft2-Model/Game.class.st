@@ -109,23 +109,22 @@ Game >> leaderBoard [
 
 { #category : #playing }
 Game >> moveAllPlayers [
-	self players
-		do: [ :player | 
-			(self playerHasNotFinished: player)
-				ifTrue: [ self movePlayer: player ] ]
+	self players do: [ :player | self movePlayer: player ]
 ]
 
 { #category : #'private - moving' }
 Game >> movePlayer: player [
 	| diceSum |
 	diceSum := 0.
-	self
-		assert: [ self playerHasNotFinished: player ]
-		description: 'Player already reached completed the game'.
 	dices do: [ :dice | diceSum := diceSum + dice roll ].
-	state player: player advancesApplyingEffects: diceSum.
-	(state lapOfPlayer: player) >= self numberOfLaps
-		ifTrue: [ leaderBoard add: player ]
+	state player: player advances: diceSum.
+	(self playerHasNotFinished: player)
+		ifTrue: [ state
+				player: player
+				triggersEffectAtPosition: (self positionOfPlayer: player).
+			(self playerHasNotFinished: player)
+				ifFalse: [ leaderBoard add: player ] ]
+		ifFalse: [ leaderBoard add: player ]
 ]
 
 { #category : #accessing }

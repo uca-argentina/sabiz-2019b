@@ -12,7 +12,8 @@ LeaderBoardTest >> testCantAddDuplicatedValuesToLeaderBoard [
 	| leaderboard |
 	leaderboard := LeaderBoard new.
 	leaderboard add: 'element'.
-	self should: [ leaderboard add: 'element' ] raise: AssertionFailure
+	leaderboard add: 'element'.
+	self assert: leaderboard size equals: 1
 ]
 
 { #category : #tests }
