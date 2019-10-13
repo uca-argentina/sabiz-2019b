@@ -194,3 +194,46 @@ SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackF
 	self assert: (game positionOfPlayer: #player1) equals: 4.
 	self assert: (game lapOfPlayer: #player1) equals: 0.
 ]
+
+{ #category : #'tests - timemachine' }
+SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
+	| game board |
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			TimeMachine new.
+			Empty new}
+		andNumberOfLaps: 2.
+	game := Game
+		playedBy: {#player1}
+		throwing: {(LoadedDice loadedWith: 4)}
+		using: board.
+	game playOneRound.
+	self assert: (game positionOfPlayer: #player1) equals: 1.
+	self assert: (game lapOfPlayer: #player1) equals: 0
+]
+
+{ #category : #'tests - timemachine' }
+SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
+	| game board |
+	board := Board
+		withSpotsCollection:
+			{Empty new.
+			Empty new.
+			Empty new.
+			Empty new.
+			TimeMachine new.
+			Empty new}
+		andNumberOfLaps: 2.
+	game := Game
+		playedBy: {#player1}
+		throwing: {(SequentialDice withRollingSequence: {2 . 8})}
+		using: board.
+	game playOneRound.
+	game playOneRound.
+	self assert: (game positionOfPlayer: #player1) equals: 1.
+	self assert: (game lapOfPlayer: #player1) equals: 0
+]
