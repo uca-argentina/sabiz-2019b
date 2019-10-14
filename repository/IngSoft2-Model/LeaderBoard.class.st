@@ -10,16 +10,9 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-LeaderBoard class >> newLeadBoard [
-	^ self new initializeLeaderBoard
-]
-
 { #category : #adding }
 LeaderBoard >> add: anElement [
-	elements
-		addIfNotPresent: anElement copy
-		ifPresentDo: [ AssertionFailure signal ]
+	elements addIfNotPresent: anElement copy
 ]
 
 { #category : #accessing }
@@ -48,7 +41,8 @@ LeaderBoard >> fourth [
 ]
 
 { #category : #initialization }
-LeaderBoard >> initializeLeaderBoard [
+LeaderBoard >> initialize [
+	super initialize.
 	elements := OrderedCollection new
 ]
 

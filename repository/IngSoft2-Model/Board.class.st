@@ -11,7 +11,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : #validation }
 Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 	self
 		assert: [ spotsAmmount > 0 ]
@@ -22,17 +22,21 @@ Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 ]
 
 { #category : #'instance creation' }
-Board class >> withSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+Board class >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
 	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
 	^ self new
-		initializeWithSpots: spotsAmmount
+		standardWithNumberOfSpots: spotsAmmount
 		andNumberOfLaps: numberOfLaps
 ]
 
-{ #category : #initialization }
-Board >> initializeWithSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
-	spots := Array new: spotsAmmount withAll: Spot new.
-	numberOfLaps := lapsAmmount
+{ #category : #'instance creation' }
+Board class >> withSpotsCollection: spotCollection andNumberOfLaps: numberOfLaps [
+	self
+		checkNumberSpots: spotCollection size
+		checkNumberLaps: numberOfLaps.
+	^ self new
+		withSpotsCollection: spotCollection
+		andNumberOfLaps: numberOfLaps
 ]
 
 { #category : #accessing }
@@ -43,4 +47,29 @@ Board >> numberOfLaps [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
+]
+
+{ #category : #'private - accessing' }
+Board >> spotAt: position [
+	^ spots at: position
+]
+
+{ #category : #accessing }
+Board >> spots [
+	^ spots copy
+]
+
+{ #category : #initialization }
+Board >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
+	| array |
+	array := OrderedCollection new.
+	spotsAmmount timesRepeat: [ array add: Spot random ].
+	spots := array asArray.
+	numberOfLaps := lapsAmmount
+]
+
+{ #category : #initialization }
+Board >> withSpotsCollection: spotsCollection andNumberOfLaps: lapsAmmount [
+	spots := spotsCollection asArray.
+	numberOfLaps := lapsAmmount
 ]
