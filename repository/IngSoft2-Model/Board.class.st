@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #validation }
-Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
+Board class >> checkNumberOfSpots: spotsAmmount checkNumberOfLaps: numberOfLaps [
 	self
 		assert: [ spotsAmmount > 0 ]
 		description: 'Invalid number of spots'.
@@ -23,17 +23,19 @@ Board class >> checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps [
 
 { #category : #'instance creation' }
 Board class >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
-	self checkNumberSpots: spotsAmmount checkNumberLaps: numberOfLaps.
-	^ self new
-		standardWithNumberOfSpots: spotsAmmount
+	| spots |
+	spots := OrderedCollection new.
+	spotsAmmount timesRepeat: [ spots add: Spot random ].
+	^ self
+		withSpotsCollection: spots asArray
 		andNumberOfLaps: numberOfLaps
 ]
 
 { #category : #'instance creation' }
 Board class >> withSpotsCollection: spotCollection andNumberOfLaps: numberOfLaps [
 	self
-		checkNumberSpots: spotCollection size
-		checkNumberLaps: numberOfLaps.
+		checkNumberOfSpots: spotCollection size
+		checkNumberOfLaps: numberOfLaps.
 	^ self new
 		withSpotsCollection: spotCollection
 		andNumberOfLaps: numberOfLaps
@@ -57,15 +59,6 @@ Board >> spotAt: position [
 { #category : #accessing }
 Board >> spots [
 	^ spots copy
-]
-
-{ #category : #initialization }
-Board >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: lapsAmmount [
-	| array |
-	array := OrderedCollection new.
-	spotsAmmount timesRepeat: [ array add: Spot random ].
-	spots := array asArray.
-	numberOfLaps := lapsAmmount
 ]
 
 { #category : #initialization }
