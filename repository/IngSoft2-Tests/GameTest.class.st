@@ -26,7 +26,7 @@ GameTest >> testCantCreateGameWithInvalidNumberOfLaps [
 	self
 		should: [ Game
 				playedBy: {#player1}
-				throwing: {(LoadedDice loadedWith: 6)}
+				throwing: {(SequentialDice withRollingSequence: {6})}
 				using: (Board standardWithNumberOfSpots: 10 andNumberOfLaps: 0) ]
 		raise: AssertionFailure
 ]
@@ -118,7 +118,7 @@ GameTest >> testGameHasGivenSetOfDices [
 	| game dice1 dice2 board |
 	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	dice1 := RandomDice withFaces: 6.
-	dice2 := LoadedDice loadedWith: 4.
+	dice2 := SequentialDice withRollingSequence: {4}.
 	game := Game
 		playedBy: {#player1}
 		throwing:
@@ -188,7 +188,7 @@ GameTest >> testPlayerOneWonTheGame [
 	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2}
-		throwing: {(LoadedDice loadedWith: 10)}
+		throwing: {(SequentialDice withRollingSequence: {10})}
 		using: board.
 	game playAnEntireGame.
 	self assert: [ game winner = #player1 ]
@@ -281,7 +281,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 9)}
+		throwing: {(SequentialDice withRollingSequence: {9})}
 		using: board.
 	game playOneRound.
 	self assert: [ (game lapOfPlayer: #player1) = 0 ]
@@ -291,7 +291,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice board |
 	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
-	dice := LoadedDice loadedWith: 10.
+	dice := SequentialDice withRollingSequence: {10}.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {dice}

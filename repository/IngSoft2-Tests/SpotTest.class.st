@@ -69,7 +69,7 @@ SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 5
@@ -123,7 +123,7 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 9
@@ -143,7 +143,7 @@ SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForward
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	self assert: (game lapOfPlayer: #player1) equals: 0.
 	game playOneRound.
@@ -165,7 +165,7 @@ SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 5)}
+		throwing: {(SequentialDice withRollingSequence: {5})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 2
@@ -209,7 +209,7 @@ SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZe
 		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 1.
