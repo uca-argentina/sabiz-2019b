@@ -14,35 +14,25 @@ Class {
 }
 
 { #category : #validation }
-Game class >> checkPlayers: gamePlayers checkDices: dices checkRepeatedPlayers: players [
-	self
-		assert: [ gamePlayers isNotEmpty ]
-		description: 'Not enough players to initialize game'.
-	self
-		assert: [ dices isNotEmpty ]
-		description: 'Tried to initialize a game with an invalid set of Dices'.
-	self
-		assert: [ players size = gamePlayers size ]
-		description: 'Tried to initialize game with a duplicated player'
+Game class >> checkDuplicatePlayers: players [
+	self assert: players asSet size = players size
 ]
 
 { #category : #validation }
-Game class >> filterDuplicatePlayers: players [
-	| filtered |
-	filtered := OrderedCollection new.
-	players do: [ :each | filtered addIfNotPresent: each ].
-	^ filtered
+Game class >> checkPlayerQuantity: players checkDices: dices [
+	self
+		assert: [ players isNotEmpty ]
+		description: 'Not enough players to initialize game'.
+	self
+		assert: [ dices isNotEmpty ]
+		description: 'Tried to initialize a game with an invalid set of Dices'
 ]
 
 { #category : #'instance creation' }
 Game class >> playedBy: players throwing: dices using: aBoard [
-	| filteredPlayers |
-	filteredPlayers := self filterDuplicatePlayers: players.
-	self
-		checkPlayers: filteredPlayers
-		checkDices: dices
-		checkRepeatedPlayers: players.
-	^ self new players: filteredPlayers dices: dices andBoard: aBoard
+	self checkDuplicatePlayers: players.
+	self checkPlayerQuantity: players checkDices: dices.
+	^ self new players: players dices: dices andBoard: aBoard
 ]
 
 { #category : #'instance creation' }
@@ -58,11 +48,6 @@ Game class >> standard [
 ]
 
 { #category : #standardValues }
-Game class >> standardLapAmmount [
-	^ 3
-]
-
-{ #category : #standardValues }
 Game class >> standardSetOfDices [
 	^ {(RandomDice withFaces: 6)}
 ]
@@ -70,11 +55,6 @@ Game class >> standardSetOfDices [
 { #category : #standardValues }
 Game class >> standardSetOfPlayers [
 	^ {#player1 . #player2 . #player3}
-]
-
-{ #category : #standardValues }
-Game class >> standardSpotAmount [
-	^ 24
 ]
 
 { #category : #accessing }
