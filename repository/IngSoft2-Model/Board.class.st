@@ -29,6 +29,24 @@ Board class >> regularWithNumberOfSpots: spotsNumber andNumberOfLaps: lapsNumber
 ]
 
 { #category : #'instance creation' }
+Board class >> standard [
+	^ self
+		withDistribution: OverallSpotDistribution standard
+		numberOfSpots: self standardNumberOfSpots
+		andNumberOfLaps: self standardNumberOfLaps
+]
+
+{ #category : #standardValues }
+Board class >> standardNumberOfLaps [
+	^ 2
+]
+
+{ #category : #standardValues }
+Board class >> standardNumberOfSpots [
+	^ 10
+]
+
+{ #category : #'instance creation' }
 Board class >> withDistribution: spotDistribution numberOfSpots: spotsAmount andNumberOfLaps: numberOfLaps [
 	| spots |
 	spots := OrderedCollection new.

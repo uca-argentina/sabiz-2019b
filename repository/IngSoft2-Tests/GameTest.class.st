@@ -19,14 +19,8 @@ GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 { #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutDices [
 	self
-		should: [ Game
-				playedBy: {#player1}
-				throwing: {}
-				using:
-					(Board
-						withDistribution: OverallSpotDistribution standard
-						numberOfSpots: 10
-						andNumberOfLaps: 2) ]
+		should:
+			[ Game playedBy: {#player1} throwing: {} using: Board standard ]
 		raise: AssertionFailure
 ]
 
@@ -36,11 +30,7 @@ GameTest >> testCantCreateGameWithoutPlayers [
 		should: [ Game
 				playedBy: {}
 				throwing: {(RandomDice withFaces: 6)}
-				using:
-					(Board
-						withDistribution: OverallSpotDistribution standard
-						numberOfSpots: 10
-						andNumberOfLaps: 2) ]
+				using: Board standard ]
 		raise: AssertionFailure
 ]
 
@@ -50,11 +40,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 		should: [ Game
 				playedBy: {#player1 . #player1}
 				throwing: {(RandomDice withFaces: 6)}
-				using:
-					(Board
-						withDistribution: OverallSpotDistribution standard
-						numberOfSpots: 10
-						andNumberOfLaps: 2) ]
+				using: Board standard ]
 		raise: AssertionFailure
 ]
 
@@ -67,68 +53,28 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 ]
 
 { #category : #'test - accessing' }
-GameTest >> testGameHasGivenNumberOfLaps [
-	| game board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 10
-		andNumberOfLaps: 2.
-	game := Game
-		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}
-		using: board.
-	self assert: [ game numberOfLaps = 2 ]
-]
-
-{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfPlayers [
-	| game board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 10
-		andNumberOfLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
-		using: board.
+		using: Board standard.
 	self assert: [ game numberOfPlayers = 1 ]
 ]
 
 { #category : #'test - accessing' }
-GameTest >> testGameHasGivenNumberOfSpots [
-	| game board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 20
-		andNumberOfLaps: 2.
-	game := Game
-		playedBy: {#player1}
-		throwing: {(RandomDice withFaces: 6)}
-		using: board.
-	self assert: [ game numberOfSpots = 20 ]
-]
-
-{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenPlayer [
-	| game board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 10
-		andNumberOfLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
-		using: board.
+		using: Board standard.
 	self assert: [ game includesPlayer: #player1 ]
 ]
 
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenSetOfDices [
-	| game dice1 dice2 board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 10
-		andNumberOfLaps: 2.
+	| game dice1 dice2 |
 	dice1 := RandomDice withFaces: 6.
 	dice2 := SequentialDice withRollingSequence: {4}.
 	game := Game
@@ -136,7 +82,7 @@ GameTest >> testGameHasGivenSetOfDices [
 		throwing:
 			{dice1.
 			dice2}
-		using: board.
+		using: Board standard.
 	self
 		assert: [ game dices
 				includesAll:
@@ -147,19 +93,7 @@ GameTest >> testGameHasGivenSetOfDices [
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game board |
-	board := Board
-		withSpotCollection:
-			{Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new}
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
@@ -172,19 +106,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game board |
-	board := Board
-		withSpotCollection:
-			{Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new}
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
@@ -196,15 +118,11 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 
 { #category : #'test - playing' }
 GameTest >> testPlayerOneWonTheGame [
-	| game board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 10
-		andNumberOfLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(SequentialDice withRollingSequence: {10})}
-		using: board.
+		using: Board standard.
 	game playAnEntireGame.
 	self assert: [ game winner = #player1 ]
 ]
@@ -212,19 +130,7 @@ GameTest >> testPlayerOneWonTheGame [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game board |
-	board := Board
-		withSpotCollection:
-			{Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new}
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -238,19 +144,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game board |
-	board := Board
-		withSpotCollection:
-			{Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new}
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -264,19 +158,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 { #category : #'test - playing' }
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
 	| game board |
-	board := Board
-		withSpotCollection:
-			{Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new.
-			Regular new}
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {9})}
@@ -288,10 +170,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 { #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice board |
-	board := Board
-		withDistribution: OverallSpotDistribution standard
-		numberOfSpots: 10
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	dice := SequentialDice withRollingSequence: {10}.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}

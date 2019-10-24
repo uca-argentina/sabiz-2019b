@@ -40,11 +40,7 @@ Game class >> standard [
 	^ self
 		playedBy: self standardSetOfPlayers
 		throwing: self standardSetOfDices
-		using:
-			(Board
-				withDistribution: OverallSpotDistribution standard
-				numberOfSpots: 10
-				andNumberOfLaps: 2)
+		using: Board standard
 ]
 
 { #category : #standardValues }
@@ -115,11 +111,6 @@ Game >> numberOfLaps [
 { #category : #accessing }
 Game >> numberOfPlayers [
 	^ self players size
-]
-
-{ #category : #accessing }
-Game >> numberOfSpots [
-	^ board numberOfSpots
 ]
 
 { #category : #playing }

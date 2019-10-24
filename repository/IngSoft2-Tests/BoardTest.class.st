@@ -7,6 +7,26 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #'test - accessing' }
+BoardTest >> testBoardHasGivenNumberOfLaps [
+	| board |
+	board := Board
+		withDistribution: OverallSpotDistribution standard
+		numberOfSpots: 10
+		andNumberOfLaps: 2.
+	self assert: [ board numberOfLaps = 2 ]
+]
+
+{ #category : #'test - accessing' }
+BoardTest >> testBoardHasGivenNumberOfSpots [
+	| board |
+	board := Board
+		withDistribution: OverallSpotDistribution standard
+		numberOfSpots: 20
+		andNumberOfLaps: 2.
+	self assert: [ board numberOfSpots = 20 ]
+]
+
 { #category : #tests }
 BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 	self
