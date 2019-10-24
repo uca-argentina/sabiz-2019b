@@ -19,11 +19,6 @@ MoonWalk class >> newLoadedWith: numberOfSpotsToGoBack [
 	^ self new initializeWith: numberOfSpotsToGoBack
 ]
 
-{ #category : #'standard values' }
-MoonWalk class >> probability [
-	^ 5
-]
-
 { #category : #effect }
 MoonWalk >> applyEffectOn: gameState triggeredBy: player [
 	| playersToApplyEffect |

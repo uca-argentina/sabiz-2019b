@@ -7,11 +7,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'standard values' }
-AtomicBomb class >> probability [
-	^ 2
-]
-
 { #category : #effect }
 AtomicBomb >> applyEffectOn: gameState triggeredBy: player [
 	| players |

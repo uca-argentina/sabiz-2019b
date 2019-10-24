@@ -13,16 +13,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-Game class >> addIgnoringRepeated: players [
-	| gamePlayers |
-	players asOrderedCollection.
-	gamePlayers := OrderedCollection new.
-	players do: [ :each | gamePlayers addIfNotPresent: each ].
-	^ gamePlayers
-]
-
-{ #category : #testing }
+{ #category : #validation }
 Game class >> checkPlayers: gamePlayers checkDices: dices checkRepeatedPlayers: players [
 	self
 		assert: [ gamePlayers isNotEmpty ]
@@ -35,15 +26,23 @@ Game class >> checkPlayers: gamePlayers checkDices: dices checkRepeatedPlayers: 
 		description: 'Tried to initialize game with a duplicated player'
 ]
 
+{ #category : #validation }
+Game class >> filterDuplicatePlayers: players [
+	| filtered |
+	filtered := OrderedCollection new.
+	players do: [ :each | filtered addIfNotPresent: each ].
+	^ filtered
+]
+
 { #category : #'instance creation' }
 Game class >> playedBy: players throwing: dices using: aBoard [
-	| gamePlayers |
-	gamePlayers := self addIgnoringRepeated: players.
+	| filteredPlayers |
+	filteredPlayers := self filterDuplicatePlayers: players.
 	self
-		checkPlayers: gamePlayers
+		checkPlayers: filteredPlayers
 		checkDices: dices
 		checkRepeatedPlayers: players.
-	^ self new players: gamePlayers dices: dices andBoard: aBoard
+	^ self new players: filteredPlayers dices: dices andBoard: aBoard
 ]
 
 { #category : #'instance creation' }
@@ -53,8 +52,9 @@ Game class >> standard [
 		throwing: self standardSetOfDices
 		using:
 			(Board
-				standardWithNumberOfSpots: self standardSpotAmount
-				andNumberOfLaps: self standardLapAmmount)
+				withDistribution: OverallSpotDistribution standard
+				numberOfSpots: 10
+				andNumberOfLaps: 2)
 ]
 
 { #category : #standardValues }

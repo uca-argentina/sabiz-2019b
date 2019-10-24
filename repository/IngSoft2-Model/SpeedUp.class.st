@@ -7,11 +7,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'standard values' }
-SpeedUp class >> probability [
-	^ 15
-]
-
 { #category : #effect }
 SpeedUp >> applyEffectOn: gameState triggeredBy: player [
 	gameState player: player advances: self numberOfSpotsToGoForward

@@ -7,31 +7,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'additional methods' }
-Spot class >> idealDistribution [
-	| idealDistribution |
-	idealDistribution := Dictionary new.
-	self allSubclasses
-		do:
-			[ :each | idealDistribution at: each name asSymbol put: each probability ].
-	^ idealDistribution
-]
-
-{ #category : #'standard values' }
-Spot class >> probability [
-	self subclassResponsibility
-]
-
-{ #category : #'instance creation' }
-Spot class >> random [
-	| choiceCollection |
-	choiceCollection := OrderedCollection new.
-	self allSubclasses
-		do:
-			[ :each | each probability timesRepeat: [ choiceCollection add: each ] ].
-	^ choiceCollection atRandom new
-]
-
 { #category : #effect }
 Spot >> applyEffectOn: gameState triggeredBy: player [
 	self subclassResponsibility

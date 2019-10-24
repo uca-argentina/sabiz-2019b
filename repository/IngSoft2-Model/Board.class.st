@@ -22,22 +22,29 @@ Board class >> checkNumberOfSpots: spotsAmmount checkNumberOfLaps: numberOfLaps 
 ]
 
 { #category : #'instance creation' }
-Board class >> standardWithNumberOfSpots: spotsAmmount andNumberOfLaps: numberOfLaps [
+Board class >> regularWithNumberOfSpots: spotsNumber andNumberOfLaps: lapsNumber [
+	^ self
+		withSpotCollection: (OrderedCollection new: spotsNumber withAll: Regular new)
+		andNumberOfLaps: lapsNumber
+]
+
+{ #category : #'instance creation' }
+Board class >> withDistribution: spotDistribution numberOfSpots: spotsAmount andNumberOfLaps: numberOfLaps [
 	| spots |
 	spots := OrderedCollection new.
-	spotsAmmount timesRepeat: [ spots add: Spot random ].
+	spotsAmount timesRepeat: [ spots add: spotDistribution randomSpot ].
 	^ self
-		withSpotsCollection: spots asArray
+		withSpotCollection: spots asArray
 		andNumberOfLaps: numberOfLaps
 ]
 
 { #category : #'instance creation' }
-Board class >> withSpotsCollection: spotCollection andNumberOfLaps: numberOfLaps [
+Board class >> withSpotCollection: spotCollection andNumberOfLaps: numberOfLaps [
 	self
 		checkNumberOfSpots: spotCollection size
 		checkNumberOfLaps: numberOfLaps.
 	^ self new
-		withSpotsCollection: spotCollection
+		withSpotCollection: spotCollection
 		andNumberOfLaps: numberOfLaps
 ]
 
@@ -62,7 +69,7 @@ Board >> spots [
 ]
 
 { #category : #initialization }
-Board >> withSpotsCollection: spotsCollection andNumberOfLaps: lapsAmmount [
+Board >> withSpotCollection: spotsCollection andNumberOfLaps: lapsAmmount [
 	spots := spotsCollection asArray.
 	numberOfLaps := lapsAmmount
 ]

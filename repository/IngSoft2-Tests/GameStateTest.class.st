@@ -10,7 +10,10 @@ Class {
 { #category : #tests }
 GameStateTest >> testAllPlayersStartAtFirstSpot [
 	| game board |
-	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board
+		withDistribution: OverallSpotDistribution standard
+		numberOfSpots: 10
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
@@ -22,7 +25,10 @@ GameStateTest >> testAllPlayersStartAtFirstSpot [
 { #category : #tests }
 GameStateTest >> testAllPlayersStartAtLapZero [
 	| game board |
-	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.	
+	board := Board
+		withDistribution: OverallSpotDistribution standard
+		numberOfSpots: 10
+		andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
@@ -42,19 +48,7 @@ GameStateTest >> testGameIsOver [
 { #category : #tests }
 GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDice [
 	| game board |
-	board := Board
-		withSpotsCollection:
-			{Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new}
-		andNumberOfLaps: 2.
+	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
