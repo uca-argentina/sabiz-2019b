@@ -177,7 +177,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 		throwing: {dice}
 		using: board.
 	game playAnEntireGame.
-	self assert: [ #player1 = game leaderBoard first ].
-	self assert: [ #player2 = game leaderBoard second ].
-	self assert: [ #player3 = game leaderBoard third ]
+	self
+		assert: game leaderBoardPositions
+		equals: {#player1 . #player2 . #player3}
 ]
