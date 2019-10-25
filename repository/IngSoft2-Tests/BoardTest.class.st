@@ -9,7 +9,7 @@ Class {
 
 { #category : #extracted }
 BoardTest >> allEffectTypes [
-	^ (Spot allSubclasses collect: [ :each | each new ]) asArray
+	^ (Effect allSubclasses collect: [ :each | each new ]) asArray
 ]
 
 { #category : #'test - accessing' }

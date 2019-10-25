@@ -3,7 +3,7 @@ Move forwards 4 spots
 "
 Class {
 	#name : #SpeedUp,
-	#superclass : #Spot,
+	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
 

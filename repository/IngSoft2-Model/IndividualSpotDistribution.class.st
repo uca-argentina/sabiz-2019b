@@ -14,7 +14,7 @@ Class {
 { #category : #'instance creation' }
 IndividualSpotDistribution class >> of: spotSubclass withProbability: probability [
 	self assert: (probability >= 0 and: probability <= 100).
-	self assert: (Spot allSubclasses includes: spotSubclass).
+	self assert: (Effect allSubclasses includes: spotSubclass).
 	^ self new
 		initializeWithSpotType: spotSubclass
 		andProbability: probability

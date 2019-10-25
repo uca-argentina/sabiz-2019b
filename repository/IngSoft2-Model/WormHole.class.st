@@ -3,7 +3,7 @@ Go back 4 spots
 "
 Class {
 	#name : #WormHole,
-	#superclass : #Spot,
+	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
 
