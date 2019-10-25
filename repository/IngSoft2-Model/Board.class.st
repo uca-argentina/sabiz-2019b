@@ -79,11 +79,6 @@ Board >> spotAt: position [
 	^ spots at: position
 ]
 
-{ #category : #accessing }
-Board >> spots [
-	^ spots copy
-]
-
 { #category : #initialization }
 Board >> with: spotsCollection andLaps: lapsAmmount [
 	spots := spotsCollection.

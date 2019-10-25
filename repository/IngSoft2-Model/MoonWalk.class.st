@@ -11,11 +11,10 @@ Class {
 }
 
 { #category : #'instance creation' }
-MoonWalk class >> newLoadedWith: numberOfSpotsToGoBack [
+MoonWalk class >> goingBack: numberOfSpotsToGoBack [
 	self
-		assert: [ numberOfSpotsToGoBack < 6 and: numberOfSpotsToGoBack > 0 ]
-		description:
-			'Number Of Spots to Go back for MoonWalk effect must be between 1 and 5 included both'.
+		assert: [ numberOfSpotsToGoBack > 0 ]
+		description: 'Number Of Spots to Go back must be greater than zero'.
 	^ self new initializeWith: numberOfSpotsToGoBack
 ]
 
@@ -29,14 +28,17 @@ MoonWalk >> applyOn: gameState triggeredBy: player [
 			[ :each | gameState player: each advances: self numberOfSpotsToGoBack ]
 ]
 
-{ #category : #initialization }
-MoonWalk >> initialize [
-	| random |
-	random := Random new.
-	numberOfSpotsToGoBack := random nextInt: 5
+{ #category : #defaultValues }
+MoonWalk >> defaultGoBackValue [
+	^ 4
 ]
 
-{ #category : #'testing - initialization' }
+{ #category : #initialization }
+MoonWalk >> initialize [
+	numberOfSpotsToGoBack := self defaultGoBackValue
+]
+
+{ #category : #initialization }
 MoonWalk >> initializeWith: spotsToGoBack [
 	numberOfSpotsToGoBack := spotsToGoBack
 ]

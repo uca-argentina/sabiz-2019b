@@ -7,12 +7,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #effect }
+{ #category : #effectValue }
 SpeedUp >> applyOn: gameState triggeredBy: player [
 	gameState player: player advances: self numberOfSpotsToGoForward
 ]
 
-{ #category : #effect }
+{ #category : #effectValue }
 SpeedUp >> numberOfSpotsToGoForward [
 	^ 4
 ]

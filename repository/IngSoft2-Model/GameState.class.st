@@ -17,6 +17,14 @@ GameState class >> newGamePlayedBy: players onBoard: board throwing: dices [
 	^ self new newGamePlayedBy: players onBoard: board throwing: dices
 ]
 
+{ #category : #'private - moving' }
+GameState >> addStateFor: player withLaps: newLapNumber andPosition: netNewPosition [
+	| listOfPlayersStates |
+	listOfPlayersStates := playerStates at: player.
+	listOfPlayersStates
+		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber)
+]
+
 { #category : #accessing }
 GameState >> currentPlaces [
 	^ (playerStates associations
@@ -25,7 +33,7 @@ GameState >> currentPlaces [
 		collect: [ :assoc | assoc key ]
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 GameState >> includesPlayer: player [
 	^ playerStates keys includes: player
 ]
@@ -67,9 +75,9 @@ GameState >> player: player advances: rollResult [
 		ifTrue: [ netNewPosition := self numberOfSpots.
 			newLapNumber := newLapNumber - 1 ].
 	self
-		saveStateOfPlayer: player
-		withNewLapNumber: newLapNumber
-		andNewPosition: netNewPosition
+		addStateFor: player
+		withLaps: newLapNumber
+		andPosition: netNewPosition
 ]
 
 { #category : #'private - moving' }
@@ -77,7 +85,7 @@ GameState >> player: player triggersEffectAtPosition: position [
 	(board spotAt: position) applyEffectOn: self triggeredBy: player
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 GameState >> playerHasNotFinished: player [
 	^ (self lapOfPlayer: player) < board numberOfLaps
 ]
@@ -106,14 +114,6 @@ GameState >> previousLapOfPlayer: aPlayer [
 GameState >> previousPositionOfPlayer: aPlayer [
 	^ ((playerStates at: aPlayer) at: (playerStates at: aPlayer) size - 2)
 		position
-]
-
-{ #category : #'private - moving' }
-GameState >> saveStateOfPlayer: player withNewLapNumber: newLapNumber andNewPosition: netNewPosition [
-	| listOfPlayersStates |
-	listOfPlayersStates := playerStates at: player.
-	listOfPlayersStates
-		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber)
 ]
 
 { #category : #'playerStates - accessing' }

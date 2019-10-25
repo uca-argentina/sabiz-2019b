@@ -11,11 +11,11 @@ Class {
 TimeMachine >> applyOn: gameState triggeredBy: player [
 	(gameState sizeOfPlayerStateForPlayer: player) = 2
 		ifTrue: [ gameState
-				saveStateOfPlayer: player
-				withNewLapNumber: 0
-				andNewPosition: 1 ]
+				addStateFor: player
+				withLaps: 0
+				andPosition: 1 ]
 		ifFalse: [ gameState
-				saveStateOfPlayer: player
-				withNewLapNumber: (gameState previousLapOfPlayer: player)
-				andNewPosition: (gameState previousPositionOfPlayer: player) ]
+				addStateFor: player
+				withLaps: (gameState previousLapOfPlayer: player)
+				andPosition: (gameState previousPositionOfPlayer: player) ]
 ]
