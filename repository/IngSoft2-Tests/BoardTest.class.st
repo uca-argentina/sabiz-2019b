@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #extracted }
+BoardTest >> allEffectTypes [
+	^ (Spot allSubclasses collect: [ :each | each new ]) asArray
+]
+
 { #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfLaps [
 	| board |
@@ -37,12 +42,7 @@ BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 { #category : #tests }
 BoardTest >> testCustomBoardHasParticularEffectAtGivenPosition [
 	| board effects |
-	effects := {Regular new.
-	MoonWalk new.
-	WormHole new.
-	TimeMachine new.
-	SpeedUp new.
-	AtomicBomb new}.
+	effects := self allEffectTypes.
 	board := Board with: effects andLaps: 5.
 	effects
 		withIndexDo: [ :effect :index | self assert: (board spotAt: index) equals: effect ]
