@@ -15,32 +15,6 @@ DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 ]
 
 { #category : #tests }
-DiceTest >> testDiceLoadedWithFiveReturnFiveWhenItIsRolled [
-	| dice |
-	dice := LoadedDice loadedWith: 5.
-	self assert: [ dice roll = 5 ]
-]
-
-{ #category : #tests }
-DiceTest >> testDiceLoadedWithNegativeFiveReturnsNegativeFiveWhenItIsRolled [
-	| dice |
-	dice := NegativeLoadedDice loadedWith: -5.
-	self assert: [ dice roll = -5 ]
-]
-
-{ #category : #tests }
-DiceTest >> testLoadedDiceCreationFailsWhenLoadedValueIsLessThanFour [
-	self should: [ LoadedDice loadedWith: 2 ] raise: AssertionFailure
-]
-
-{ #category : #tests }
-DiceTest >> testNegativeLoadedDiceCreationFailsWhenTheLoadedValueIsBiggerThanNegative4 [
-	self
-		should: [ NegativeLoadedDice loadedWith: -2 ]
-		raise: AssertionFailure
-]
-
-{ #category : #tests }
 DiceTest >> testRandomDiceCreationFailsWhenGivenNumberOfFacesIsLessThanFour [
 	self should: [ RandomDice withFaces: 2 ] raise: AssertionFailure
 ]

@@ -7,22 +7,14 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
-SpotTest >> testAllProbabilitiesAddUpToOneHundred [
-	self
-		assert: [ (Spot allSubclasses
-				inject: 0
-				into: [ :sum :each | sum + each probability ]) = 100 ]
-]
-
 { #category : #'tests - moonwalk' }
 SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
 	| board spotsToGoBack |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
+		with:
+			{Regular new.
 			MoonWalk new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	spotsToGoBack := (board spotAt: 2) numberOfSpotsToGoBack * -1.
 	self assert: [ spotsToGoBack <= 5 and: spotsToGoBack >= 1 ]
 ]
@@ -31,16 +23,16 @@ SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
 SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTriggerIt [
 	| board game |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
+		with:
+			{Regular new.
+			Regular new.
+			Regular new.
+			Regular new.
+			Regular new.
+			Regular new.
 			(MoonWalk newLoadedWith: 3).
 			SpeedUp new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
@@ -60,16 +52,16 @@ SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTrigg
 SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
+		with:
+			{Regular new.
 			MoonWalk new.
 			SpeedUp new.
 			TimeMachine new.
-			Empty new}
-		andNumberOfLaps: 2.
+			Regular new}
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 5
@@ -79,13 +71,13 @@ SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainingLaps [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
-			Empty new.
+		with:
+			{Regular new.
+			Regular new.
 			AtomicBomb new.
-			Empty new.
-			Empty new}
-		andNumberOfLaps: 4.
+			Regular new.
+			Regular new}
+		andLaps: 4.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {8 . 3 . 1})}
@@ -110,20 +102,20 @@ SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainin
 SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
+		with:
+			{Regular new.
 			MoonWalk new.
-			Empty new.
+			Regular new.
 			TimeMachine new.
 			SpeedUp new.
 			WormHole new.
 			TimeMachine new.
-			Empty new.
+			Regular new.
 			TimeMachine new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 9
@@ -133,17 +125,17 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
+		with:
+			{Regular new.
 			WormHole new.
 			TimeMachine new.
-			Empty new.
+			Regular new.
 			SpeedUp new.
 			WormHole new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	self assert: (game lapOfPlayer: #player1) equals: 0.
 	game playOneRound.
@@ -155,17 +147,17 @@ SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForward
 SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
+		with:
+			{Regular new.
 			MoonWalk new.
 			SpeedUp new.
 			TimeMachine new.
-			Empty new.
+			Regular new.
 			WormHole new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 5)}
+		throwing: {(SequentialDice withRollingSequence: {5})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 2
@@ -175,14 +167,14 @@ SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
+		with:
+			{Regular new.
 			WormHole new.
 			SpeedUp new.
 			TimeMachine new.
-			Empty new.
+			Regular new.
 			WormHole new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {6 . 1})}
@@ -199,17 +191,17 @@ SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackF
 SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
 	| game board |
 	board := Board
-		withSpotsCollection:
-			{Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
+		with:
+			{Regular new.
+			Regular new.
+			Regular new.
+			Regular new.
 			TimeMachine new.
-			Empty new}
-		andNumberOfLaps: 2.
+			Regular new}
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(LoadedDice loadedWith: 4)}
+		throwing: {(SequentialDice withRollingSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 1.
@@ -220,14 +212,14 @@ SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZe
 SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := Board
-		withSpotsCollection:
+		with:
 			{SpeedUp new.
 			AtomicBomb  new.
-			Empty new.
+			Regular new.
 			WormHole new.
 			TimeMachine new.
-			Empty new}
-		andNumberOfLaps: 2.
+			Regular new}
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {2 . 8})}

@@ -7,11 +7,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'standard values' }
-TimeMachine class >> probability [
-	^ 8
-]
-
 { #category : #effect }
 TimeMachine >> applyEffectOn: gameState triggeredBy: player [
 	(gameState sizeOfPlayerStateForPlayer: player) = 2

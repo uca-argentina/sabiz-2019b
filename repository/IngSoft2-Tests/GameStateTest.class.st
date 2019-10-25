@@ -9,24 +9,22 @@ Class {
 
 { #category : #tests }
 GameStateTest >> testAllPlayersStartAtFirstSpot [
-	| game board |
-	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: board.
+		using: Board standard.
 	self assert: [ (game positionOfPlayer: #player1) = 1 ].
 	self assert: [ (game positionOfPlayer: #player2) = 1 ]
 ]
 
 { #category : #tests }
 GameStateTest >> testAllPlayersStartAtLapZero [
-	| game board |
-	board := Board standardWithNumberOfSpots: 10 andNumberOfLaps: 2.	
+	| game |
 	game := Game
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: board.
+		using: Board standard.
 	self assert: [ (game lapOfPlayer: #player1) = 0 ].
 	self assert: [ (game lapOfPlayer: #player2) = 0 ]
 ]
@@ -41,24 +39,11 @@ GameStateTest >> testGameIsOver [
 
 { #category : #tests }
 GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDice [
-	| game board |
-	board := Board
-		withSpotsCollection:
-			{Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new.
-			Empty new}
-		andNumberOfLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self
 		assert: [ game currentPlaces = {#player3 . #player2 . #player1} ]
