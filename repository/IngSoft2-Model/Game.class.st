@@ -63,14 +63,14 @@ Game >> dices [
 	^ dices copy
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 Game >> includesPlayer: aPlayer [
 	^ state includesPlayer: aPlayer
 ]
 
 { #category : #playing }
 Game >> isNotOver [
-	^ self players size > self leaderBoard size
+	^ self players size > self leaderBoardPositions size
 ]
 
 { #category : #accessing }
@@ -79,8 +79,8 @@ Game >> lapOfPlayer: player [
 ]
 
 { #category : #accessing }
-Game >> leaderBoard [
-	^ leaderBoard copy
+Game >> leaderBoardPositions [
+	^ leaderBoard positions
 ]
 
 { #category : #playing }
@@ -152,8 +152,5 @@ Game >> positionOfPlayer: aPlayer [
 
 { #category : #accessing }
 Game >> winner [
-	self
-		assert: [ leaderBoard isNotEmpty ]
-		description: 'No one has reached the end yet'.
-	^ leaderBoard first
+	^ leaderBoard winner
 ]
