@@ -11,10 +11,10 @@ Class {
 SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
 	| board spotsToGoBack |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			MoonWalk new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	spotsToGoBack := (board spotAt: 2) numberOfSpotsToGoBack * -1.
 	self assert: [ spotsToGoBack <= 5 and: spotsToGoBack >= 1 ]
 ]
@@ -23,7 +23,7 @@ SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
 SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTriggerIt [
 	| board game |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			Regular new.
 			Regular new.
@@ -32,7 +32,7 @@ SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTrigg
 			Regular new.
 			(MoonWalk newLoadedWith: 3).
 			SpeedUp new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
@@ -52,13 +52,13 @@ SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTrigg
 SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			MoonWalk new.
 			SpeedUp new.
 			TimeMachine new.
 			Regular new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {4})}
@@ -71,13 +71,13 @@ SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainingLaps [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			Regular new.
 			AtomicBomb new.
 			Regular new.
 			Regular new}
-		andNumberOfLaps: 4.
+		andLaps: 4.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {8 . 3 . 1})}
@@ -102,7 +102,7 @@ SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainin
 SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			MoonWalk new.
 			Regular new.
@@ -112,7 +112,7 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 			TimeMachine new.
 			Regular new.
 			TimeMachine new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {4})}
@@ -125,14 +125,14 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			WormHole new.
 			TimeMachine new.
 			Regular new.
 			SpeedUp new.
 			WormHole new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {4})}
@@ -147,14 +147,14 @@ SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForward
 SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			MoonWalk new.
 			SpeedUp new.
 			TimeMachine new.
 			Regular new.
 			WormHole new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {5})}
@@ -167,14 +167,14 @@ SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			WormHole new.
 			SpeedUp new.
 			TimeMachine new.
 			Regular new.
 			WormHole new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {6 . 1})}
@@ -191,14 +191,14 @@ SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackF
 SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{Regular new.
 			Regular new.
 			Regular new.
 			Regular new.
 			TimeMachine new.
 			Regular new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {4})}
@@ -212,14 +212,14 @@ SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZe
 SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := Board
-		withSpotCollection:
+		with:
 			{SpeedUp new.
 			AtomicBomb  new.
 			Regular new.
 			WormHole new.
 			TimeMachine new.
 			Regular new}
-		andNumberOfLaps: 2.
+		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {2 . 8})}
