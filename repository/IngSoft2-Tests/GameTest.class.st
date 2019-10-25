@@ -93,7 +93,7 @@ GameTest >> testGameHasGivenSetOfDices [
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game board |
-	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board regularWithSpots: 10 andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
@@ -106,7 +106,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game board |
-	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board regularWithSpots: 10 andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
@@ -130,7 +130,7 @@ GameTest >> testPlayerOneWonTheGame [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game board |
-	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board regularWithSpots: 10 andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -144,7 +144,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game board |
-	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board regularWithSpots: 10 andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
@@ -158,7 +158,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 { #category : #'test - playing' }
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
 	| game board |
-	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board regularWithSpots: 10 andLaps: 2.
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {9})}
@@ -170,7 +170,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 { #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice board |
-	board := Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2.
+	board := Board regularWithSpots: 10 andLaps: 2.
 	dice := SequentialDice withRollingSequence: {10}.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}

@@ -32,7 +32,7 @@ Game class >> checkPlayerQuantity: players checkDices: dices [
 Game class >> playedBy: players throwing: dices using: aBoard [
 	self checkDuplicatePlayers: players.
 	self checkPlayerQuantity: players checkDices: dices.
-	^ self new players: players dices: dices andBoard: aBoard
+	^ self new playedBy: players throwing: dices on: aBoard
 ]
 
 { #category : #'instance creation' }
@@ -53,43 +53,38 @@ Game class >> standardSetOfPlayers [
 	^ {#player1 . #player2 . #player3}
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGameState }
 Game >> currentPlaces [
 	^ state currentPlaces
 ]
 
-{ #category : #accessing }
+{ #category : #accesingGame }
 Game >> dices [
 	^ dices copy
 ]
 
-{ #category : #accessing }
+{ #category : #accesingGame }
 Game >> includesPlayer: aPlayer [
 	^ state includesPlayer: aPlayer
 ]
 
-{ #category : #playing }
+{ #category : #accessingGameState }
 Game >> isNotOver [
 	^ self players size > self leaderBoardPositions size
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGameState }
 Game >> lapOfPlayer: player [
 	^ state lapOfPlayer: player
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGameState }
 Game >> leaderBoardPositions [
 	^ leaderBoard positions
 ]
 
-{ #category : #playing }
-Game >> moveAllPlayers [
-	self players do: [ :player | self movePlayer: player ]
-]
-
 { #category : #'private - moving' }
-Game >> movePlayer: player [
+Game >> move: player [
 	| diceSum |
 	diceSum := 0.
 	dices do: [ :dice | diceSum := diceSum + dice roll ].
@@ -97,18 +92,23 @@ Game >> movePlayer: player [
 	(self playerHasNotFinished: player)
 		ifTrue: [ state
 				player: player
-				triggersEffectAtPosition: (self positionOfPlayer: player).
-			(self playerHasNotFinished: player)
-				ifFalse: [ leaderBoard add: player ] ]
+				triggersEffectAtPosition: (self positionOfPlayer: player) ].
+	((self playerHasNotFinished: player)
+		or: (self leaderBoardPositions includes: player))
 		ifFalse: [ leaderBoard add: player ]
 ]
 
-{ #category : #accessing }
+{ #category : #'private - moving' }
+Game >> moveAllPlayers [
+	self players do: [ :player | self move: player ]
+]
+
+{ #category : #accesingGame }
 Game >> numberOfLaps [
 	^ board numberOfLaps
 ]
 
-{ #category : #accessing }
+{ #category : #accesingGame }
 Game >> numberOfPlayers [
 	^ self players size
 ]
@@ -124,18 +124,8 @@ Game >> playOneRound [
 	self moveAllPlayers
 ]
 
-{ #category : #playing }
-Game >> playerHasNotFinished: player [
-	^ (state lapOfPlayer: player) < self numberOfLaps
-]
-
-{ #category : #accessing }
-Game >> players [
-	^ state players
-]
-
 { #category : #initialization }
-Game >> players: gamePlayers dices: gameDices andBoard: aBoard [
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	dices := gameDices asOrderedCollection.
 	leaderBoard := LeaderBoard new.
 	board := aBoard.
@@ -145,12 +135,22 @@ Game >> players: gamePlayers dices: gameDices andBoard: aBoard [
 		throwing: dices
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGameState }
+Game >> playerHasNotFinished: player [
+	^ (state lapOfPlayer: player) < self numberOfLaps
+]
+
+{ #category : #accesingGame }
+Game >> players [
+	^ state players
+]
+
+{ #category : #accessingGameState }
 Game >> positionOfPlayer: aPlayer [
 	^ state positionOfPlayer: aPlayer
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGameState }
 Game >> winner [
 	^ leaderBoard winner
 ]

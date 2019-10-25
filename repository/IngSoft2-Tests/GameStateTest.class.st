@@ -43,7 +43,7 @@ GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDic
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
-		using: (Board regularWithNumberOfSpots: 10 andNumberOfLaps: 2).
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self
 		assert: [ game currentPlaces = {#player3 . #player2 . #player1} ]
