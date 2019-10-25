@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #effect }
-TimeMachine >> applyEffectOn: gameState triggeredBy: player [
+TimeMachine >> applyOn: gameState triggeredBy: player [
 	(gameState sizeOfPlayerStateForPlayer: player) = 2
 		ifTrue: [ gameState
 				saveStateOfPlayer: player

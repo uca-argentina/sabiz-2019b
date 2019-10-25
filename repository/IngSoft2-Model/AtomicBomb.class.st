@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #effect }
-AtomicBomb >> applyEffectOn: gameState triggeredBy: player [
+AtomicBomb >> applyOn: gameState triggeredBy: player [
 	| players |
 	players := gameState players.
 	self moveAll: players toFirstSpotUpdating: gameState

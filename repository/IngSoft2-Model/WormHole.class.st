@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #effect }
-WormHole >> applyEffectOn: gameState triggeredBy: player [
+WormHole >> applyOn: gameState triggeredBy: player [
 	gameState player: player advances: self numberOfSpotsToGoBack
 ]
 

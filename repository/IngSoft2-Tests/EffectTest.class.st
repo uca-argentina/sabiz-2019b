@@ -2,13 +2,13 @@
 This class contains tests about spots.
 "
 Class {
-	#name : #SpotTest,
+	#name : #EffectTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'tests - moonwalk' }
-SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
+EffectTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
 	| board spotsToGoBack |
 	board := Board
 		with:
@@ -20,7 +20,7 @@ SpotTest >> testMoonWalkGeneratesAValidNumberOfSpotsToGoBackValue [
 ]
 
 { #category : #'tests - moonwalk' }
-SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTriggerIt [
+EffectTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTriggerIt [
 	| board game |
 	board := Board
 		with:
@@ -48,8 +48,8 @@ SpotTest >> testMoonWalkLoadedWithThreeReducesThreeSpotsToAllPlayerWhoDoNotTrigg
 	self assert: (game positionOfPlayer: #player3) equals: 7
 ]
 
-{ #category : #'tests - empty' }
-SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
+{ #category : #'tests - regular' }
+EffectTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 	| game board |
 	board := Board
 		with:
@@ -68,7 +68,7 @@ SpotTest >> testPlayerTriggerEmptySpotAndNothingHappens [
 ]
 
 { #category : #'tests - atomicbomb' }
-SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainingLaps [
+EffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainingLaps [
 	| game board |
 	board := Board
 		with:
@@ -99,7 +99,7 @@ SpotTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainin
 ]
 
 { #category : #'tests - speedup' }
-SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
+EffectTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 	| game board |
 	board := Board
 		with:
@@ -122,7 +122,7 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesBackFourSpots [
 ]
 
 { #category : #'tests - speedup' }
-SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
+EffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
 	board := Board
 		with:
@@ -144,7 +144,7 @@ SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForward
 ]
 
 { #category : #'tests - wormhole' }
-SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
+EffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := Board
 		with:
@@ -164,7 +164,7 @@ SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 ]
 
 { #category : #'tests - wormhole' }
-SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackFourPositions [
+EffectTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := Board
 		with:
@@ -188,7 +188,7 @@ SpotTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackF
 ]
 
 { #category : #'tests - timemachine' }
-SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
+EffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
 	| game board |
 	board := Board
 		with:
@@ -209,7 +209,7 @@ SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZe
 ]
 
 { #category : #'tests - timemachine' }
-SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
+EffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := Board
 		with:

@@ -9,18 +9,15 @@ Class {
 
 { #category : #'test - accessing' }
 GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
-	| game |
-	game := Game standard.
 	self
-		should: [ self assert: [ game positionOfPlayer: #PlayerFromAnotherGame ] ]
+		should: [ Game standard positionOfPlayer: #PlayerFromAnotherGame ]
 		raise: AssertionFailure
 ]
 
 { #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutDices [
 	self
-		should:
-			[ Game playedBy: {#player1} throwing: {} using: Board standard ]
+		should: [ Game playedBy: {#player1} throwing: {} using: Board standard ]
 		raise: AssertionFailure
 ]
 
@@ -92,12 +89,11 @@ GameTest >> testGameHasGivenSetOfDices [
 
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
-	| game board |
-	board := Board regularWithSpots: 10 andLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
 	self assert: [ (game lapOfPlayer: #player1) = -1 ]
@@ -105,12 +101,11 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
-	| game board |
-	board := Board regularWithSpots: 10 andLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
 	self assert: [ (game lapOfPlayer: #player1) = 1 ]
@@ -129,12 +124,11 @@ GameTest >> testPlayerOneWonTheGame [
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
-	| game board |
-	board := Board regularWithSpots: 10 andLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self assert: [ (game positionOfPlayer: #player1) = 7 ].
 	game playOneRound.
@@ -143,12 +137,11 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
-	| game board |
-	board := Board regularWithSpots: 10 andLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self assert: [ (game positionOfPlayer: #player1) = 7 ].
 	game playOneRound.
@@ -157,25 +150,23 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 
 { #category : #'test - playing' }
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
-	| game board |
-	board := Board regularWithSpots: 10 andLaps: 2.
+	| game |
 	game := Game
 		playedBy: {#player1}
 		throwing: {(SequentialDice withRollingSequence: {9})}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self assert: [ (game lapOfPlayer: #player1) = 0 ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
-	| game dice board |
-	board := Board regularWithSpots: 10 andLaps: 2.
+	| game dice |
 	dice := SequentialDice withRollingSequence: {10}.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {dice}
-		using: board.
+		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playAnEntireGame.
 	self
 		assert: game leaderBoardPositions

@@ -8,5 +8,5 @@ Class {
 }
 
 { #category : #effect }
-Regular >> applyEffectOn: gameState triggeredBy: player [
+Regular >> applyOn: gameState triggeredBy: player [
 ]

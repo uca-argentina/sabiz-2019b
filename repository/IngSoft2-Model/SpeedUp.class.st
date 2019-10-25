@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #effect }
-SpeedUp >> applyEffectOn: gameState triggeredBy: player [
+SpeedUp >> applyOn: gameState triggeredBy: player [
 	gameState player: player advances: self numberOfSpotsToGoForward
 ]
 

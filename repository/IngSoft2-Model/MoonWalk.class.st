@@ -20,7 +20,7 @@ MoonWalk class >> newLoadedWith: numberOfSpotsToGoBack [
 ]
 
 { #category : #effect }
-MoonWalk >> applyEffectOn: gameState triggeredBy: player [
+MoonWalk >> applyOn: gameState triggeredBy: player [
 	| playersToApplyEffect |
 	playersToApplyEffect := gameState players.
 	playersToApplyEffect remove: player.
