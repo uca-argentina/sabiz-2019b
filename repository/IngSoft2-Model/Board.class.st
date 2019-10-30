@@ -64,6 +64,12 @@ Board class >> with: spotDistribution andSpots: spotsAmount andLaps: numberOfLap
 		andLaps: numberOfLaps
 ]
 
+{ #category : #effect }
+Board >> applyEffectAt: position on: gameState triggeredBy: player [
+	self assert: (position > 0 and: position <= self numberOfSpots).
+	(spots at: position) applyEffectOn: gameState triggeredBy: player
+]
+
 { #category : #accessing }
 Board >> numberOfLaps [
 	^ numberOfLaps
@@ -72,11 +78,6 @@ Board >> numberOfLaps [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
-]
-
-{ #category : #'private - accessing' }
-Board >> spotAt: position [
-	^ spots at: position
 ]
 
 { #category : #initialization }

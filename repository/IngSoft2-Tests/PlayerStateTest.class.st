@@ -11,8 +11,9 @@ Class {
 PlayerStateTest >> testCantModifyStatesAttributes [
 	| state dummy |
 	state := PlayerState
-		onPosition: OrderedCollection new
-		onLapNumber: OrderedCollection new.
+		on: OrderedCollection new
+		and: OrderedCollection new
+		and: nil.
 	dummy := state position.
 	dummy
 		add:
@@ -28,14 +29,14 @@ PlayerStateTest >> testCantModifyStatesAttributes [
 { #category : #tests }
 PlayerStateTest >> testPlayerStateShowsGivenLapNumber [
 	| state |
-	state := PlayerState onPosition: 5 onLapNumber: 2.
+	state := PlayerState on: 5 and: 2 and: nil.
 	self assert: [ state lapNumber = 2 ]
 ]
 
 { #category : #tests }
 PlayerStateTest >> testPlayerStateShowsGivenPosition [
 	| state |
-	state := PlayerState onPosition: 5 onLapNumber: 2.
+	state := PlayerState on: 5 and: 2 and: nil.
 	self assert: [ state position = 5 ]
 ]
 
@@ -43,7 +44,7 @@ PlayerStateTest >> testPlayerStateShowsGivenPosition [
 PlayerStateTest >> testStateAttributesAreInstantiatedByValueAndNotByReference [
 	| state dummy |
 	dummy := OrderedCollection new.
-	state := PlayerState onPosition: dummy onLapNumber: dummy.
+	state := PlayerState on: dummy and: dummy and: nil.
 	dummy
 		add:
 			'this tries to change the state by modifying a reference to its attributes'.

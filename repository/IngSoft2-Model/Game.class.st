@@ -5,9 +5,7 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'dices',
 		'leaderBoard',
-		'board',
 		'state'
 	],
 	#category : #'IngSoft2-Model'
@@ -60,7 +58,7 @@ Game >> currentPlaces [
 
 { #category : #accesingGame }
 Game >> dices [
-	^ dices copy
+	^ state dices
 ]
 
 { #category : #accesingGame }
@@ -70,7 +68,7 @@ Game >> includesPlayer: aPlayer [
 
 { #category : #accessingGameState }
 Game >> isNotOver [
-	^ self players size > self leaderBoardPositions size
+	^ state players size > self leaderBoardPositions size
 ]
 
 { #category : #accessingGameState }
@@ -85,32 +83,23 @@ Game >> leaderBoardPositions [
 
 { #category : #'private - moving' }
 Game >> move: player [
-	| diceSum |
-	diceSum := 0.
-	dices do: [ :dice | diceSum := diceSum + dice roll ].
-	state player: player advances: diceSum.
-	(self playerHasNotFinished: player)
-		ifTrue: [ state
-				player: player
-				triggersEffectAtPosition: (self positionOfPlayer: player) ].
-	((self playerHasNotFinished: player)
+	state move: player.
+	((state playerHasNotFinished: player)
 		or: (self leaderBoardPositions includes: player))
 		ifFalse: [ leaderBoard add: player ]
 ]
 
 { #category : #'private - moving' }
 Game >> moveAllPlayers [
-	self players do: [ :player | self move: player ]
-]
-
-{ #category : #accesingGame }
-Game >> numberOfLaps [
-	^ board numberOfLaps
+	state players
+		do: [ :player | 
+			(state playerHasNotFinished: player)
+				ifTrue: [ self move: player ] ]
 ]
 
 { #category : #accesingGame }
 Game >> numberOfPlayers [
-	^ self players size
+	^ state players size
 ]
 
 { #category : #playing }
@@ -126,23 +115,11 @@ Game >> playOneRound [
 
 { #category : #initialization }
 Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
-	dices := gameDices asOrderedCollection.
 	leaderBoard := LeaderBoard new.
-	board := aBoard.
 	state := GameState
-		newGamePlayedBy: gamePlayers
-		onBoard: board copy
-		throwing: dices
-]
-
-{ #category : #accessingGameState }
-Game >> playerHasNotFinished: player [
-	^ (state lapOfPlayer: player) < self numberOfLaps
-]
-
-{ #category : #accesingGame }
-Game >> players [
-	^ state players
+		playedBy: gamePlayers
+		onBoard: aBoard
+		throwing: gameDices
 ]
 
 { #category : #accessingGameState }

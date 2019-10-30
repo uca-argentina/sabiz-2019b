@@ -5,84 +5,74 @@ Class {
 	#name : #GameState,
 	#superclass : #Object,
 	#instVars : [
-		'playerStates',
 		'board',
-		'dices'
+		'dices',
+		'playersStates'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-GameState class >> newGamePlayedBy: players onBoard: board throwing: dices [
-	^ self new newGamePlayedBy: players onBoard: board throwing: dices
+GameState class >> playedBy: players onBoard: board throwing: dices [
+	^ self new playedBy: players onBoard: board throwing: dices
 ]
 
-{ #category : #'private - moving' }
-GameState >> addStateFor: player withLaps: newLapNumber andPosition: netNewPosition [
-	| listOfPlayersStates |
-	listOfPlayersStates := playerStates at: player.
-	listOfPlayersStates
-		add: (PlayerState onPosition: netNewPosition onLapNumber: newLapNumber)
+{ #category : #stateLogging }
+GameState >> backUpCurrentStateFor: player [
+	| statesOfPlayer |
+	statesOfPlayer := playersStates at: player.
+	statesOfPlayer add: (playersStates at: player) last copy
 ]
 
 { #category : #accessing }
 GameState >> currentPlaces [
-	^ (playerStates associations
+	^ (playersStates associations
 		sort:
 			[ :assoc1 :assoc2 | assoc1 value last position > assoc2 value last position ])
 		collect: [ :assoc | assoc key ]
 ]
 
 { #category : #accessing }
-GameState >> includesPlayer: player [
-	^ playerStates keys includes: player
-]
-
-{ #category : #'playerStates - accessing' }
-GameState >> lapOfPlayer: player [
-	^ (playerStates at: player) last lapNumber
-]
-
-{ #category : #initialization }
-GameState >> newGamePlayedBy: gamePlayers onBoard: gameBoard throwing: gameDices [
-	| startPlayerStatesCollection |
-	startPlayerStatesCollection := OrderedCollection new.
-	startPlayerStatesCollection
-		add: (PlayerState onPosition: 1 onLapNumber: 0).
-	board := gameBoard.
-	dices := gameDices.
-	playerStates := Dictionary new.
-	gamePlayers
-		do: [ :each | playerStates at: each put: startPlayerStatesCollection copy ]
+GameState >> dices [
+	^ dices copy
 ]
 
 { #category : #accessing }
-GameState >> numberOfSpots [
-	^ board numberOfSpots
+GameState >> includesPlayer: player [
+	^ playersStates keys includes: player
+]
+
+{ #category : #accessing }
+GameState >> lapOfPlayer: player [
+	^ (self stateOf: player) lapNumber
 ]
 
 { #category : #'private - moving' }
-GameState >> player: player advances: rollResult [
-	| newLapNumber actualLap actualPosition netNewPosition grossNewPosition |
-	(self playerHasNotFinished: player)
-		ifFalse: [ ^ self ].
-	actualLap := self lapOfPlayer: player.
-	actualPosition := self positionOfPlayer: player.
-	grossNewPosition := actualPosition + rollResult.
-	newLapNumber := actualLap + (grossNewPosition // self numberOfSpots).
-	netNewPosition := grossNewPosition % self numberOfSpots.
-	netNewPosition = 0
-		ifTrue: [ netNewPosition := self numberOfSpots.
-			newLapNumber := newLapNumber - 1 ].
-	self
-		addStateFor: player
-		withLaps: newLapNumber
-		andPosition: netNewPosition
+GameState >> move: player [
+	self backUpCurrentStateFor: player.
+	self player: player moves: self rollSum.
+	board
+		applyEffectAt: (self positionOfPlayer: player)
+		on: self
+		triggeredBy: player
+]
+
+{ #category : #initialization }
+GameState >> playedBy: gamePlayers onBoard: gameBoard throwing: diceSet [
+	| startPlayerStatesCollection |
+	startPlayerStatesCollection := OrderedCollection new.
+	startPlayerStatesCollection add: (PlayerState on: 1 and: 0 and: gameBoard).
+	board := gameBoard.
+	dices := diceSet.
+	playersStates := Dictionary new.
+	gamePlayers
+		do:
+			[ :each | playersStates at: each put: startPlayerStatesCollection copy ]
 ]
 
 { #category : #'private - moving' }
-GameState >> player: player triggersEffectAtPosition: position [
-	(board spotAt: position) applyEffectOn: self triggeredBy: player
+GameState >> player: player moves: anAmount [
+	(self stateOf: player) move: anAmount
 ]
 
 { #category : #accessing }
@@ -90,33 +80,42 @@ GameState >> playerHasNotFinished: player [
 	^ (self lapOfPlayer: player) < board numberOfLaps
 ]
 
-{ #category : #'playerStates - accessing' }
+{ #category : #accessing }
 GameState >> players [
-	^ playerStates keys asOrderedCollection copy
+	^ playersStates keys asOrderedCollection copy
 ]
 
-{ #category : #'playerStates - accessing' }
+{ #category : #accessing }
 GameState >> positionOfPlayer: player [
-	^ (playerStates
+	^ (self stateOf: player) position
+]
+
+{ #category : #effect }
+GameState >> rewindPositionFor: player [
+	| playerStates |
+	playerStates := playersStates at: player.
+	playerStates size <= 2
+		ifTrue: [ playerStates add: (PlayerState on: 1 and: 0 and: board) ]
+		ifFalse: [ | previousState |
+			previousState := playerStates at: playerStates size - 2.
+			playerStates
+				add:
+					(PlayerState
+						on: previousState position
+						and: previousState lapNumber
+						and: board) ]
+]
+
+{ #category : #'private - moving' }
+GameState >> rollSum [
+	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
+]
+
+{ #category : #accessing }
+GameState >> stateOf: player [
+	^ (playersStates
 		at: player
-		ifAbsent: [ AssertionFailure
-				signal: 'Asked for the position of a player that is not in game' ])
-		last position
-]
-
-{ #category : #'playerStates - accessing' }
-GameState >> previousLapOfPlayer: aPlayer [
-	^ ((playerStates at: aPlayer) at: (playerStates at: aPlayer) size - 2)
-		lapNumber
-]
-
-{ #category : #'playerStates - accessing' }
-GameState >> previousPositionOfPlayer: aPlayer [
-	^ ((playerStates at: aPlayer) at: (playerStates at: aPlayer) size - 2)
-		position
-]
-
-{ #category : #'playerStates - accessing' }
-GameState >> sizeOfPlayerStateForPlayer: aPlayer [
-	^ (playerStates at: aPlayer) size
+		ifAbsent:
+			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
+		last
 ]

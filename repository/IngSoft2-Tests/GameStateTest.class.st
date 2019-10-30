@@ -42,7 +42,7 @@ GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDic
 	| game |
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
-		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
+		throwing: {(SequentialDice withSequence: {1 . 2 . 3})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self

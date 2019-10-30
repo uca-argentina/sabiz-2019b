@@ -5,9 +5,7 @@ Class {
 	#name : #RandomDice,
 	#superclass : #Dice,
 	#instVars : [
-		'numberOfFaces',
-		'rollResult',
-		'random'
+		'faces'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -21,13 +19,11 @@ RandomDice class >> withFaces: faces [
 ]
 
 { #category : #initialization }
-RandomDice >> initializeWith: faces [
-	numberOfFaces := faces.
-	random := Random new
+RandomDice >> initializeWith: numberOfFaces [
+	faces := 1 to: numberOfFaces
 ]
 
 { #category : #rolling }
 RandomDice >> roll [
-	rollResult := random nextInt: numberOfFaces.
-	^ rollResult
+	^ faces atRandom
 ]

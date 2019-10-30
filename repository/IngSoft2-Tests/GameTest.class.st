@@ -73,7 +73,7 @@ GameTest >> testGameHasGivenPlayer [
 GameTest >> testGameHasGivenSetOfDices [
 	| game dice1 dice2 |
 	dice1 := RandomDice withFaces: 6.
-	dice2 := SequentialDice withRollingSequence: {4}.
+	dice2 := SequentialDice withSequence: {4}.
 	game := Game
 		playedBy: {#player1}
 		throwing:
@@ -92,7 +92,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game |
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {3 . -4})}
+		throwing: {(SequentialDice withSequence: {3 . -4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
@@ -104,7 +104,7 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game |
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {7 . 4})}
+		throwing: {(SequentialDice withSequence: {7 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
@@ -116,7 +116,7 @@ GameTest >> testPlayerOneWonTheGame [
 	| game |
 	game := Game
 		playedBy: {#player1 . #player2}
-		throwing: {(SequentialDice withRollingSequence: {10})}
+		throwing: {(SequentialDice withSequence: {10})}
 		using: Board standard.
 	game playAnEntireGame.
 	self assert: [ game winner = #player1 ]
@@ -127,7 +127,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game |
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
+		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self assert: [ (game positionOfPlayer: #player1) = 7 ].
@@ -140,7 +140,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game |
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {-4 . 4})}
+		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self assert: [ (game positionOfPlayer: #player1) = 7 ].
@@ -153,7 +153,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 	| game |
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {9})}
+		throwing: {(SequentialDice withSequence: {9})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self assert: [ (game lapOfPlayer: #player1) = 0 ]
@@ -162,7 +162,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 { #category : #'test - playing' }
 GameTest >> testRiggedGameEndsAsExpected [
 	| game dice |
-	dice := SequentialDice withRollingSequence: {10}.
+	dice := SequentialDice withSequence: {10}.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
 		throwing: {dice}

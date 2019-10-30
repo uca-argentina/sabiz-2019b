@@ -23,18 +23,17 @@ MoonWalk >> applyOn: gameState triggeredBy: player [
 	| playersToApplyEffect |
 	playersToApplyEffect := gameState players.
 	playersToApplyEffect remove: player.
-	playersToApplyEffect
-		do:
-			[ :each | gameState player: each advances: self numberOfSpotsToGoBack ]
+	playersToApplyEffect do: [ :each | gameState move: each ]
 ]
 
-{ #category : #defaultValues }
+{ #category : #standardValues }
 MoonWalk >> defaultGoBackValue [
 	^ 4
 ]
 
 { #category : #initialization }
 MoonWalk >> initialize [
+	super initialize.
 	numberOfSpotsToGoBack := self defaultGoBackValue
 ]
 
@@ -43,7 +42,7 @@ MoonWalk >> initializeWith: spotsToGoBack [
 	numberOfSpotsToGoBack := spotsToGoBack
 ]
 
-{ #category : #effect }
+{ #category : #accessing }
 MoonWalk >> numberOfSpotsToGoBack [
-	^ numberOfSpotsToGoBack * -1
+	^ -1 * numberOfSpotsToGoBack
 ]

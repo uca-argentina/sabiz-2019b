@@ -9,10 +9,10 @@ Class {
 
 { #category : #effect }
 WormHole >> applyOn: gameState triggeredBy: player [
-	gameState player: player advances: self numberOfSpotsToGoBack
+	gameState move: player
 ]
 
-{ #category : #effect }
+{ #category : #standardValues }
 WormHole >> numberOfSpotsToGoBack [
 	^ -4
 ]

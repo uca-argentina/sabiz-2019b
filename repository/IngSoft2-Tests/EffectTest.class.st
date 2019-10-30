@@ -23,7 +23,7 @@ EffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
-		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
+		throwing: {(SequentialDice withSequence: {1 . 2 . 3})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 2.
@@ -49,7 +49,7 @@ EffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintain
 		andLaps: 4.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
-		throwing: {(SequentialDice withRollingSequence: {8 . 3 . 1})}
+		throwing: {(SequentialDice withSequence: {8 . 3 . 1})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 4.
@@ -84,7 +84,7 @@ EffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {4})}
+		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 9
@@ -104,7 +104,7 @@ EffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwa
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {4})}
+		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	self assert: (game lapOfPlayer: #player1) equals: 0.
 	game playOneRound.
@@ -126,7 +126,7 @@ EffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {5})}
+		throwing: {(SequentialDice withSequence: {5})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 2
@@ -146,7 +146,7 @@ EffectTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBac
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {6 . 1})}
+		throwing: {(SequentialDice withSequence: {6 . 1})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 1.
@@ -169,7 +169,7 @@ EffectTest >> testSpotWithRegularEffectDoesNothing [
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {4})}
+		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 5
@@ -189,7 +189,7 @@ EffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAnd
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {4})}
+		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
 	self assert: (game positionOfPlayer: #player1) equals: 1.
@@ -210,7 +210,7 @@ EffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
-		throwing: {(SequentialDice withRollingSequence: {2 . 8})}
+		throwing: {(SequentialDice withSequence: {2 . 8})}
 		using: board.
 	game playOneRound.
 	game playOneRound.

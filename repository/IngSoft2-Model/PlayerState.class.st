@@ -6,14 +6,15 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'position',
-		'lapNumber'
+		'lapNumber',
+		'board'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-PlayerState class >> onPosition: position onLapNumber: lapNumber [
-	^ self new onPosition: position onLapNumber: lapNumber
+PlayerState class >> on: position and: lapNumber and: board [
+	^ self new on: position and: lapNumber and: board
 ]
 
 { #category : #accesing }
@@ -21,8 +22,22 @@ PlayerState >> lapNumber [
 	^ lapNumber copy
 ]
 
+{ #category : #'private - moving' }
+PlayerState >> move: rollSum [
+	| newLapNumber netNewPosition grossNewPosition |
+	grossNewPosition := position + rollSum.
+	newLapNumber := lapNumber + (grossNewPosition // board numberOfSpots).
+	netNewPosition := grossNewPosition % board numberOfSpots.
+	netNewPosition = 0
+		ifTrue: [ netNewPosition := board numberOfSpots.
+			newLapNumber := newLapNumber - 1 ].
+	position := netNewPosition.
+	lapNumber := newLapNumber
+]
+
 { #category : #initialization }
-PlayerState >> onPosition: currentPosition onLapNumber: currentLapNumber [
+PlayerState >> on: currentPosition and: currentLapNumber and: gameBoard [
+	board := gameBoard copy.
 	position := currentPosition copy.
 	lapNumber := currentLapNumber copy
 ]
