@@ -14,8 +14,8 @@ GameStateTest >> testAllPlayersStartAtFirstSpot [
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game positionOfPlayer: #player1) = 1 ].
-	self assert: [ (game positionOfPlayer: #player2) = 1 ]
+	self assert: [ (game positionOf: #player1) = 1 ].
+	self assert: [ (game positionOf: #player2) = 1 ]
 ]
 
 { #category : #tests }
@@ -25,8 +25,8 @@ GameStateTest >> testAllPlayersStartAtLapZero [
 		playedBy: {#player1 . #player2}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game lapOfPlayer: #player1) = 0 ].
-	self assert: [ (game lapOfPlayer: #player2) = 0 ]
+	self assert: [ (game lapOf: #player1) = 0 ].
+	self assert: [ (game lapOf: #player2) = 0 ]
 ]
 
 { #category : #tests }
@@ -38,13 +38,13 @@ GameStateTest >> testGameIsOver [
 ]
 
 { #category : #tests }
-GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDice [
+GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	| game |
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
-		throwing: {(SequentialDice withRollingSequence: {1 . 2 . 3})}
+		throwing: {(SequentialDice withSequence: {3 . 4 . 11})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self
-		assert: [ game currentPlaces = {#player3 . #player2 . #player1} ]
+		assert: [ game currentRanking = {#player3 . #player2 . #player1} ]
 ]

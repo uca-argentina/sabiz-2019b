@@ -8,27 +8,22 @@ Class {
 }
 
 { #category : #extracted }
-BoardTest >> allEffectTypes [
-	^ (Spot allSubclasses collect: [ :each | each new ]) asArray
+BoardTest >> allSpotTypes [
+	^ (Effect allSubclasses collect: [ :each | Spot with: each new ])
+		asArray
 ]
 
 { #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfLaps [
 	| board |
-	board := Board
-		with: OverallSpotDistribution standard
-		andSpots: 10
-		andLaps: 2.
+	board := Board standardWithSpots: 10 andLaps: 2.
 	self assert: [ board numberOfLaps = 2 ]
 ]
 
 { #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfSpots [
 	| board |
-	board := Board
-		with: OverallSpotDistribution standard
-		andSpots: 20
-		andLaps: 2.
+	board := Board standardWithSpots: 20 andLaps: 2.
 	self assert: [ board numberOfSpots = 20 ]
 ]
 
@@ -41,39 +36,27 @@ BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 
 { #category : #tests }
 BoardTest >> testCustomBoardHasParticularEffectAtGivenPosition [
-	| board effects |
-	effects := self allEffectTypes.
-	board := Board with: effects andLaps: 5.
-	effects
-		withIndexDo: [ :effect :index | self assert: (board spotAt: index) equals: effect ]
+	| board spots |
+	spots := self allSpotTypes.
+	board := Board with: spots andLaps: 5.
+	spots
+		withIndexDo: [ :spot :index | self assert: (board spotAt: index) equals: spot ]
 ]
 
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
-		should: [ Board
-				with: OverallSpotDistribution standard
-				andSpots: 10
-				andLaps: 0 ]
+		should: [ Board standardWithSpots: 10 andLaps: 0 ]
 			raise: AssertionFailure;
-		should: [ Board
-				with: OverallSpotDistribution standard
-				andSpots: 10
-				andLaps: -1 ]
+		should: [ Board standardWithSpots: 10 andLaps: -1 ]
 			raise: AssertionFailure
 ]
 
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ Board
-				with: OverallSpotDistribution standard
-				andSpots: 0
-				andLaps: 2 ]
+		should: [ Board standardWithSpots: 0 andLaps: 2 ]
 			raise: AssertionFailure;
-		should: [ Board
-				with: OverallSpotDistribution standard
-				andSpots: -1
-				andLaps: 2 ]
+		should: [ Board standardWithSpots: -1 andLaps: 2 ]
 			raise: AssertionFailure
 ]

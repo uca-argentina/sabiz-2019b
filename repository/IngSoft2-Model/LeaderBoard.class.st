@@ -22,20 +22,25 @@ LeaderBoard >> at: position [
 	^ (elements at: position) copy
 ]
 
+{ #category : #accessing }
+LeaderBoard >> finishRanking [
+	^ elements asArray
+]
+
+{ #category : #accessing }
+LeaderBoard >> includesAll: players [
+	^ elements includesAll: players
+]
+
 { #category : #initialization }
 LeaderBoard >> initialize [
 	super initialize.
 	elements := OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 LeaderBoard >> isNotEmpty [
 	^ elements isNotEmpty
-]
-
-{ #category : #accessing }
-LeaderBoard >> positions [
-	^ elements asArray
 ]
 
 { #category : #accessing }

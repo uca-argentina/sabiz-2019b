@@ -6,14 +6,23 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'position',
-		'lapNumber'
+		'lapNumber',
+		'board'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-PlayerState class >> onPosition: position onLapNumber: lapNumber [
-	^ self new onPosition: position onLapNumber: lapNumber
+PlayerState class >> on: position and: lapNumber [
+	self assert: position > 0.
+	^ self new on: position and: lapNumber
+]
+
+{ #category : #comparing }
+PlayerState >> > aState [
+	self lapNumber == aState lapNumber
+		ifTrue: [ ^ self position > aState position ]
+		ifFalse: [ ^ self lapNumber > aState lapNumber ]
 ]
 
 { #category : #accesing }
@@ -22,7 +31,7 @@ PlayerState >> lapNumber [
 ]
 
 { #category : #initialization }
-PlayerState >> onPosition: currentPosition onLapNumber: currentLapNumber [
+PlayerState >> on: currentPosition and: currentLapNumber [
 	position := currentPosition copy.
 	lapNumber := currentLapNumber copy
 ]
