@@ -66,7 +66,7 @@ GameTest >> testGameHasGivenPlayer [
 		playedBy: {#player1}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ game includesPlayer: #player1 ]
+	self assert: [ game isPlayedBy: #player1 ]
 ]
 
 { #category : #'test - accessing' }
@@ -169,6 +169,6 @@ GameTest >> testRiggedGameEndsAsExpected [
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playAnEntireGame.
 	self
-		assert: game leaderBoardPositions
+		assert: game finishRanking
 		equals: {#player1 . #player2 . #player3}
 ]

@@ -6,7 +6,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'leaderBoard',
-		'state'
+		'state',
+		'dices',
+		'board'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -52,23 +54,28 @@ Game class >> standardSetOfPlayers [
 ]
 
 { #category : #accessingGameState }
-Game >> currentPlaces [
-	^ state currentPlaces
+Game >> currentRanking [
+	^ state currentRanking
 ]
 
 { #category : #accesingGame }
 Game >> dices [
-	^ state dices
+	^ dices copy
 ]
 
-{ #category : #accesingGame }
-Game >> includesPlayer: aPlayer [
-	^ state includesPlayer: aPlayer
+{ #category : #accessingGameState }
+Game >> finishRanking [
+	^ leaderBoard finishRanking
 ]
 
 { #category : #accessingGameState }
 Game >> isNotOver [
-	^ state players size > self leaderBoardPositions size
+	^ (leaderBoard includesAll: state players) not
+]
+
+{ #category : #accesingGame }
+Game >> isPlayedBy: aPlayer [
+	^ state isPlayedBy: aPlayer
 ]
 
 { #category : #accessingGameState }
@@ -76,21 +83,21 @@ Game >> lapOfPlayer: player [
 	^ state lapOfPlayer: player
 ]
 
-{ #category : #accessingGameState }
-Game >> leaderBoardPositions [
-	^ leaderBoard positions
-]
-
 { #category : #'private - moving' }
 Game >> move: player [
-	state move: player.
-	((state playerHasNotFinished: player)
-		or: (self leaderBoardPositions includes: player))
+	| newState |
+	newState := board
+		newStateOf: player
+		In: (state of: player)
+		afterMoving: self rollSum.
+	board applyEffectOn: self triggeredBy: player in: newState.
+	((self playerHasNotFinished: player)
+		or: (self finishRanking includes: player))
 		ifFalse: [ leaderBoard add: player ]
 ]
 
 { #category : #'private - moving' }
-Game >> moveAllPlayers [
+Game >> moveAllPlayersWhoHaventFinished [
 	state players
 		do: [ :player | 
 			(state playerHasNotFinished: player)
@@ -110,21 +117,30 @@ Game >> playAnEntireGame [
 { #category : #playing }
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
-	self moveAllPlayers
+	self moveAllPlayersWhoHaventFinished
 ]
 
 { #category : #initialization }
 Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	leaderBoard := LeaderBoard new.
-	state := GameState
-		playedBy: gamePlayers
-		onBoard: aBoard
-		throwing: gameDices
+	board := aBoard.
+	dices := gameDices.
+	state := GameState playedBy: gamePlayers
+]
+
+{ #category : #accessingGameState }
+Game >> playerHasNotFinished: player [
+	^ (self lapOfPlayer: player) < board numberOfLaps
 ]
 
 { #category : #accessingGameState }
 Game >> positionOfPlayer: aPlayer [
 	^ state positionOfPlayer: aPlayer
+]
+
+{ #category : #'private - moving' }
+Game >> rollSum [
+	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
 ]
 
 { #category : #accessingGameState }

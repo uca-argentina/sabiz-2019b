@@ -2,7 +2,7 @@
 Everybody else goes back N spots
 "
 Class {
-	#name : #MoonWalk,
+	#name : #MoonWalkEffect,
 	#superclass : #Effect,
 	#instVars : [
 		'numberOfSpotsToGoBack'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MoonWalk class >> goingBack: numberOfSpotsToGoBack [
+MoonWalkEffect class >> goingBack: numberOfSpotsToGoBack [
 	self
 		assert: [ numberOfSpotsToGoBack > 0 ]
 		description: 'Number Of Spots to Go back must be greater than zero'.
@@ -19,7 +19,7 @@ MoonWalk class >> goingBack: numberOfSpotsToGoBack [
 ]
 
 { #category : #effect }
-MoonWalk >> applyOn: gameState triggeredBy: player [
+MoonWalkEffect >> applyOn: gameState triggeredBy: player [
 	| playersToApplyEffect |
 	playersToApplyEffect := gameState players.
 	playersToApplyEffect remove: player.
@@ -27,22 +27,22 @@ MoonWalk >> applyOn: gameState triggeredBy: player [
 ]
 
 { #category : #standardValues }
-MoonWalk >> defaultGoBackValue [
+MoonWalkEffect >> defaultGoBackValue [
 	^ 4
 ]
 
 { #category : #initialization }
-MoonWalk >> initialize [
+MoonWalkEffect >> initialize [
 	super initialize.
 	numberOfSpotsToGoBack := self defaultGoBackValue
 ]
 
 { #category : #initialization }
-MoonWalk >> initializeWith: spotsToGoBack [
+MoonWalkEffect >> initializeWith: spotsToGoBack [
 	numberOfSpotsToGoBack := spotsToGoBack
 ]
 
 { #category : #accessing }
-MoonWalk >> numberOfSpotsToGoBack [
+MoonWalkEffect >> numberOfSpotsToGoBack [
 	^ -1 * numberOfSpotsToGoBack
 ]

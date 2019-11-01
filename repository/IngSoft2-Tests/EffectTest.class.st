@@ -12,14 +12,14 @@ EffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 	| board game |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: (MoonWalk goingBack: 3)).
-			(Spot with: SpeedUp new)}
+			{(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: (MoonWalkEffect goingBack: 3)).
+			(Spot with: SpeedUpEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
@@ -41,11 +41,11 @@ EffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintain
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: AtomicBomb new).
-			(Spot with: Regular new).
-			(Spot with: Regular new)}
+			{(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: AtomicBombEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new)}
 		andLaps: 4.
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
@@ -72,15 +72,15 @@ EffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: MoonWalk new).
-			(Spot with: Regular new).
-			(Spot with: TimeMachine new).
-			(Spot with: SpeedUp new).
-			(Spot with: WormHole new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new).
-			(Spot with: TimeMachine new)}
+			{(Spot with: NullEffect new).
+			(Spot with: MoonWalkEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: SpeedUpEffect new).
+			(Spot with: WormHoleEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: TimeMachineEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
@@ -95,12 +95,12 @@ EffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwa
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: WormHole new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new).
-			(Spot with: SpeedUp new).
-			(Spot with: WormHole new)}
+			{(Spot with: NullEffect new).
+			(Spot with: WormHoleEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: SpeedUpEffect new).
+			(Spot with: WormHoleEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
@@ -117,12 +117,12 @@ EffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: MoonWalk new).
-			(Spot with: SpeedUp new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new).
-			(Spot with: WormHole new)}
+			{(Spot with: NullEffect new).
+			(Spot with: MoonWalkEffect new).
+			(Spot with: SpeedUpEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: WormHoleEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
@@ -133,16 +133,16 @@ EffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 ]
 
 { #category : #'tests - wormhole' }
-EffectTest >> testPlayerTriggersWormHoleAtPositionThreeAndLosesALapAfterGoingBackFourPositions [
+EffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: WormHole new).
-			(Spot with: SpeedUp new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new).
-			(Spot with: WormHole new)}
+			{(Spot with: NullEffect new).
+			(Spot with: WormHoleEffect new).
+			(Spot with: SpeedUpEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: WormHoleEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
@@ -161,11 +161,11 @@ EffectTest >> testSpotWithRegularEffectDoesNothing [
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: MoonWalk new).
-			(Spot with: SpeedUp new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new)}
+			{(Spot with: NullEffect new).
+			(Spot with: MoonWalkEffect new).
+			(Spot with: SpeedUpEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
@@ -180,12 +180,12 @@ EffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAnd
 	| game board |
 	board := Board
 		with:
-			{(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: Regular new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new)}
+			{(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}
@@ -201,12 +201,12 @@ EffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := Board
 		with:
-			{(Spot with: SpeedUp new).
-			(Spot with: AtomicBomb new).
-			(Spot with: Regular new).
-			(Spot with: WormHole new).
-			(Spot with: TimeMachine new).
-			(Spot with: Regular new)}
+			{(Spot with: SpeedUpEffect new).
+			(Spot with: AtomicBombEffect new).
+			(Spot with: NullEffect new).
+			(Spot with: WormHoleEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: NullEffect new)}
 		andLaps: 2.
 	game := Game
 		playedBy: {#player1}

@@ -38,7 +38,7 @@ GameStateTest >> testGameIsOver [
 ]
 
 { #category : #tests }
-GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDice [
+GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	| game |
 	game := Game
 		playedBy: {#player1 . #player2 . #player3}
@@ -46,5 +46,5 @@ GameStateTest >> testOngoingGameShowsExpectedPlayerPlacesWhenUsingSequientialDic
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self
-		assert: [ game currentPlaces = {#player3 . #player2 . #player1} ]
+		assert: [ game currentRanking = {#player3 . #player2 . #player1} ]
 ]

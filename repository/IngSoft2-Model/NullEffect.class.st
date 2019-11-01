@@ -2,11 +2,11 @@
 A regular spot with no effect
 "
 Class {
-	#name : #Regular,
+	#name : #NullEffect,
 	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #effect }
-Regular >> applyOn: gameState triggeredBy: player [
+NullEffect >> applyOn: gameState triggeredBy: player [
 ]

@@ -22,6 +22,11 @@ LeaderBoard >> at: position [
 	^ (elements at: position) copy
 ]
 
+{ #category : #accessing }
+LeaderBoard >> finishRanking [
+	^ elements asArray
+]
+
 { #category : #initialization }
 LeaderBoard >> initialize [
 	super initialize.
@@ -31,11 +36,6 @@ LeaderBoard >> initialize [
 { #category : #testing }
 LeaderBoard >> isNotEmpty [
 	^ elements isNotEmpty
-]
-
-{ #category : #accessing }
-LeaderBoard >> positions [
-	^ elements asArray
 ]
 
 { #category : #accessing }

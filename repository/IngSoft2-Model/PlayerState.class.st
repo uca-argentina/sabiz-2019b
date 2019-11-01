@@ -13,8 +13,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-PlayerState class >> on: position and: lapNumber and: board [
-	^ self new on: position and: lapNumber and: board
+PlayerState class >> on: position and: lapNumber [
+	self assert: position > 0.
+	^ self new on: position and: lapNumber
 ]
 
 { #category : #accesing }
@@ -22,22 +23,8 @@ PlayerState >> lapNumber [
 	^ lapNumber copy
 ]
 
-{ #category : #'private - moving' }
-PlayerState >> move: rollSum [
-	| newLapNumber netNewPosition grossNewPosition |
-	grossNewPosition := position + rollSum.
-	newLapNumber := lapNumber + (grossNewPosition // board numberOfSpots).
-	netNewPosition := grossNewPosition % board numberOfSpots.
-	netNewPosition = 0
-		ifTrue: [ netNewPosition := board numberOfSpots.
-			newLapNumber := newLapNumber - 1 ].
-	position := netNewPosition.
-	lapNumber := newLapNumber
-]
-
 { #category : #initialization }
-PlayerState >> on: currentPosition and: currentLapNumber and: gameBoard [
-	board := gameBoard copy.
+PlayerState >> on: currentPosition and: currentLapNumber [
 	position := currentPosition copy.
 	lapNumber := currentLapNumber copy
 ]
