@@ -10,7 +10,7 @@ Class {
 { #category : #tests }
 DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 	self
-		should: [ SequentialDice withRollingSequence: {} ]
+		should: [ SequentialDice withSequence: {} ]
 		raise: AssertionFailure
 ]
 
@@ -32,7 +32,7 @@ DiceTest >> testRandomDiceRollsValidNumber [
 DiceTest >> testSequentialDiceRollsExpectedSequence [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
-	dice := SequentialDice withRollingSequence: {1 . 2 . 3 . 4}.
+	dice := SequentialDice withSequence: {1 . 2 . 3 . 4}.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
