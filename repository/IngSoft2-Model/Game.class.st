@@ -86,8 +86,8 @@ Game >> lapOf: player [
 { #category : #'private - moving' }
 Game >> move: player [
 	| newState |
-	(self playerHasNotFinished: player)
-		ifFalse: [ ^ self ].
+	(self playerHasFinished: player)
+		ifTrue: [ ^ self ].
 	newState := self
 		nextStateFor: (state stateOf: player)
 		afterMoving: self rollSum.
@@ -98,11 +98,8 @@ Game >> move: player [
 ]
 
 { #category : #'private - moving' }
-Game >> moveAllPlayersWhoHaventFinished [
-	state players
-		do: [ :player | 
-			(self playerHasNotFinished: player)
-				ifTrue: [ self move: player ] ]
+Game >> moveAllPlayers [
+	state players do: [ :player | self move: player ]
 ]
 
 { #category : #effect }
@@ -130,7 +127,7 @@ Game >> playAnEntireGame [
 { #category : #playing }
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
-	self moveAllPlayersWhoHaventFinished
+	self moveAllPlayers
 ]
 
 { #category : #initialization }

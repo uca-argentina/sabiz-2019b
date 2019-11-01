@@ -20,11 +20,6 @@ Spot >> applyEffectOn: game triggeredBy: player in: state [
 	effect applyOn: game triggeredBy: player in: state
 ]
 
-{ #category : #accessing }
-Spot >> effect [
-	^ effect
-]
-
 { #category : #'instance creation' }
 Spot >> with: anEffect [
 	effect := anEffect
