@@ -89,7 +89,7 @@ Game >> move: player [
 	(self playerHasFinished: player)
 		ifTrue: [ ^ self ].
 	newState := self
-		nextStateFor: (state of: player)
+		nextStateFor: (state stateOf: player)
 		afterMoving: (self totalDisplacementFor: player).
 	board applyEffectOn: self triggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
@@ -111,7 +111,7 @@ Game >> moveEveryoneToTheFirstSpot [
 					(PlayerState
 						on: 1
 						and: (self lapOf: each)
-						under: (state of: each) effects)
+						under: (state stateOf: each) effects)
 				for: each ]
 ]
 
@@ -151,7 +151,7 @@ Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 			| newState |
 			each == player
 				ifFalse: [ newState := board
-						nextStateFor: (state of: each)
+						nextStateFor: (state stateOf: each)
 						afterMoving: anAmount.
 					state add: newState for: each ] ]
 ]
@@ -177,7 +177,7 @@ Game >> rewindPositionFor: player [
 	playerStates := state historyOf: player.
 	playerStates size <= 1
 		ifTrue: [ playerStates
-				add: (PlayerState on: 1 and: 0 under: (state of: player) effects) ]
+				add: (PlayerState on: 1 and: 0 under: (state stateOf: player) effects) ]
 		ifFalse: [ | previousState |
 			previousState := playerStates at: playerStates size - 1.
 			playerStates
@@ -185,7 +185,7 @@ Game >> rewindPositionFor: player [
 					(PlayerState
 						on: previousState position
 						and: previousState lapNumber
-						under: (state of: player) effects) ]
+						under: (state stateOf: player) effects) ]
 ]
 
 { #category : #'private - moving' }
@@ -202,9 +202,12 @@ Game >> set: aState for: player [
 Game >> totalDisplacementFor: player [
 	| total |
 	total := state globalPlayerEffects
-		inject: 0
+		inject: self rollSum
 		into: [ :sum :each | sum + each value ].
-	total := state of: player
+	total := (state stateOf: player) effects
+		inject: total
+		into: [ :sum :each | sum + each value ].
+	^ total
 ]
 
 { #category : #accessingGameState }

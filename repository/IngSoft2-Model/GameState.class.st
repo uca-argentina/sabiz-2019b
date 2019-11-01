@@ -55,16 +55,7 @@ GameState >> isPlayedBy: player [
 
 { #category : #accesingPlayersState }
 GameState >> lapOf: player [
-	^ (self of: player) lapNumber
-]
-
-{ #category : #accesingPlayersState }
-GameState >> of: player [
-	^ (playersStates
-		at: player
-		ifAbsent:
-			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
-		last
+	^ (self stateOf: player) lapNumber
 ]
 
 { #category : #initialization }
@@ -86,5 +77,14 @@ GameState >> players [
 
 { #category : #accesingPlayersState }
 GameState >> positionOf: player [
-	^ (self of: player) position
+	^ (self stateOf: player) position
+]
+
+{ #category : #accesingPlayersState }
+GameState >> stateOf: player [
+	^ (playersStates
+		at: player
+		ifAbsent:
+			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
+		last
 ]
