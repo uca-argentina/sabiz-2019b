@@ -3,7 +3,7 @@ A regular spot with no effect
 "
 Class {
 	#name : #NullEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#category : #'IngSoft2-Model'
 }
 

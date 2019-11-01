@@ -3,7 +3,7 @@ Everybody else goes back N spots
 "
 Class {
 	#name : #MoonWalkEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#instVars : [
 		'numberOfSpotsToGoBack'
 	],

@@ -3,7 +3,7 @@ Go back to the starting position of your last turn, if the game just started, ju
 "
 Class {
 	#name : #TimeMachineEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#category : #'IngSoft2-Model'
 }
 
