@@ -6,3 +6,8 @@ Class {
 	#superclass : #PlayerEffect,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #evaluating }
+AccelerationEffect >> value [
+	^ 1
+]

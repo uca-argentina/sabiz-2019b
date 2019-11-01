@@ -5,7 +5,8 @@ Class {
 	#name : #GameState,
 	#superclass : #Object,
 	#instVars : [
-		'playersStates'
+		'playersStates',
+		'globalPlayerEffects'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,6 +14,11 @@ Class {
 { #category : #'instance creation' }
 GameState class >> playedBy: players [
 	^ self new playedBy: players
+]
+
+{ #category : #adding }
+GameState >> add: playerEffect [
+	globalPlayerEffects add: playerEffect
 ]
 
 { #category : #adding }
@@ -31,13 +37,34 @@ GameState >> currentRanking [
 ]
 
 { #category : #accessing }
+GameState >> globalPlayerEffects [
+	^ globalPlayerEffects copy
+]
+
+{ #category : #accesingPlayersState }
+GameState >> historyOf: player [
+	^ playersStates
+		at: player
+		ifAbsent: [ AssertionFailure signal: 'Asked for a player that is not in game' ]
+]
+
+{ #category : #accessing }
 GameState >> isPlayedBy: player [
 	^ playersStates includesKey: player
 ]
 
 { #category : #accesingPlayersState }
 GameState >> lapOf: player [
-	^ (self stateOf: player) lapNumber
+	^ (self of: player) lapNumber
+]
+
+{ #category : #accesingPlayersState }
+GameState >> of: player [
+	^ (playersStates
+		at: player
+		ifAbsent:
+			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
+		last
 ]
 
 { #category : #initialization }
@@ -48,7 +75,8 @@ GameState >> playedBy: gamePlayers [
 	playersStates := Dictionary new.
 	gamePlayers
 		do:
-			[ :each | playersStates at: each put: startPlayerStatesCollection copy ]
+			[ :each | playersStates at: each put: startPlayerStatesCollection copy ].
+	globalPlayerEffects := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -58,21 +86,5 @@ GameState >> players [
 
 { #category : #accesingPlayersState }
 GameState >> positionOf: player [
-	^ (self stateOf: player) position
-]
-
-{ #category : #accesingPlayersState }
-GameState >> stateOf: player [
-	^ (playersStates
-		at: player
-		ifAbsent:
-			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
-		last
-]
-
-{ #category : #accesingPlayersState }
-GameState >> statesOf: player [
-	^ playersStates
-		at: player
-		ifAbsent: [ AssertionFailure signal: 'Asked for a player that is not in game' ]
+	^ (self of: player) position
 ]

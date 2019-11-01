@@ -7,15 +7,23 @@ Class {
 	#instVars : [
 		'position',
 		'lapNumber',
-		'board'
+		'board',
+		'effects'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 PlayerState class >> on: position and: lapNumber [
-	self assert: position > 0.
-	^ self new on: position and: lapNumber
+	^ self on: position and: lapNumber under: OrderedCollection new
+]
+
+{ #category : #'instance creation' }
+PlayerState class >> on: position and: lapNumber under: playerEffects [
+	self
+		assert: position > 0
+		description: 'A player cant be on a position lower than 1'.
+	^ self new on: position and: lapNumber under: playerEffects
 ]
 
 { #category : #comparing }
@@ -25,18 +33,24 @@ PlayerState >> > aState [
 		ifFalse: [ ^ self lapNumber > aState lapNumber ]
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
+PlayerState >> effects [
+	^ effects copy
+]
+
+{ #category : #accessing }
 PlayerState >> lapNumber [
 	^ lapNumber copy
 ]
 
 { #category : #initialization }
-PlayerState >> on: currentPosition and: currentLapNumber [
+PlayerState >> on: currentPosition and: currentLapNumber under: playerEffects [
 	position := currentPosition copy.
-	lapNumber := currentLapNumber copy
+	lapNumber := currentLapNumber copy.
+	effects := playerEffects
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 PlayerState >> position [
 	^ position copy
 ]

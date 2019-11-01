@@ -58,7 +58,7 @@ Game >> currentRanking [
 	^ state currentRanking
 ]
 
-{ #category : #accesingGame }
+{ #category : #accessingGame }
 Game >> dices [
 	^ dices copy
 ]
@@ -73,7 +73,7 @@ Game >> isNotOver [
 	^ (leaderBoard includesAll: state players) not
 ]
 
-{ #category : #accesingGame }
+{ #category : #accessingGame }
 Game >> isPlayedBy: aPlayer [
 	^ state isPlayedBy: aPlayer
 ]
@@ -89,8 +89,8 @@ Game >> move: player [
 	(self playerHasFinished: player)
 		ifTrue: [ ^ self ].
 	newState := self
-		nextStateFor: (state stateOf: player)
-		afterMoving: self rollSum.
+		nextStateFor: (state of: player)
+		afterMoving: (self totalDisplacementFor: player).
 	board applyEffectOn: self triggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
 		or: (self finishRanking includes: player))
@@ -105,8 +105,14 @@ Game >> moveAllPlayers [
 { #category : #effect }
 Game >> moveEveryoneToTheFirstSpot [
 	state players
-		do:
-			[ :each | state add: (PlayerState on: 1 and: (self lapOf: each)) for: each ]
+		do: [ :each | 
+			state
+				add:
+					(PlayerState
+						on: 1
+						and: (self lapOf: each)
+						under: (state of: each) effects)
+				for: each ]
 ]
 
 { #category : #'private - moving' }
@@ -114,7 +120,7 @@ Game >> nextStateFor: aState afterMoving: rollSum [
 	^ board nextStateFor: aState afterMoving: rollSum
 ]
 
-{ #category : #accesingGame }
+{ #category : #accessingGame }
 Game >> numberOfPlayers [
 	^ state players size
 ]
@@ -145,7 +151,7 @@ Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 			| newState |
 			each == player
 				ifFalse: [ newState := board
-						nextStateFor: (state stateOf: each)
+						nextStateFor: (state of: each)
 						afterMoving: anAmount.
 					state add: newState for: each ] ]
 ]
@@ -168,14 +174,18 @@ Game >> positionOf: aPlayer [
 { #category : #effect }
 Game >> rewindPositionFor: player [
 	| playerStates |
-	playerStates := state statesOf: player.
+	playerStates := state historyOf: player.
 	playerStates size <= 1
-		ifTrue: [ playerStates add: (PlayerState on: 1 and: 0) ]
+		ifTrue: [ playerStates
+				add: (PlayerState on: 1 and: 0 under: (state of: player) effects) ]
 		ifFalse: [ | previousState |
 			previousState := playerStates at: playerStates size - 1.
 			playerStates
 				add:
-					(PlayerState on: previousState position and: previousState lapNumber) ]
+					(PlayerState
+						on: previousState position
+						and: previousState lapNumber
+						under: (state of: player) effects) ]
 ]
 
 { #category : #'private - moving' }
@@ -186,6 +196,15 @@ Game >> rollSum [
 { #category : #'private - moving' }
 Game >> set: aState for: player [
 	state add: aState for: player
+]
+
+{ #category : #'private - moving' }
+Game >> totalDisplacementFor: player [
+	| total |
+	total := state globalPlayerEffects
+		inject: 0
+		into: [ :sum :each | sum + each value ].
+	total := state of: player
 ]
 
 { #category : #accessingGameState }
