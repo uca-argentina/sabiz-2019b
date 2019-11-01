@@ -15,15 +15,19 @@ GameState class >> playedBy: players [
 	^ self new playedBy: players
 ]
 
+{ #category : #adding }
+GameState >> add: state for: player [
+	| playerStates |
+	playerStates := playersStates at: player.
+	playerStates add: state
+]
+
 { #category : #accessing }
 GameState >> currentRanking [
-self assert: false description: 'Tener en cuenta laps!!!'.
-
 	^ (playersStates associations
 		sort:
-			[ :assoc1 :assoc2 | assoc1 value last position > assoc2 value last position ])
+			[ :assoc1 :assoc2 | assoc1 value last > assoc2 value last ])
 		collect: [ :assoc | assoc key ]
-		
 ]
 
 { #category : #accessing }
@@ -32,17 +36,8 @@ GameState >> isPlayedBy: player [
 ]
 
 { #category : #accesingPlayersState }
-GameState >> lapOfPlayer: player [
-	^ (self of: player) lapNumber
-]
-
-{ #category : #accesingPlayersState }
-GameState >> of: player [
-	^ (playersStates
-		at: player
-		ifAbsent:
-			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
-		last
+GameState >> lapOf: player [
+	^ (self stateOf: player) lapNumber
 ]
 
 { #category : #initialization }
@@ -62,6 +57,22 @@ GameState >> players [
 ]
 
 { #category : #accesingPlayersState }
-GameState >> positionOfPlayer: player [
-	^ (self of: player) position
+GameState >> positionOf: player [
+	^ (self stateOf: player) position
+]
+
+{ #category : #accesingPlayersState }
+GameState >> stateOf: player [
+	^ (playersStates
+		at: player
+		ifAbsent:
+			[ AssertionFailure signal: 'Asked for a player that is not in game' ])
+		last
+]
+
+{ #category : #accesingPlayersState }
+GameState >> statesOf: player [
+	^ playersStates
+		at: player
+		ifAbsent: [ AssertionFailure signal: 'Asked for a player that is not in game' ]
 ]

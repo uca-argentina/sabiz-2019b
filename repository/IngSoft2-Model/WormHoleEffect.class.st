@@ -8,8 +8,12 @@ Class {
 }
 
 { #category : #effect }
-WormHoleEffect >> applyOn: gameState triggeredBy: player [
-	gameState player: player moves: self numberOfSpotsToGoBack
+WormHoleEffect >> applyOn: game triggeredBy: player in: state [
+	| newState |
+	newState := game
+		nextStateFor: state
+		afterMoving: self numberOfSpotsToGoBack.
+	game set: newState for: player
 ]
 
 { #category : #standardValues }

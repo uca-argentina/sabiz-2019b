@@ -8,5 +8,6 @@ Class {
 }
 
 { #category : #effect }
-NullEffect >> applyOn: gameState triggeredBy: player [
+NullEffect >> applyOn: game triggeredBy: player in: state [
+	game set: state for: player
 ]

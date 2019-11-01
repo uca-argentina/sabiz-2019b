@@ -19,11 +19,11 @@ MoonWalkEffect class >> goingBack: numberOfSpotsToGoBack [
 ]
 
 { #category : #effect }
-MoonWalkEffect >> applyOn: gameState triggeredBy: player [
-	| playersToApplyEffect |
-	playersToApplyEffect := gameState players.
-	playersToApplyEffect remove: player.
-	playersToApplyEffect do: [ :each | gameState move: each ]
+MoonWalkEffect >> applyOn: game triggeredBy: player in: state [
+	game set: state for: player.
+	game
+		player: player
+		triggersMoonWalkEffectMoving: self numberOfSpotsToGoBack
 ]
 
 { #category : #standardValues }

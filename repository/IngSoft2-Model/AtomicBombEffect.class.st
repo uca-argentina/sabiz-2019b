@@ -8,6 +8,6 @@ Class {
 }
 
 { #category : #effect }
-AtomicBombEffect >> applyOn: gameState triggeredBy: player [
-	gameState moveEveryoneToTheFirstSpot
+AtomicBombEffect >> applyOn: game triggeredBy: player in: state [
+	game moveEveryoneToTheFirstSpot
 ]

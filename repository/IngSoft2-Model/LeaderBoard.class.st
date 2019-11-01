@@ -27,13 +27,18 @@ LeaderBoard >> finishRanking [
 	^ elements asArray
 ]
 
+{ #category : #accessing }
+LeaderBoard >> includesAll: players [
+	^ elements includesAll: players
+]
+
 { #category : #initialization }
 LeaderBoard >> initialize [
 	super initialize.
 	elements := OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 LeaderBoard >> isNotEmpty [
 	^ elements isNotEmpty
 ]

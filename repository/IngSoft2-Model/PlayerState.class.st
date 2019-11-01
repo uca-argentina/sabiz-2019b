@@ -18,6 +18,13 @@ PlayerState class >> on: position and: lapNumber [
 	^ self new on: position and: lapNumber
 ]
 
+{ #category : #comparing }
+PlayerState >> > aState [
+	self lapNumber == aState lapNumber
+		ifTrue: [ ^ self position > aState position ]
+		ifFalse: [ ^ self lapNumber > aState lapNumber ]
+]
+
 { #category : #accesing }
 PlayerState >> lapNumber [
 	^ lapNumber copy

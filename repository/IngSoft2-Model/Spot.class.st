@@ -16,8 +16,8 @@ Spot class >> with: anEffect [
 ]
 
 { #category : #effect }
-Spot >> applyEffectOn: gameState triggeredBy: player [
-	^ effect applyOn: gameState triggeredBy: player
+Spot >> applyEffectOn: game triggeredBy: player in: state [
+	effect applyOn: game triggeredBy: player in: state
 ]
 
 { #category : #accessing }

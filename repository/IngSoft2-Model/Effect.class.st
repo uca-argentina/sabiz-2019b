@@ -8,6 +8,6 @@ Class {
 }
 
 { #category : #effect }
-Effect >> applyOn: gameState triggeredBy: player [
+Effect >> applyOn: game triggeredBy: player in: state [
 	self subclassResponsibility
 ]

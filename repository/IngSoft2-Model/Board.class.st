@@ -96,11 +96,14 @@ Board class >> with: elementDistribution andSpots: spotsAmount andLaps: numberOf
 
 { #category : #effect }
 Board >> applyEffectOn: game triggeredBy: player in: state [
-	(self spotAt: state position) applyEffectOn: game triggeredBy: player
+	(self spotAt: state position)
+		applyEffectOn: game
+		triggeredBy: player
+		in: state
 ]
 
 { #category : #'private - moving' }
-Board >> newStateOf: player In: state afterMoving: rollSum [
+Board >> nextStateFor: state afterMoving: rollSum [
 	| newLapNumber netNewPosition grossNewPosition |
 	grossNewPosition := state position + rollSum.
 	newLapNumber := state lapNumber

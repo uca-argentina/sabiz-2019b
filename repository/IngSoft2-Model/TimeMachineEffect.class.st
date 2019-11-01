@@ -8,6 +8,6 @@ Class {
 }
 
 { #category : #effect }
-TimeMachineEffect >> applyOn: gameState triggeredBy: player [
-	gameState rewindPositionFor: player
+TimeMachineEffect >> applyOn: game triggeredBy: player in: state [
+	game rewindPositionFor: player
 ]

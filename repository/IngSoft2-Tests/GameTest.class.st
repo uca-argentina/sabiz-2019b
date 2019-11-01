@@ -10,7 +10,7 @@ Class {
 { #category : #'test - accessing' }
 GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	self
-		should: [ Game standard positionOfPlayer: #PlayerFromAnotherGame ]
+		should: [ Game standard positionOf: #PlayerFromAnotherGame ]
 		raise: AssertionFailure
 ]
 
@@ -96,7 +96,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOfPlayer: #player1) = -1 ]
+	self assert: [ (game lapOf: #player1) = -1 ]
 ]
 
 { #category : #'test - playing' }
@@ -108,7 +108,7 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOfPlayer: #player1) = 1 ]
+	self assert: [ (game lapOf: #player1) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -130,9 +130,9 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOfPlayer: #player1) = 7 ].
+	self assert: [ (game positionOf: #player1) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOfPlayer: #player1) = 1 ]
+	self assert: [ (game positionOf: #player1) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -143,9 +143,9 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOfPlayer: #player1) = 7 ].
+	self assert: [ (game positionOf: #player1) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOfPlayer: #player1) = 1 ]
+	self assert: [ (game positionOf: #player1) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -156,7 +156,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 		throwing: {(SequentialDice withSequence: {9})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game lapOfPlayer: #player1) = 0 ]
+	self assert: [ (game lapOf: #player1) = 0 ]
 ]
 
 { #category : #'test - playing' }

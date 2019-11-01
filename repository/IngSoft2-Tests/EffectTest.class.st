@@ -26,14 +26,14 @@ EffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 		throwing: {(SequentialDice withSequence: {1 . 2 . 3})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 2.
-	self assert: (game positionOfPlayer: #player2) equals: 3.
-	self assert: (game positionOfPlayer: #player3) equals: 4.
+	self assert: (game positionOf: #player1) equals: 2.
+	self assert: (game positionOf: #player2) equals: 3.
+	self assert: (game positionOf: #player3) equals: 4.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 8.
-	self assert: (game lapOfPlayer: #player1) equals: -1.
-	self assert: (game positionOfPlayer: #player2) equals: 2.
-	self assert: (game positionOfPlayer: #player3) equals: 7
+	self assert: (game positionOf: #player1) equals: 8.
+	self assert: (game lapOf: #player1) equals: -1.
+	self assert: (game positionOf: #player2) equals: 2.
+	self assert: (game positionOf: #player3) equals: 7
 ]
 
 { #category : #'tests - atomicbomb' }
@@ -52,19 +52,19 @@ EffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintain
 		throwing: {(SequentialDice withSequence: {8 . 3 . 1})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 4.
-	self assert: (game lapOfPlayer: #player1) equals: 1.
-	self assert: (game positionOfPlayer: #player2) equals: 4.
-	self assert: (game lapOfPlayer: #player2) equals: 0.
-	self assert: (game positionOfPlayer: #player3) equals: 2.
-	self assert: (game lapOfPlayer: #player3) equals: 0.
+	self assert: (game positionOf: #player1) equals: 4.
+	self assert: (game lapOf: #player1) equals: 1.
+	self assert: (game positionOf: #player2) equals: 4.
+	self assert: (game lapOf: #player2) equals: 0.
+	self assert: (game positionOf: #player3) equals: 2.
+	self assert: (game lapOf: #player3) equals: 0.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 1.
-	self assert: (game lapOfPlayer: #player1) equals: 3.
-	self assert: (game positionOfPlayer: #player2) equals: 1.
-	self assert: (game lapOfPlayer: #player2) equals: 1.
-	self assert: (game positionOfPlayer: #player3) equals: 1.
-	self assert: (game lapOfPlayer: #player3) equals: 0
+	self assert: (game positionOf: #player1) equals: 1.
+	self assert: (game lapOf: #player1) equals: 3.
+	self assert: (game positionOf: #player2) equals: 1.
+	self assert: (game lapOf: #player2) equals: 1.
+	self assert: (game positionOf: #player3) equals: 1.
+	self assert: (game lapOf: #player3) equals: 0
 ]
 
 { #category : #'tests - speedup' }
@@ -87,7 +87,7 @@ EffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 9
+	self assert: (game positionOf: #player1) equals: 9
 ]
 
 { #category : #'tests - speedup' }
@@ -106,10 +106,10 @@ EffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwa
 		playedBy: {#player1}
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
-	self assert: (game lapOfPlayer: #player1) equals: 0.
+	self assert: (game lapOf: #player1) equals: 0.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 3.
-	self assert: (game lapOfPlayer: #player1) equals: 1
+	self assert: (game positionOf: #player1) equals: 3.
+	self assert: (game lapOf: #player1) equals: 1
 ]
 
 { #category : #'tests - wormhole' }
@@ -129,7 +129,7 @@ EffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 		throwing: {(SequentialDice withSequence: {5})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 2
+	self assert: (game positionOf: #player1) equals: 2
 ]
 
 { #category : #'tests - wormhole' }
@@ -149,11 +149,11 @@ EffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackF
 		throwing: {(SequentialDice withSequence: {6 . 1})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 1.
-	self assert: (game lapOfPlayer: #player1) equals: 1.
+	self assert: (game positionOf: #player1) equals: 1.
+	self assert: (game lapOf: #player1) equals: 1.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 4.
-	self assert: (game lapOfPlayer: #player1) equals: 0
+	self assert: (game positionOf: #player1) equals: 4.
+	self assert: (game lapOf: #player1) equals: 0
 ]
 
 { #category : #'tests - regular' }
@@ -172,7 +172,7 @@ EffectTest >> testSpotWithRegularEffectDoesNothing [
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 5
+	self assert: (game positionOf: #player1) equals: 5
 ]
 
 { #category : #'tests - timemachine' }
@@ -192,8 +192,8 @@ EffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAnd
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 1.
-	self assert: (game lapOfPlayer: #player1) equals: 0
+	self assert: (game positionOf: #player1) equals: 1.
+	self assert: (game lapOf: #player1) equals: 0
 ]
 
 { #category : #'tests - timemachine' }
@@ -214,6 +214,6 @@ EffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 		using: board.
 	game playOneRound.
 	game playOneRound.
-	self assert: (game positionOfPlayer: #player1) equals: 1.
-	self assert: (game lapOfPlayer: #player1) equals: 0
+	self assert: (game positionOf: #player1) equals: 1.
+	self assert: (game lapOf: #player1) equals: 0
 ]
