@@ -9,7 +9,7 @@ Class {
 
 { #category : #extracted }
 BoardTest >> allSpotTypes [
-	^ (Effect allSubclasses collect: [ :each | Spot with: each new ])
+	^ (SpotEffect allSubclasses collect: [ :each | Spot with: each new ])
 		asArray
 ]
 

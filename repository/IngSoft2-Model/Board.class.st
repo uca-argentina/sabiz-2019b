@@ -112,7 +112,10 @@ Board >> nextStateFor: state afterMoving: rollSum [
 	netNewPosition == 0
 		ifTrue: [ netNewPosition := self numberOfSpots.
 			newLapNumber := newLapNumber - 1 ].
-	^ PlayerState on: netNewPosition and: newLapNumber
+	^ PlayerState
+		on: netNewPosition
+		and: newLapNumber
+		under: state effects
 ]
 
 { #category : #accessing }

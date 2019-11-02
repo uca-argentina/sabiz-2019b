@@ -3,7 +3,7 @@ Everybody else goes back N spots
 "
 Class {
 	#name : #MoonWalkEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#instVars : [
 		'numberOfSpotsToGoBack'
 	],
@@ -20,7 +20,7 @@ MoonWalkEffect class >> goingBack: numberOfSpotsToGoBack [
 
 { #category : #effect }
 MoonWalkEffect >> applyOn: game triggeredBy: player in: state [
-	game set: state for: player.
+	game updateStateFor: player with: state.
 	game
 		player: player
 		triggersMoonWalkEffectMoving: self numberOfSpotsToGoBack

@@ -1,14 +1,15 @@
 "
-A game with a given number of spots
+A game
 "
 Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
 		'leaderBoard',
-		'state',
 		'dices',
-		'board'
+		'board',
+		'playersStates',
+		'globalPlayerEffects'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -55,10 +56,12 @@ Game class >> standardSetOfPlayers [
 
 { #category : #accessingGameState }
 Game >> currentRanking [
-	^ state currentRanking
+	^ (self playersCurrentStates
+		sort: [ :assoc1 :assoc2 | assoc1 value > assoc2 value ])
+		collect: [ :assoc | assoc key ]
 ]
 
-{ #category : #accesingGame }
+{ #category : #accessingGame }
 Game >> dices [
 	^ dices copy
 ]
@@ -68,19 +71,24 @@ Game >> finishRanking [
 	^ leaderBoard finishRanking
 ]
 
+{ #category : #accessingPlayer }
+Game >> historyOf: player [
+	^ playersStates at: player
+]
+
 { #category : #accessingGameState }
 Game >> isNotOver [
-	^ (leaderBoard includesAll: state players) not
+	^ (leaderBoard includesAll: self players) not
 ]
 
-{ #category : #accesingGame }
-Game >> isPlayedBy: aPlayer [
-	^ state isPlayedBy: aPlayer
+{ #category : #accessingGame }
+Game >> isPlayedBy: player [
+	^ self players includes: player
 ]
 
-{ #category : #accessingGameState }
+{ #category : #accessingPlayer }
 Game >> lapOf: player [
-	^ state lapOf: player
+	^ (self stateOf: player) lapNumber
 ]
 
 { #category : #'private - moving' }
@@ -89,24 +97,30 @@ Game >> move: player [
 	(self playerHasFinished: player)
 		ifTrue: [ ^ self ].
 	newState := self
-		nextStateFor: (state stateOf: player)
-		afterMoving: self rollSum.
+		nextStateFor: (self stateOf: player)
+		afterMoving: (self totalDisplacementFor: player).
 	board applyEffectOn: self triggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
-		or: (self finishRanking includes: player))
+		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]
 ]
 
 { #category : #'private - moving' }
 Game >> moveAllPlayers [
-	state players do: [ :player | self move: player ]
+	self players do: [ :player | self move: player ]
 ]
 
 { #category : #effect }
 Game >> moveEveryoneToTheFirstSpot [
-	state players
-		do:
-			[ :each | state add: (PlayerState on: 1 and: (self lapOf: each)) for: each ]
+	self players
+		do: [ :each | 
+			self
+				updateStateFor: each
+				with:
+					(PlayerState
+						on: 1
+						and: (self lapOf: each)
+						under: (self stateOf: each) effects) ]
 ]
 
 { #category : #'private - moving' }
@@ -114,9 +128,9 @@ Game >> nextStateFor: aState afterMoving: rollSum [
 	^ board nextStateFor: aState afterMoving: rollSum
 ]
 
-{ #category : #accesingGame }
+{ #category : #accessingGame }
 Game >> numberOfPlayers [
-	^ state players size
+	^ self players size
 ]
 
 { #category : #playing }
@@ -133,21 +147,27 @@ Game >> playOneRound [
 { #category : #initialization }
 Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	leaderBoard := LeaderBoard new.
-	board := aBoard.
-	dices := gameDices.
-	state := GameState playedBy: gamePlayers
+	board := aBoard copy.
+	dices := gameDices copy.
+	globalPlayerEffects := OrderedCollection new.
+	playersStates := (gamePlayers
+		collect: [ :each | 
+			Association
+				key: each
+				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
+		asDictionary
 ]
 
 { #category : #effect }
 Game >> player: player triggersMoonWalkEffectMoving: anAmount [
-	state players
+	self players
 		do: [ :each | 
 			| newState |
 			each == player
 				ifFalse: [ newState := board
-						nextStateFor: (state stateOf: each)
+						nextStateFor: (self stateOf: each)
 						afterMoving: anAmount.
-					state add: newState for: each ] ]
+					self updateStateFor: each with: newState ] ]
 ]
 
 { #category : #accessingGameState }
@@ -160,22 +180,40 @@ Game >> playerHasNotFinished: player [
 	^ (self lapOf: player) < board numberOfLaps
 ]
 
-{ #category : #accessingGameState }
-Game >> positionOf: aPlayer [
-	^ state positionOf: aPlayer
+{ #category : #accessingPlayer }
+Game >> players [
+	^ playersStates keys copy
+]
+
+{ #category : #accessingPlayer }
+Game >> playersCurrentStates [
+	^ (self players
+		collect: [ :player | Association key: player value: (self stateOf: player) ])
+		asArray
+]
+
+{ #category : #accessingPlayer }
+Game >> positionOf: player [
+	^ (self stateOf: player) position
 ]
 
 { #category : #effect }
 Game >> rewindPositionFor: player [
-	| playerStates |
-	playerStates := state statesOf: player.
-	playerStates size <= 1
-		ifTrue: [ playerStates add: (PlayerState on: 1 and: 0) ]
+	| history |
+	history := self historyOf: player.
+	history size <= 1
+		ifTrue: [ self
+				updateStateFor: player
+				with: (PlayerState on: 1 and: 0 under: (self stateOf: player) effects) ]
 		ifFalse: [ | previousState |
-			previousState := playerStates at: playerStates size - 1.
-			playerStates
-				add:
-					(PlayerState on: previousState position and: previousState lapNumber) ]
+			previousState := history at: history size - 1.
+			self
+				updateStateFor: player
+				with:
+					(PlayerState
+						on: previousState position
+						and: previousState lapNumber
+						under: (self stateOf: player) effects) ]
 ]
 
 { #category : #'private - moving' }
@@ -183,9 +221,31 @@ Game >> rollSum [
 	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
 ]
 
+{ #category : #accessingPlayer }
+Game >> stateOf: player [
+	^ (playersStates
+		at: player
+		ifAbsent: [ AssertionFailure
+				signal: 'Asked for a player that is not in the game' ]) last
+]
+
 { #category : #'private - moving' }
-Game >> set: aState for: player [
-	state add: aState for: player
+Game >> totalDisplacementFor: player [
+	| total |
+	total := globalPlayerEffects
+		inject: self rollSum
+		into: [ :sum :each | sum + each value ].
+	total := (self stateOf: player) effects
+		inject: total
+		into: [ :sum :each | sum + each value ].
+	^ total
+]
+
+{ #category : #updating }
+Game >> updateStateFor: player with: aState [
+	| playerStates |
+	playerStates := playersStates at: player.
+	playerStates add: aState
 ]
 
 { #category : #accessingGameState }

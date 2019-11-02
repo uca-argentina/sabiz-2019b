@@ -29,7 +29,7 @@ OverallOccurrenceDistribution >> initializeWith: aDistribution [
 	distribution := aDistribution asOrderedCollection
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 OverallOccurrenceDistribution >> probabilityOf: element [
 	^ (distribution
 		select:

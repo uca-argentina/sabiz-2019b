@@ -3,7 +3,7 @@ Move forwards 4 spots
 "
 Class {
 	#name : #SpeedUpEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#category : #'IngSoft2-Model'
 }
 
@@ -13,7 +13,7 @@ SpeedUpEffect >> applyOn: game triggeredBy: player in: state [
 	newState := game
 		nextStateFor: state
 		afterMoving: self numberOfSpotsToGoForward.
-	game set: newState for: player
+	game updateStateFor: player with: newState
 ]
 
 { #category : #standardValues }

@@ -3,7 +3,7 @@ Resets all players to the starting position, keeping their row number
 "
 Class {
 	#name : #AtomicBombEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#category : #'IngSoft2-Model'
 }
 

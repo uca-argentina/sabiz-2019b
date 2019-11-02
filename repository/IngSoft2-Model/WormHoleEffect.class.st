@@ -3,7 +3,7 @@ Go back 4 spots
 "
 Class {
 	#name : #WormHoleEffect,
-	#superclass : #Effect,
+	#superclass : #SpotEffect,
 	#category : #'IngSoft2-Model'
 }
 
@@ -13,7 +13,7 @@ WormHoleEffect >> applyOn: game triggeredBy: player in: state [
 	newState := game
 		nextStateFor: state
 		afterMoving: self numberOfSpotsToGoBack.
-	game set: newState for: player
+	game updateStateFor: player with: newState
 ]
 
 { #category : #standardValues }
