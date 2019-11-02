@@ -6,10 +6,16 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'playerName',
-		'cards'
+		'cards',
+		'states'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'instance creation' }
+Player class >> named: playerName [
+	^ self named: playerName holding: Card startingSet
+]
 
 { #category : #'instance creation' }
 Player class >> named: playerName holding: cards [
@@ -18,7 +24,7 @@ Player class >> named: playerName holding: cards [
 
 { #category : #comparing }
 Player >> = player [
-	^ self playerName = player playerName
+	^ self name = player name
 ]
 
 { #category : #initialization }
@@ -28,6 +34,6 @@ Player >> initializeNamed: aName holding: aSetOfCards [
 ]
 
 { #category : #accessing }
-Player >> playerName [
+Player >> name [
 	^ playerName
 ]

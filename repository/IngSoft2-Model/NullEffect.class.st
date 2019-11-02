@@ -9,5 +9,5 @@ Class {
 
 { #category : #effect }
 NullEffect >> applyOn: game triggeredBy: player in: state [
-	game set: state for: player
+	game updateStateFor: player with: state
 ]

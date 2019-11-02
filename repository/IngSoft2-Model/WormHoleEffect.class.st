@@ -13,7 +13,7 @@ WormHoleEffect >> applyOn: game triggeredBy: player in: state [
 	newState := game
 		nextStateFor: state
 		afterMoving: self numberOfSpotsToGoBack.
-	game set: newState for: player
+	game updateStateFor: player with: newState
 ]
 
 { #category : #standardValues }
