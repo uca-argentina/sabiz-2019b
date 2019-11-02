@@ -1,5 +1,5 @@
 "
-This class contains information about the current state of a player
+This class contains information about the current state of a player, consisting of a lap number, the position of the player in the board, and the list of effects that are applied to him
 "
 Class {
 	#name : #PlayerState,
