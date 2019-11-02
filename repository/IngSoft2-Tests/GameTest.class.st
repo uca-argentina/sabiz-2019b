@@ -7,6 +7,28 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #'tests - game state' }
+GameTest >> testAllPlayersStartAtFirstSpot [
+	| game |
+	game := Game
+		playedBy: {#player1 . #player2}
+		throwing: {(RandomDice withFaces: 6)}
+		using: Board standard.
+	self assert: [ (game positionOf: #player1) = 1 ].
+	self assert: [ (game positionOf: #player2) = 1 ]
+]
+
+{ #category : #'tests - game state' }
+GameTest >> testAllPlayersStartAtLapZero [
+	| game |
+	game := Game
+		playedBy: {#player1 . #player2}
+		throwing: {(RandomDice withFaces: 6)}
+		using: Board standard.
+	self assert: [ (game lapOf: #player1) = 0 ].
+	self assert: [ (game lapOf: #player2) = 0 ]
+]
+
 { #category : #'test - accessing' }
 GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	self
@@ -87,6 +109,14 @@ GameTest >> testGameHasGivenSetOfDices [
 					dice2} ]
 ]
 
+{ #category : #'tests - game state' }
+GameTest >> testGameIsOver [
+	| game |
+	game := Game standard.
+	game playAnEntireGame.
+	self deny: [ game isNotOver ]
+]
+
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game |
@@ -97,6 +127,18 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	game playOneRound.
 	game playOneRound.
 	self assert: [ (game lapOf: #player1) = -1 ]
+]
+
+{ #category : #'tests - game state' }
+GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
+	| game |
+	game := Game
+		playedBy: {#player1 . #player2 . #player3}
+		throwing: {(SequentialDice withSequence: {3 . 4 . 11})}
+		using: (Board regularWithSpots: 10 andLaps: 2).
+	game playOneRound.
+	self
+		assert: [ game currentRanking = {#player3 . #player2 . #player1} ]
 ]
 
 { #category : #'test - playing' }

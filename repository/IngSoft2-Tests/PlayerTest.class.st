@@ -9,14 +9,12 @@ Class {
 
 { #category : #tests }
 PlayerTest >> testTwoPlayersWithTheDifferentNamesAreTheDifferentPlayers [
-	self
-		deny: (Player named: #player1 holding: Card startingSet)
-		equals: (Player named: #player2 holding: Card startingSet)
+	self deny: (Player named: #player1) equals: (Player named: #player2)
 ]
 
 { #category : #tests }
 PlayerTest >> testTwoPlayersWithTheSameNameAreTheSamePlayer [
 	self
-		assert: (Player named: #player1 holding: Card startingSet)
-		equals: (Player named: #player1 holding: {Card random})
+		assert: (Player named: #player1)
+		equals: (Player named: #player1)
 ]

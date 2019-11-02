@@ -28,6 +28,11 @@ LeaderBoard >> finishRanking [
 ]
 
 { #category : #accessing }
+LeaderBoard >> includes: player [
+	^ elements includes: player
+]
+
+{ #category : #accessing }
 LeaderBoard >> includesAll: players [
 	^ elements includesAll: players
 ]
