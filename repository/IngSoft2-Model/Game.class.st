@@ -9,7 +9,7 @@ Class {
 		'dices',
 		'board',
 		'playersStates',
-		'globalPlayerEffects'
+		'globalPermanentCardEffects'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -150,7 +150,7 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
 	dices := gameDices copy.
-	globalPlayerEffects := OrderedCollection new.
+	globalPermanentCardEffects := OrderedCollection new.
 	playersStates := (gamePlayers
 		collect: [ :each | 
 			Association
@@ -233,7 +233,7 @@ Game >> stateOf: player [
 { #category : #'private - moving' }
 Game >> totalDisplacementFor: player [
 	| total |
-	total := globalPlayerEffects
+	total := globalPermanentCardEffects
 		inject: self rollSum
 		into: [ :sum :each | sum + each value ].
 	total := (self stateOf: player) effects
