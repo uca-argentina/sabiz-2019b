@@ -11,13 +11,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-Deck class >> newDeckLoadedWith: anEffect [
-	^ self initializeLoadedWith: anEffect
+Deck class >> newLoadedWith: anEffect [
+	^ self new initializeLoadedWith: anEffect
 ]
 
 { #category : #'instance creation' }
-Deck class >> newStandardDeck [
-	^ self initializeStandardDeck
+Deck class >> newStandard [
+	^ self new initializeStandardDeck
 ]
 
 { #category : #initialization }

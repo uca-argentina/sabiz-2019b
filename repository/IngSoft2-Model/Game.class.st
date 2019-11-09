@@ -9,7 +9,8 @@ Class {
 		'dices',
 		'board',
 		'playersStates',
-		'globalPermanentCardEffects'
+		'globalPermanentCardEffects',
+		'deck'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -34,6 +35,17 @@ Game class >> playedBy: players throwing: dices using: aBoard [
 	self checkDuplicatePlayers: players.
 	self checkPlayerQuantity: players checkDices: dices.
 	^ self new playedBy: players throwing: dices on: aBoard
+]
+
+{ #category : #'instance creation' }
+Game class >> playedBy: players throwing: dices using: aBoard andDeckLoadedWith: anEffect [
+	self checkDuplicatePlayers: players.
+	self checkPlayerQuantity: players checkDices: dices.
+	^ self new
+		playedBy: players
+		throwing: dices
+		on: aBoard
+		usingDeckLoadedWith: anEffect
 ]
 
 { #category : #'instance creation' }
@@ -69,6 +81,11 @@ Game >> dices [
 { #category : #accessingGameState }
 Game >> finishRanking [
 	^ leaderBoard finishRanking
+]
+
+{ #category : #playing }
+Game >> giveCardTo: aPlayer [
+
 ]
 
 { #category : #accessingPlayer }
@@ -149,6 +166,22 @@ Game >> playOneRound [
 Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
+	deck := Deck newStandard.
+	dices := gameDices copy.
+	globalPermanentCardEffects := OrderedCollection new.
+	playersStates := (gamePlayers
+		collect: [ :each | 
+			Association
+				key: each
+				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
+		asDictionary
+]
+
+{ #category : #initialization }
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith: anEffect [
+	leaderBoard := LeaderBoard new.
+	board := aBoard copy.
+	deck := Deck newLoadedWith: anEffect.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
 	playersStates := (gamePlayers
