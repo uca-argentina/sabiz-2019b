@@ -3,7 +3,7 @@ This effect adds 1 to the rollSum of a given player
 "
 Class {
 	#name : #SpeedEffect,
-	#superclass : #PlayerEffect,
+	#superclass : #CardPermanentEffect,
 	#category : #'IngSoft2-Model'
 }
 

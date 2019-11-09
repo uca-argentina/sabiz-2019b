@@ -4,8 +4,16 @@ This class models cards that can be held and played
 Class {
 	#name : #Card,
 	#superclass : #Object,
+	#instVars : [
+		'effect'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'instance creation' }
+Card class >> newWith: anEffect [
+	^ self new initializeWith: anEffect
+]
 
 { #category : #'instance creation' }
 Card class >> random [
@@ -23,4 +31,9 @@ Card class >> startingSet [
 { #category : #standardValues }
 Card class >> startingSetSize [
 	^ 2
+]
+
+{ #category : #initialization }
+Card >> initializeWith: anEffect [
+	effect := anEffect
 ]
