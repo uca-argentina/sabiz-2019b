@@ -99,6 +99,7 @@ Game >> move: player [
 	newState := self
 		nextStateFor: (self stateOf: player)
 		afterMoving: (self totalDisplacementFor: player).
+	self updateStateFor: player with: newState.
 	board applyEffectOn: self triggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
@@ -201,12 +202,12 @@ Game >> positionOf: player [
 Game >> rewindPositionFor: player [
 	| history |
 	history := self historyOf: player.
-	history size <= 1
+	history size <= 2
 		ifTrue: [ self
 				updateStateFor: player
 				with: (PlayerState on: 1 and: 0 under: (self stateOf: player) effects) ]
 		ifFalse: [ | previousState |
-			previousState := history at: history size - 1.
+			previousState := history at: history size - 3.
 			self
 				updateStateFor: player
 				with:
