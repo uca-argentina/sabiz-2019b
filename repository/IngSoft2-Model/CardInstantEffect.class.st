@@ -9,4 +9,5 @@ Class {
 
 { #category : #effect }
 CardInstantEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
+	self subclassResponsibility
 ]

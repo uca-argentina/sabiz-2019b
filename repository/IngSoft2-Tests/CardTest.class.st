@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'tests - permanent' }
 CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayers [
 	| game cardToPlay |
 	game := Game
@@ -26,7 +26,7 @@ CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayers [
 	self assert: (game positionOf: (Player named: #player2)) equals: 9
 ]
 
-{ #category : #tests }
+{ #category : #'tests - permanent' }
 CardTest >> testAccelerationEffectIncreasesInOneDicesRollResult [
 	| game cardToPlay |
 	game := Game
@@ -43,7 +43,7 @@ CardTest >> testAccelerationEffectIncreasesInOneDicesRollResult [
 	self assert: (game positionOf: (Player named: #player1)) equals: 9
 ]
 
-{ #category : #tests }
+{ #category : #'tests - permanent' }
 CardTest >> testCantPlayAPermanentCardIfIsNotTheTurnOfThePlayer [
 	| game cardToPlay |
 	game := Game

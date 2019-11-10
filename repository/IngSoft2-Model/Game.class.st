@@ -75,7 +75,7 @@ Game >> addEffectOfCard: aCard [
 ]
 
 { #category : #effect }
-Game >> applyEffectTriggeredBy: newState in: player [
+Game >> applyEffectTriggeredBy: player in: newState [
 	board applyEffectOn: self triggeredBy: player in: newState
 ]
 
@@ -145,7 +145,7 @@ Game >> move: player [
 		nextStateFor: (self stateOf: player)
 		afterMoving: (self totalDisplacementFor: player).
 	self updateStateFor: player with: newState.
-	self applyEffectTriggeredBy: newState in: player.
+	self applyEffectTriggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]

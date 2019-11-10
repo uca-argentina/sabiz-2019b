@@ -41,7 +41,7 @@ Deck >> initializeStandardDeck [
 				of: OverloadEffect new
 				withProbability: 25).
 			(IndividualOccurrenceProbability
-				of: SpeedEffect
+				of: SpeedEffect new
 				withProbability: 25)}
 ]
 
