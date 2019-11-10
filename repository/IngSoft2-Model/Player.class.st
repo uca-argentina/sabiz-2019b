@@ -27,6 +27,13 @@ Player >> cardsInHand [
 	^ cardsInHand
 ]
 
+{ #category : #validation }
+Player >> checkAvailabilityOf: aCard [
+	self
+		assert: [ cardsInHand includes: aCard ]
+		description: 'That card is not in the Hand'
+]
+
 { #category : #comparing }
 Player >> hash [ 
 ^ (self name) hash
@@ -41,4 +48,11 @@ Player >> initializeNamed: aName [
 { #category : #accessing }
 Player >> name [
 	^ playerName
+]
+
+{ #category : #playing }
+Player >> playCard: aCard on: aGame affecting: players [
+	self checkAvailabilityOf: aCard.
+	aCard applyEffectOn: players on: aGame triggeredBy: self.
+	cardsInHand remove: aCard
 ]

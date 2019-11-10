@@ -15,6 +15,15 @@ Card class >> newWith: anEffect [
 	^ self new initializeWith: anEffect
 ]
 
+{ #category : #effect }
+Card >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
+]
+
+{ #category : #accessing }
+Card >> effect [
+	^ effect
+]
+
 { #category : #initialization }
 Card >> initializeWith: anEffect [
 	effect := anEffect

@@ -136,7 +136,7 @@ Game >> move: player [
 		ifFalse: [ leaderBoard add: player ]
 ]
 
-{ #category : #'private - moving' }
+{ #category : #'testing - playing' }
 Game >> moveAllPlayers [
 	self players do: [ :player | self move: player ]
 ]
@@ -169,12 +169,12 @@ Game >> numberOfPlayers [
 	^ self players size
 ]
 
-{ #category : #playing }
+{ #category : #'testing - playing' }
 Game >> playAnEntireGame [
 	[ self isNotOver ] whileTrue: [ self playOneRound ]
 ]
 
-{ #category : #playing }
+{ #category : #'testing - playing' }
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
 	self moveAllPlayers
@@ -214,6 +214,14 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith
 				key: each
 				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
 		asDictionary
+]
+
+{ #category : #playing }
+Game >> player: aPlayer playsCard: aCard affecting: players [
+	(self players detect: [ :each | each = aPlayer ])
+		playCard: aCard
+		on: self
+		affecting: players
 ]
 
 { #category : #effect }
