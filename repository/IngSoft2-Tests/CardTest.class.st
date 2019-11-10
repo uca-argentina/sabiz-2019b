@@ -85,6 +85,60 @@ CardTest >> testCantPlayAPermanentCardIfIsNotTheTurnOfThePlayer [
 		raise: AssertionFailure
 ]
 
+{ #category : #'tests - permanent' }
+CardTest >> testOverloadEffectDecreasesInTwoDicesRollResulForOnlyOnePlayerAndIsAcumulative [
+	| game cardToPlay |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(SequentialDice withSequence: {4})}
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: OverloadEffect new.
+	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player1).
+	cardToPlay := (game cardsInHandOf: (Player named: #player2)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player1).
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: (Player named: #player1)) equals: 3.
+	self assert: (game positionOf: (Player named: #player2)) equals: 5
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testOverloadEffectDecreasesInTwoDicesRollResultOfOnlyOnePlayer [
+	| game cardToPlay |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(SequentialDice withSequence: {7})}
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: OverloadEffect new.
+	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player2).
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: (Player named: #player1)) equals: 8.
+	self assert: (game positionOf: (Player named: #player2)) equals: 6.
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testOverloadEffectDecreasesInTwoDicesRollResultOfOnlyOnePlayerAndIfAcumulativeIsNegativeGoesBack [
+	| game cardToPlay |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(SequentialDice withSequence: {1})}
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: OverloadEffect new.
+	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player2).
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: (Player named: #player1)) equals: 2.
+	self assert: (game positionOf: (Player named: #player2)) equals: 10.
+	self assert: (game lapOf: (Player named: #player2)) equals: -1.
+]
+
 { #category : #'tests - instant' }
 CardTest >> testRepeatCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
 	| game cardToPlay board |
