@@ -8,6 +8,18 @@ Class {
 }
 
 { #category : #tests }
+TurnTest >> testCantKnowTheTurnIfTheGameJustStartedBeforeCallNextTurn [
+	| game |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(RandomDice withFaces: 6)}
+		using: (Board regularWithSpots: 10 andLaps: 2).
+	self should: [ game currentTurn ] raise: AssertionFailure
+]
+
+{ #category : #tests }
 TurnTest >> testItsThePreviousPlayerTurnUntilCallingNextTurn [
 	| game |
 	game := Game
