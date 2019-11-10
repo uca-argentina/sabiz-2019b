@@ -10,7 +10,8 @@ Class {
 		'board',
 		'playersStates',
 		'globalPermanentCardEffects',
-		'deck'
+		'deck',
+		'turn'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -171,6 +172,7 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
 	deck := Deck newStandard.
+	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
 	gamePlayers
@@ -190,6 +192,7 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
 	deck := Deck newLoadedWith: anEffect.
+	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
 	playersStates := (gamePlayers
