@@ -69,6 +69,11 @@ Game class >> standardSetOfPlayers [
 	(Player named: #player3)}
 ]
 
+{ #category : #effect }
+Game >> applyEffectTriggeredBy: newState in: player [
+	board applyEffectOn: self triggeredBy: player in: newState
+]
+
 { #category : #accessing }
 Game >> cardsInHandOf: aPlayer [
 	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
@@ -130,7 +135,7 @@ Game >> move: player [
 		nextStateFor: (self stateOf: player)
 		afterMoving: (self totalDisplacementFor: player).
 	self updateStateFor: player with: newState.
-	board applyEffectOn: self triggeredBy: player in: newState.
+	self applyEffectTriggeredBy: newState in: player.
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]
