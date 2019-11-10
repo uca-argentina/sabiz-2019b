@@ -70,6 +70,11 @@ Game class >> standardSetOfPlayers [
 ]
 
 { #category : #effect }
+Game >> addEffectOfCard: aCard [
+	globalPermanentCardEffects add: aCard effect
+]
+
+{ #category : #effect }
 Game >> applyEffectTriggeredBy: newState in: player [
 	board applyEffectOn: self triggeredBy: player in: newState
 ]
@@ -104,6 +109,11 @@ Game >> dices [
 { #category : #accessingGameState }
 Game >> finishRanking [
 	^ leaderBoard finishRanking
+]
+
+{ #category : #accessing }
+Game >> globalPermanentCardEffects [
+	^ globalPermanentCardEffects
 ]
 
 { #category : #accessingPlayer }
@@ -164,9 +174,21 @@ Game >> nextStateFor: aState afterMoving: rollSum [
 	^ board nextStateFor: aState afterMoving: rollSum
 ]
 
-{ #category : #accessing }
-Game >> nextTurn [
-	^ turn nextTurn
+{ #category : #'private - moving' }
+Game >> nextTurnPlaying: aCard affecting: players [
+	| currentTurnPlayer |
+	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
+	self player: currentTurnPlayer  playsCard: aCard  affecting: players.
+	self move: currentTurnPlayer.
+	^ currentTurnPlayer
+]
+
+{ #category : #'private - moving' }
+Game >> nextTurnWithoutPlayingCards [
+	| currentTurnPlayer |
+	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
+	self move: currentTurnPlayer.
+	^ currentTurnPlayer
 ]
 
 { #category : #accessingGame }
@@ -213,6 +235,10 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith
 	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
+	gamePlayers
+		do: [ :each | 
+			each cardsInHand add: deck nextCard.
+			each cardsInHand add: deck nextCard ].
 	playersStates := (gamePlayers
 		collect: [ :each | 
 			Association

@@ -17,6 +17,7 @@ Card class >> newWith: anEffect [
 
 { #category : #effect }
 Card >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
+	effect applyEffectOn: players on: aGame triggeredBy: aPlayer
 ]
 
 { #category : #accessing }

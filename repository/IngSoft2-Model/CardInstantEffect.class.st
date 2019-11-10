@@ -6,3 +6,7 @@ Class {
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #effect }
+CardInstantEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
+]

@@ -19,10 +19,8 @@ Turn class >> newWith: players [
 
 { #category : #accessing }
 Turn >> currentTurn [
-	currentTurn = 0
-		ifTrue: [ AssertionFailure
-				signal:
-					'The game recently started it is not the turn of any player until calling nextTurn' ].
+	(currentTurn = 0)
+		ifTrue: [ ^ playerSequence at: 1 ].
 	currentTurn := playerSequence at: lastPlayerIndex + 1.
 	^ currentTurn
 ]
@@ -35,7 +33,7 @@ Turn >> initializeWith: players [
 ]
 
 { #category : #accessing }
-Turn >> nextTurn [
+Turn >> nextTurnWithoutPlayingCards [
 	lastPlayerIndex := (lastPlayerIndex + 1) % playerSequence size.
 	currentTurn := lastPlayerIndex + 1.
 	^ playerSequence at: currentTurn

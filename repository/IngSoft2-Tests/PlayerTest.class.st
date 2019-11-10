@@ -33,10 +33,8 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 		andDeckLoadedWith: RepeatEffect.
 	cardToPlay := Card newWith: AccelerationEffect.
 	self
-		should: [ game
-				player: (Player named: #player1)
-				playsCard: cardToPlay
-				affecting: (Player named: #player2) ]
+		should:
+			[ game nextTurnPlaying: cardToPlay affecting: (Player named: #player2) ]
 		raise: AssertionFailure
 ]
 
@@ -50,10 +48,7 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 		throwing: {(RandomDice withFaces: 6)}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
-	game
-		player: (Player named: #player1)
-		playsCard: cardToPlay
-		affecting: (Player named: #player2).
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player2).
 	self
 		assert: (game cardsInHandOf: (Player named: #player1)) size
 		equals: 1
