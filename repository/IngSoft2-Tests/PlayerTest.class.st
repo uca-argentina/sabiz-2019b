@@ -9,14 +9,12 @@ Class {
 
 { #category : #tests }
 PlayerTest >> testAllPlayerReceivesTwoCardsAsSoonAsHeEntersTheGame [
-	| game player1 player2 board |
-	player1 := Player named: #player1.
-	player2 := Player named: #player2.
+	| game board |
 	board := Board standard.
 	game := Game
 		playedBy:
-			{player1.
-			player2}
+			{(Player named: #player1).
+			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: board.
 	game players

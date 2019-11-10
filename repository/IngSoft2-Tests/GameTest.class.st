@@ -174,7 +174,7 @@ GameTest >> testPlayerOneWonTheGame [
 			{(Player named: #player1).
 			(Player named: #player2)}
 		throwing: {(SequentialDice withSequence: {10})}
-		using: Board standard.
+		using: (Board regularWithSpots: 10 andLaps: 1).
 	game playAnEntireGame.
 	self assert: [ game winner = (game playerNumber: 1) ]
 ]
