@@ -6,20 +6,15 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'playerName',
-		'cards',
-		'states'
+		'states',
+		'cardsInHand'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 Player class >> named: playerName [
-	^ self named: playerName holding: Card startingSet
-]
-
-{ #category : #'instance creation' }
-Player class >> named: playerName holding: cards [
-	^ self new initializeNamed: playerName holding: cards
+	^ self new initializeNamed: playerName
 ]
 
 { #category : #comparing }
@@ -27,10 +22,15 @@ Player >> = player [
 	^ self name = player name
 ]
 
+{ #category : #accessing }
+Player >> cardsInHand [
+	^ cardsInHand
+]
+
 { #category : #initialization }
-Player >> initializeNamed: aName holding: aSetOfCards [
+Player >> initializeNamed: aName [
 	playerName := aName.
-	cards := aSetOfCards
+	cardsInHand := OrderedCollection new
 ]
 
 { #category : #accessing }

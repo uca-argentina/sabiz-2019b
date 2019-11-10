@@ -169,6 +169,10 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	deck := Deck newStandard.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
+	gamePlayers
+		do: [ :each | 
+			each cardsInHand add: deck nextCard.
+			each cardsInHand add: deck nextCard ].
 	playersStates := (gamePlayers
 		collect: [ :each | 
 			Association
