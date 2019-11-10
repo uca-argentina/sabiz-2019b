@@ -244,6 +244,9 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith
 
 { #category : #playing }
 Game >> player: aPlayer playsCard: aCard affecting: players [
+	(self playerHasFinished: aPlayer)
+		ifTrue: [ AssertionFailure
+				signal: 'Tried to make a player that has already finished play a card' ].
 	(self players detect: [ :each | each = aPlayer ])
 		playCard: aCard
 		on: self
