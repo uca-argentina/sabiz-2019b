@@ -163,3 +163,39 @@ CardTest >> testRepeatCardRepeatesTheEffectOfTheSpotReachedAfterRollingDices [
 	self assert: (game positionOf: (Player named: #player1)) equals: 5.
 	self assert: (game lapOf: (Player named: #player1)) equals: 1
 ]
+
+{ #category : #'tests - permanent' }
+CardTest >> testSpeedEffectIncreasesInOneDicesRollResulForOnlyOnePlayerAndIsAcumulative [
+	| game cardToPlay |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(SequentialDice withSequence: {2})}
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: SpeedEffect new.
+	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player1).
+	cardToPlay := (game cardsInHandOf: (Player named: #player2)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player1).
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: (Player named: #player1)) equals: 8.
+	self assert: (game positionOf: (Player named: #player2)) equals: 3
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testSpeedEffectIncreasesInOneDicesRollResultOfOnlyOnePlayer [
+	| game cardToPlay |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(SequentialDice withSequence: {7})}
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: SpeedEffect new.
+	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
+	game nextTurnPlaying: cardToPlay affecting: (Player named: #player1).
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: (Player named: #player1)) equals: 9.
+	self assert: (game positionOf: (Player named: #player2)) equals: 8
+]

@@ -33,6 +33,11 @@ PlayerState >> > aState [
 		ifFalse: [ ^ self lapNumber > aState lapNumber ]
 ]
 
+{ #category : #adding }
+PlayerState >> addEffectOfCard: aCard [
+	permanentEffects add: aCard effect
+]
+
 { #category : #accessing }
 PlayerState >> effects [
 	^ permanentEffects copy
