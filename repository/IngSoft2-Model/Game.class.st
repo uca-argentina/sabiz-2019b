@@ -17,7 +17,9 @@ Class {
 
 { #category : #validation }
 Game class >> checkDuplicatePlayers: players [
-	self assert: players asSet size = players size
+	| playersNames |
+	playersNames := players collect: [ :each | each name ].
+	self assert: playersNames asSet size = players size
 ]
 
 { #category : #validation }
@@ -63,7 +65,9 @@ Game class >> standardSetOfDices [
 
 { #category : #standardValues }
 Game class >> standardSetOfPlayers [
-	^ {#player1 . #player2 . #player3}
+	^ {(Player named: #player1).
+	(Player named: #player2).
+	(Player named: #player3)}
 ]
 
 { #category : #accessingGameState }
@@ -216,6 +220,11 @@ Game >> playerHasFinished: player [
 { #category : #accessingGameState }
 Game >> playerHasNotFinished: player [
 	^ (self lapOf: player) < board numberOfLaps
+]
+
+{ #category : #accessingPlayer }
+Game >> playerNumber: anInteger [
+	^ self players at: anInteger
 ]
 
 { #category : #accessingPlayer }
