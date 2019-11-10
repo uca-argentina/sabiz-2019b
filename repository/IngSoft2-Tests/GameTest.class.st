@@ -11,35 +11,39 @@ Class {
 GameTest >> testAllPlayersStartAtFirstSpot [
 	| game |
 	game := Game
-		playedBy: {#player1 . #player2}
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game positionOf: #player1) = 1 ].
-	self assert: [ (game positionOf: #player2) = 1 ]
+	self assert: [ (game positionOf: (Player named: #player1)) = 1 ].
+	self assert: [ (game positionOf: (Player named: #player2)) = 1 ]
 ]
 
 { #category : #'tests - game state' }
 GameTest >> testAllPlayersStartAtLapZero [
 	| game |
 	game := Game
-		playedBy: {#player1 . #player2}
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game lapOf: #player1) = 0 ].
-	self assert: [ (game lapOf: #player2) = 0 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = 0 ].
+	self assert: [ (game lapOf: (Player named: #player2)) = 0 ]
 ]
 
 { #category : #'test - accessing' }
 GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	self
-		should: [ Game standard positionOf: #PlayerFromAnotherGame ]
+		should: [ Game standard positionOf: (Player named: #PlayerFromAnotherGame) ]
 		raise: AssertionFailure
 ]
 
 { #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutDices [
 	self
-		should: [ Game playedBy: {#player1} throwing: {} using: Board standard ]
+		should: [ Game playedBy: {Player named: #player1} throwing: {} using: Board standard ]
 		raise: AssertionFailure
 ]
 
@@ -57,7 +61,9 @@ GameTest >> testCantCreateGameWithoutPlayers [
 GameTest >> testCantHaveDupplicatedPlayers [
 	self
 		should: [ Game
-				playedBy: {#player1 . #player1}
+				playedBy:
+					{(Player named: #player1).
+					(Player named: #player1)}
 				throwing: {(RandomDice withFaces: 6)}
 				using: Board standard ]
 		raise: AssertionFailure
@@ -75,7 +81,7 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 GameTest >> testGameHasGivenNumberOfPlayers [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {Player named: #player1}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
 	self assert: [ game numberOfPlayers = 1 ]
@@ -85,10 +91,10 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 GameTest >> testGameHasGivenPlayer [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ game isPlayedBy: #player1 ]
+	self assert: [ game isPlayedBy: (Player named: #player1) ]
 ]
 
 { #category : #'test - accessing' }
@@ -97,7 +103,7 @@ GameTest >> testGameHasGivenSetOfDices [
 	dice1 := RandomDice withFaces: 6.
 	dice2 := SequentialDice withSequence: {4}.
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing:
 			{dice1.
 			dice2}
@@ -121,84 +127,93 @@ GameTest >> testGameIsOver [
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {3 . -4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOf: #player1) = -1 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = -1 ]
 ]
 
 { #category : #'tests - game state' }
 GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	| game |
 	game := Game
-		playedBy: {#player1 . #player2 . #player3}
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2).
+			(Player named: #player3)}
 		throwing: {(SequentialDice withSequence: {3 . 4 . 11})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	self
-		assert: [ game currentRanking = {#player3 . #player2 . #player1} ]
+		assert: [ game currentRanking
+				=
+					{(Player named: #player3).
+					(Player named: #player2).
+					(Player named: #player1)} ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {7 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOf: #player1) = 1 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPlayerOneWonTheGame [
 	| game |
 	game := Game
-		playedBy: {#player1 . #player2}
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
 		throwing: {(SequentialDice withSequence: {10})}
-		using: Board standard.
+		using: (Board regularWithSpots: 10 andLaps: 1).
 	game playAnEntireGame.
-	self assert: [ game winner = #player1 ]
+	self assert: [ game winner = (Player named: #player1) ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOf: #player1) = 7 ].
+	self assert: [ (game positionOf: (Player named: #player1)) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOf: #player1) = 1 ]
+	self assert: [ (game positionOf: (Player named: #player1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOf: #player1) = 7 ].
+	self assert: [ (game positionOf: (Player named: #player1)) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOf: #player1) = 1 ]
+	self assert: [ (game positionOf: (Player named: #player1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
 	| game |
 	game := Game
-		playedBy: {#player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {9})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game lapOf: #player1) = 0 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = 0 ]
 ]
 
 { #category : #'test - playing' }
@@ -206,11 +221,17 @@ GameTest >> testRiggedGameEndsAsExpected [
 	| game dice |
 	dice := SequentialDice withSequence: {10}.
 	game := Game
-		playedBy: {#player1 . #player2 . #player3}
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2).
+			(Player named: #player3)}
 		throwing: {dice}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playAnEntireGame.
 	self
 		assert: game finishRanking
-		equals: {#player1 . #player2 . #player3}
+		equals:
+			{(Player named: #player1).
+			(Player named: #player2).
+			(Player named: #player3)}
 ]

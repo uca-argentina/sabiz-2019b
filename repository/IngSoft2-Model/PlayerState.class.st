@@ -8,7 +8,7 @@ Class {
 		'position',
 		'lapNumber',
 		'board',
-		'effects'
+		'permanentEffects'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -33,9 +33,14 @@ PlayerState >> > aState [
 		ifFalse: [ ^ self lapNumber > aState lapNumber ]
 ]
 
+{ #category : #adding }
+PlayerState >> addEffectOfCard: aCard [
+	permanentEffects add: aCard effect
+]
+
 { #category : #accessing }
 PlayerState >> effects [
-	^ effects copy
+	^ permanentEffects copy
 ]
 
 { #category : #accessing }
@@ -47,7 +52,7 @@ PlayerState >> lapNumber [
 PlayerState >> on: currentPosition and: currentLapNumber under: playerEffects [
 	position := currentPosition copy.
 	lapNumber := currentLapNumber copy.
-	effects := playerEffects
+	permanentEffects := playerEffects
 ]
 
 { #category : #accessing }

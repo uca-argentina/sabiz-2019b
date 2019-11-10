@@ -3,9 +3,15 @@ This effect reduces the rollSum of a given player by 2
 "
 Class {
 	#name : #OverloadEffect,
-	#superclass : #PlayerEffect,
+	#superclass : #CardPermanentEffect,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #effect }
+OverloadEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
+	self checkTurnOf: aPlayer in: aGame.
+	(aGame historyOf: player) last addEffectOfCard: (Card newWith: self)
+]
 
 { #category : #evaluating }
 OverloadEffect >> value [

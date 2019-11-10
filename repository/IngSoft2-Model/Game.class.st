@@ -9,7 +9,9 @@ Class {
 		'dices',
 		'board',
 		'playersStates',
-		'globalPlayerEffects'
+		'globalPermanentCardEffects',
+		'deck',
+		'turn'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -37,6 +39,17 @@ Game class >> playedBy: players throwing: dices using: aBoard [
 ]
 
 { #category : #'instance creation' }
+Game class >> playedBy: players throwing: dices using: aBoard andDeckLoadedWith: anEffect [
+	self checkDuplicatePlayers: players.
+	self checkPlayerQuantity: players checkDices: dices.
+	^ self new
+		playedBy: players
+		throwing: dices
+		on: aBoard
+		usingDeckLoadedWith: anEffect
+]
+
+{ #category : #'instance creation' }
 Game class >> standard [
 	^ self
 		playedBy: self standardSetOfPlayers
@@ -51,7 +64,24 @@ Game class >> standardSetOfDices [
 
 { #category : #standardValues }
 Game class >> standardSetOfPlayers [
-	^ {#player1 . #player2 . #player3}
+	^ {(Player named: #player1).
+	(Player named: #player2).
+	(Player named: #player3)}
+]
+
+{ #category : #effect }
+Game >> addEffectOfCard: aCard [
+	globalPermanentCardEffects add: aCard effect
+]
+
+{ #category : #effect }
+Game >> applyEffectTriggeredBy: player in: newState [
+	board applyEffectOn: self triggeredBy: player in: newState
+]
+
+{ #category : #accessing }
+Game >> cardsInHandOf: aPlayer [
+	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
 ]
 
 { #category : #accessingGameState }
@@ -59,6 +89,16 @@ Game >> currentRanking [
 	^ (self playersCurrentStates
 		sort: [ :assoc1 :assoc2 | assoc1 value > assoc2 value ])
 		collect: [ :assoc | assoc key ]
+]
+
+{ #category : #accessing }
+Game >> currentTurn [
+	^ turn currentTurn
+]
+
+{ #category : #accessing }
+Game >> deck [
+	^ deck copy
 ]
 
 { #category : #accessingGame }
@@ -99,13 +139,14 @@ Game >> move: player [
 	newState := self
 		nextStateFor: (self stateOf: player)
 		afterMoving: (self totalDisplacementFor: player).
-	board applyEffectOn: self triggeredBy: player in: newState.
+	self updateStateFor: player with: newState.
+	self applyEffectTriggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]
 ]
 
-{ #category : #'private - moving' }
+{ #category : #'testing - playing' }
 Game >> moveAllPlayers [
 	self players do: [ :player | self move: player ]
 ]
@@ -128,17 +169,34 @@ Game >> nextStateFor: aState afterMoving: rollSum [
 	^ board nextStateFor: aState afterMoving: rollSum
 ]
 
+{ #category : #'private - moving' }
+Game >> nextTurnPlaying: aCard affecting: players [
+	| currentTurnPlayer |
+	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
+	self player: currentTurnPlayer  playsCard: aCard  affecting: players.
+	self move: currentTurnPlayer.
+	^ currentTurnPlayer
+]
+
+{ #category : #'private - moving' }
+Game >> nextTurnWithoutPlayingCards [
+	| currentTurnPlayer |
+	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
+	self move: currentTurnPlayer.
+	^ currentTurnPlayer
+]
+
 { #category : #accessingGame }
 Game >> numberOfPlayers [
 	^ self players size
 ]
 
-{ #category : #playing }
+{ #category : #'testing - playing' }
 Game >> playAnEntireGame [
 	[ self isNotOver ] whileTrue: [ self playOneRound ]
 ]
 
-{ #category : #playing }
+{ #category : #'testing - playing' }
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
 	self moveAllPlayers
@@ -148,14 +206,53 @@ Game >> playOneRound [
 Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
+	deck := Deck newStandard.
+	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.
-	globalPlayerEffects := OrderedCollection new.
+	globalPermanentCardEffects := OrderedCollection new.
+	gamePlayers
+		do: [ :each | 
+			each cardsInHand add: deck nextCard.
+			each cardsInHand add: deck nextCard ].
 	playersStates := (gamePlayers
 		collect: [ :each | 
 			Association
 				key: each
 				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
 		asDictionary
+]
+
+{ #category : #initialization }
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith: anEffect [
+	leaderBoard := LeaderBoard new.
+	board := aBoard copy.
+	deck := Deck newLoadedWith: anEffect.
+	turn := Turn newWith: gamePlayers.
+	dices := gameDices copy.
+	globalPermanentCardEffects := OrderedCollection new.
+	gamePlayers
+		do: [ :each | 
+			each cardsInHand add: deck nextCard.
+			each cardsInHand add: deck nextCard ].
+	playersStates := (gamePlayers
+		collect: [ :each | 
+			Association
+				key: each
+				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
+		asDictionary
+]
+
+{ #category : #playing }
+Game >> player: aPlayer playsCard: aCard affecting: players [
+	(self players detect: [ :each | each = aPlayer ])
+		playCard: aCard
+		on: self
+		affecting: players
+]
+
+{ #category : #effect }
+Game >> player: aPlayer triggersEffectAt: aPosition [
+	board player: aPlayer triggersEffectAt: aPosition on: self
 ]
 
 { #category : #effect }
@@ -182,7 +279,7 @@ Game >> playerHasNotFinished: player [
 
 { #category : #accessingPlayer }
 Game >> players [
-	^ playersStates keys copy
+	^ playersStates keys
 ]
 
 { #category : #accessingPlayer }
@@ -201,12 +298,12 @@ Game >> positionOf: player [
 Game >> rewindPositionFor: player [
 	| history |
 	history := self historyOf: player.
-	history size <= 1
+	history size <= 2
 		ifTrue: [ self
 				updateStateFor: player
 				with: (PlayerState on: 1 and: 0 under: (self stateOf: player) effects) ]
 		ifFalse: [ | previousState |
-			previousState := history at: history size - 1.
+			previousState := history at: history size - 3.
 			self
 				updateStateFor: player
 				with:
@@ -232,7 +329,7 @@ Game >> stateOf: player [
 { #category : #'private - moving' }
 Game >> totalDisplacementFor: player [
 	| total |
-	total := globalPlayerEffects
+	total := globalPermanentCardEffects
 		inject: self rollSum
 		into: [ :sum :each | sum + each value ].
 	total := (self stateOf: player) effects

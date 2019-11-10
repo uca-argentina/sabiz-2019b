@@ -28,8 +28,12 @@ OverallOccurrenceDistributionTest >> testDistributionYieldsExpectedProbabilityFo
 			(IndividualOccurrenceProbability
 				of: #AtomicBombEffect
 				withProbability: 25).
-			(IndividualOccurrenceProbability of: #SpeedUpEffect withProbability: 25).
-			(IndividualOccurrenceProbability of: #MoonWalkEffect withProbability: 25)}.
+			(IndividualOccurrenceProbability
+				of: #SpeedUpEffect
+				withProbability: 25).
+			(IndividualOccurrenceProbability
+				of: #MoonWalkEffect
+				withProbability: 25)}.
 	10000
 		timesRepeat: [ | currentValue |
 			currentValue := distribution random.

@@ -44,7 +44,7 @@ Board class >> standardEffectDistribution [
 				withProbability: 2).
 			(IndividualOccurrenceProbability
 				of: NullEffect new
-				withProbability: 55).
+				withProbability: 45).
 			(IndividualOccurrenceProbability
 				of: MoonWalkEffect new
 				withProbability: 5).
@@ -56,7 +56,10 @@ Board class >> standardEffectDistribution [
 				withProbability: 8).
 			(IndividualOccurrenceProbability
 				of: WormHoleEffect new
-				withProbability: 15)}
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: CardGivingEffect new
+				withProbability: 10)}
 ]
 
 { #category : #standardValues }
@@ -126,6 +129,16 @@ Board >> numberOfLaps [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
+]
+
+{ #category : #effect }
+Board >> player: aPlayer triggersEffectAt: aPosition on: aGame [
+	| lastState |
+	lastState := (aGame historyOf: aPlayer) last.
+	(self spotAt: aPosition)
+		applyEffectOn: aGame
+		triggeredBy: aPlayer
+		in: lastState
 ]
 
 { #category : #accessing }

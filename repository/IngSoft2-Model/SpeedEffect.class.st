@@ -3,9 +3,16 @@ This effect adds 1 to the rollSum of a given player
 "
 Class {
 	#name : #SpeedEffect,
-	#superclass : #PlayerEffect,
+	#superclass : #CardPermanentEffect,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #effect }
+SpeedEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
+	self checkTurnOf: aPlayer in: aGame.
+	(aGame historyOf: player) last
+		addEffectOfCard: (Card newWith: self)
+]
 
 { #category : #evaluating }
 SpeedEffect >> value [
