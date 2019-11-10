@@ -16,23 +16,21 @@ GameTest >> testAllPlayersStartAtFirstSpot [
 			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game positionOf: game players first) = 1 ].
-	self assert: [ (game positionOf: game players second) = 1 ]
+	self assert: [ (game positionOf: (game playerNumber: 1)) = 1 ].
+	self assert: [ (game positionOf: (game playerNumber: 2)) = 1 ]
 ]
 
 { #category : #'tests - game state' }
 GameTest >> testAllPlayersStartAtLapZero [
-	| game player1 player2 |
-	player1 := Player named: #player1.
-	player2 := Player named: #player2.
+	| game p |
 	game := Game
 		playedBy:
-			{player1.
-			player2}
+			{(Player named: #player1).
+			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game lapOf: player1) = 0 ].
-	self assert: [ (game lapOf: player2) = 0 ]
+	self assert: [ (game lapOf: (game playerNumber: 1)) = 0 ].
+	self assert: [ (game lapOf: (game playerNumber: 2)) = 0 ]
 ]
 
 { #category : #'test - accessing' }
@@ -91,13 +89,12 @@ GameTest >> testGameHasGivenNumberOfPlayers [
 
 { #category : #'test - accessing' }
 GameTest >> testGameHasGivenPlayer [
-	| game player1 |
-	player1 := Player named: #player1.
+	| game |
 	game := Game
-		playedBy: {player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ game isPlayedBy: player1 ]
+	self assert: [ game isPlayedBy: (game playerNumber: 1) ]
 ]
 
 { #category : #'test - accessing' }
@@ -128,48 +125,45 @@ GameTest >> testGameIsOver [
 
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
-	| game player1 |
-	player1 := Player named: #player1.
+	| game |
 	game := Game
-		playedBy: {player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {3 . -4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOf: player1) = -1 ]
+	self assert: [ (game lapOf: (game playerNumber: 1)) = -1 ]
 ]
 
 { #category : #'tests - game state' }
 GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
-	| game player1 player2 player3 currentRanking |
-	player1 := Player named: #player1.
-	player2 := Player named: #player2.
-	player3 := Player named: #player3.
+	| game |
 	game := Game
 		playedBy:
-			{player1.
-			player2.
-			player3}
+			{(Player named: #player1).
+			(Player named: #player2).
+			(Player named: #player3)}
 		throwing: {(SequentialDice withSequence: {3 . 4 . 11})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	currentRanking := game currentRanking.
-	self assert: [currentRanking first = game players third]. 
-	self assert: [currentRanking second = game players second]. 
-	self assert: [currentRanking third = game players first]. 
+	self
+		assert: [ game currentRanking
+				=
+					{(game playerNumber: 3).
+					(game playerNumber: 2).
+					(game playerNumber: 1)} ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
-	| game player1 |
-	player1 := Player named: #player1.
+	| game |
 	game := Game
-		playedBy: {player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {7 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOf: player1) = 1 ]
+	self assert: [ (game lapOf: (game playerNumber: 1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -182,33 +176,33 @@ GameTest >> testPlayerOneWonTheGame [
 		throwing: {(SequentialDice withSequence: {10})}
 		using: Board standard.
 	game playAnEntireGame.
-	self assert: [ game winner = game players first ]
+	self assert: [ game winner = (game playerNumber: 1) ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game |
 	game := Game
-		playedBy: {Player named: #player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOf: (game players first)) = 7 ].
+	self assert: [ (game positionOf: (game playerNumber: 1)) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOf: game players first) = 1 ]
+	self assert: [ (game positionOf: (game playerNumber: 1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game |
 	game := Game
-		playedBy: {Player named: #player1}
+		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOf: game players first ) = 7 ].
+	self assert: [ (game positionOf: (game playerNumber: 1)) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOf: game players first) = 1 ]
+	self assert: [ (game positionOf: (game playerNumber: 1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -219,7 +213,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 		throwing: {(SequentialDice withSequence: {9})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game lapOf: game players first) = 0 ]
+	self assert: [ (game lapOf: (game playerNumber: 1)) = 0 ]
 ]
 
 { #category : #'test - playing' }
@@ -237,7 +231,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 	self
 		assert: game finishRanking
 		equals:
-			{game players first.
-			game players second.
-			game players third}
+			{(game playerNumber: 1).
+			(game playerNumber: 2).
+			(game playerNumber: 3)}
 ]
