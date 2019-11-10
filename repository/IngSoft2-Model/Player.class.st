@@ -27,6 +27,11 @@ Player >> cardsInHand [
 	^ cardsInHand
 ]
 
+{ #category : #comparing }
+Player >> hash [ 
+^ (self name) hash
+]
+
 { #category : #initialization }
 Player >> initializeNamed: aName [
 	playerName := aName.

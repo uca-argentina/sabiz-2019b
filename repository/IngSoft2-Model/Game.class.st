@@ -18,9 +18,7 @@ Class {
 
 { #category : #validation }
 Game class >> checkDuplicatePlayers: players [
-	| playersNames |
-	playersNames := players collect: [ :each | each name ].
-	self assert: playersNames asSet size = players size
+	self assert: players asSet size = players size
 ]
 
 { #category : #validation }
@@ -71,11 +69,21 @@ Game class >> standardSetOfPlayers [
 	(Player named: #player3)}
 ]
 
+{ #category : #accessing }
+Game >> cardsInHandOf: aPlayer [
+	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
+]
+
 { #category : #accessingGameState }
 Game >> currentRanking [
 	^ (self playersCurrentStates
 		sort: [ :assoc1 :assoc2 | assoc1 value > assoc2 value ])
 		collect: [ :assoc | assoc key ]
+]
+
+{ #category : #accessing }
+Game >> currentTurn [
+	^ turn currentTurn
 ]
 
 { #category : #accessing }
@@ -149,6 +157,11 @@ Game >> moveEveryoneToTheFirstSpot [
 { #category : #'private - moving' }
 Game >> nextStateFor: aState afterMoving: rollSum [
 	^ board nextStateFor: aState afterMoving: rollSum
+]
+
+{ #category : #accessing }
+Game >> nextTurn [
+	^ turn nextTurn
 ]
 
 { #category : #accessingGame }
@@ -226,13 +239,8 @@ Game >> playerHasNotFinished: player [
 ]
 
 { #category : #accessingPlayer }
-Game >> playerNumber: anInteger [
-	^ self players at: anInteger
-]
-
-{ #category : #accessingPlayer }
 Game >> players [
-	^ playersStates keys copy
+	^ playersStates keys
 ]
 
 { #category : #accessingPlayer }

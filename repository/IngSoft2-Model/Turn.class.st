@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'playerSequence',
-		'lastPlayerIndex'
+		'lastPlayerIndex',
+		'currentTurn'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,17 +19,24 @@ Turn class >> newWith: players [
 
 { #category : #accessing }
 Turn >> currentTurn [
-	^ playerSequence at: lastPlayerIndex + 1
+	currentTurn = 0
+		ifTrue: [ AssertionFailure
+				signal:
+					'The game recently started it is not the turn of any player until calling nextTurn' ].
+	currentTurn := playerSequence at: lastPlayerIndex + 1.
+	^ currentTurn
 ]
 
 { #category : #initialization }
 Turn >> initializeWith: players [
 	playerSequence := players copy.
-	lastPlayerIndex := players size - 1
+	lastPlayerIndex := players size - 1.
+	currentTurn := 0
 ]
 
 { #category : #accessing }
 Turn >> nextTurn [
 	lastPlayerIndex := (lastPlayerIndex + 1) % playerSequence size.
-	^ playerSequence at: lastPlayerIndex + 1
+	currentTurn := lastPlayerIndex + 1.
+	^ playerSequence at: currentTurn
 ]

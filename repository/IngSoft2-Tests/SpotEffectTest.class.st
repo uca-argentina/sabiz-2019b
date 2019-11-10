@@ -23,7 +23,8 @@ SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: [ (game playerNumber: 1) cardsInHand size = 3 ]
+	self
+		assert: [ (game cardsInHandOf: (Player named: #player1)) size = 3 ]
 ]
 
 { #category : #'tests - moonwalk' }
@@ -48,14 +49,14 @@ SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 		throwing: {(SequentialDice withSequence: {1 . 2 . 3})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 2.
-	self assert: (game positionOf: (game playerNumber: 2)) equals: 3.
-	self assert: (game positionOf: (game playerNumber: 3)) equals: 4.
+	self assert: (game positionOf: (Player named: #player1)) equals: 2.
+	self assert: (game positionOf: (Player named: #player2)) equals: 3.
+	self assert: (game positionOf: (Player named: #player3)) equals: 4.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 8.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: -1.
-	self assert: (game positionOf: (game playerNumber: 2)) equals: 2.
-	self assert: (game positionOf: (game playerNumber: 3)) equals: 7
+	self assert: (game positionOf: (Player named: #player1)) equals: 8.
+	self assert: (game lapOf: (Player named: #player1)) equals: -1.
+	self assert: (game positionOf: (Player named: #player2)) equals: 2.
+	self assert: (game positionOf: (Player named: #player3)) equals: 7
 ]
 
 { #category : #'tests - atomicbomb' }
@@ -77,19 +78,19 @@ SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMain
 		throwing: {(SequentialDice withSequence: {8 . 3 . 1})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 4.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 1.
-	self assert: (game positionOf: (game playerNumber: 2)) equals: 4.
-	self assert: (game lapOf: (game playerNumber: 2)) equals: 0.
-	self assert: (game positionOf: (game playerNumber: 3)) equals: 2.
-	self assert: (game lapOf: (game playerNumber: 3)) equals: 0.
+	self assert: (game positionOf: (Player named: #player1)) equals: 4.
+	self assert: (game lapOf: (Player named: #player1)) equals: 1.
+	self assert: (game positionOf: (Player named: #player2)) equals: 4.
+	self assert: (game lapOf: (Player named: #player2)) equals: 0.
+	self assert: (game positionOf: (Player named: #player3)) equals: 2.
+	self assert: (game lapOf: (Player named: #player3)) equals: 0.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 1.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 3.
-	self assert: (game positionOf: (game playerNumber: 2)) equals: 1.
-	self assert: (game lapOf: (game playerNumber: 2)) equals: 1.
-	self assert: (game positionOf: (game playerNumber: 3)) equals: 1.
-	self assert: (game lapOf: (game playerNumber: 3)) equals: 0
+	self assert: (game positionOf: (Player named: #player1)) equals: 1.
+	self assert: (game lapOf: (Player named: #player1)) equals: 3.
+	self assert: (game positionOf: (Player named: #player2)) equals: 1.
+	self assert: (game lapOf: (Player named: #player2)) equals: 1.
+	self assert: (game positionOf: (Player named: #player3)) equals: 1.
+	self assert: (game lapOf: (Player named: #player3)) equals: 0
 ]
 
 { #category : #'tests - speedup' }
@@ -112,7 +113,7 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 9
+	self assert: (game positionOf: (Player named: #player1)) equals: 9
 ]
 
 { #category : #'tests - speedup' }
@@ -131,10 +132,10 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingF
 		playedBy: {(Player named: #player1)}
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 0.
+	self assert: (game lapOf: (Player named: #player1)) equals: 0.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 3.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 1
+	self assert: (game positionOf: (Player named: #player1)) equals: 3.
+	self assert: (game lapOf: (Player named: #player1)) equals: 1
 ]
 
 { #category : #'tests - wormhole' }
@@ -154,7 +155,7 @@ SpotEffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 		throwing: {(SequentialDice withSequence: {5})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 2
+	self assert: (game positionOf: (Player named: #player1)) equals: 2
 ]
 
 { #category : #'tests - wormhole' }
@@ -174,11 +175,11 @@ SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingB
 		throwing: {(SequentialDice withSequence: {6 . 1})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 1.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 1.
+	self assert: (game positionOf: (Player named: #player1)) equals: 1.
+	self assert: (game lapOf: (Player named: #player1)) equals: 1.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 4.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 0
+	self assert: (game positionOf: (Player named: #player1)) equals: 4.
+	self assert: (game lapOf: (Player named: #player1)) equals: 0
 ]
 
 { #category : #'tests - regular' }
@@ -197,7 +198,7 @@ SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 5
+	self assert: (game positionOf: (Player named: #player1)) equals: 5
 ]
 
 { #category : #'tests - timemachine' }
@@ -217,8 +218,8 @@ SpotEffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositio
 		throwing: {(SequentialDice withSequence: {4})}
 		using: board.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 1.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 0
+	self assert: (game positionOf: (Player named: #player1)) equals: 1.
+	self assert: (game lapOf: (Player named: #player1)) equals: 0
 ]
 
 { #category : #'tests - timemachine' }
@@ -239,6 +240,6 @@ SpotEffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 		using: board.
 	game playOneRound.
 	game playOneRound.
-	self assert: (game positionOf: (game playerNumber: 1)) equals: 1.
-	self assert: (game lapOf: (game playerNumber: 1)) equals: 0
+	self assert: (game positionOf: (Player named: #player1)) equals: 1.
+	self assert: (game lapOf: (Player named: #player1)) equals: 0
 ]

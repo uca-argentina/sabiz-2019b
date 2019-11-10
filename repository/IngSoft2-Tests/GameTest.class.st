@@ -16,21 +16,21 @@ GameTest >> testAllPlayersStartAtFirstSpot [
 			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game positionOf: (game playerNumber: 1)) = 1 ].
-	self assert: [ (game positionOf: (game playerNumber: 2)) = 1 ]
+	self assert: [ (game positionOf: (Player named: #player1)) = 1 ].
+	self assert: [ (game positionOf: (Player named: #player2)) = 1 ]
 ]
 
 { #category : #'tests - game state' }
 GameTest >> testAllPlayersStartAtLapZero [
-	| game p |
+	| game |
 	game := Game
 		playedBy:
 			{(Player named: #player1).
 			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ (game lapOf: (game playerNumber: 1)) = 0 ].
-	self assert: [ (game lapOf: (game playerNumber: 2)) = 0 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = 0 ].
+	self assert: [ (game lapOf: (Player named: #player2)) = 0 ]
 ]
 
 { #category : #'test - accessing' }
@@ -94,7 +94,7 @@ GameTest >> testGameHasGivenPlayer [
 		playedBy: {(Player named: #player1)}
 		throwing: {(RandomDice withFaces: 6)}
 		using: Board standard.
-	self assert: [ game isPlayedBy: (game playerNumber: 1) ]
+	self assert: [ game isPlayedBy: (Player named: #player1) ]
 ]
 
 { #category : #'test - accessing' }
@@ -132,7 +132,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOf: (game playerNumber: 1)) = -1 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = -1 ]
 ]
 
 { #category : #'tests - game state' }
@@ -149,9 +149,9 @@ GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	self
 		assert: [ game currentRanking
 				=
-					{(game playerNumber: 3).
-					(game playerNumber: 2).
-					(game playerNumber: 1)} ]
+					{(Player named: #player3).
+					(Player named: #player2).
+					(Player named: #player1)} ]
 ]
 
 { #category : #'test - playing' }
@@ -163,7 +163,7 @@ GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
 	game playOneRound.
-	self assert: [ (game lapOf: (game playerNumber: 1)) = 1 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -176,7 +176,7 @@ GameTest >> testPlayerOneWonTheGame [
 		throwing: {(SequentialDice withSequence: {10})}
 		using: (Board regularWithSpots: 10 andLaps: 1).
 	game playAnEntireGame.
-	self assert: [ game winner = (game playerNumber: 1) ]
+	self assert: [ game winner = (Player named: #player1) ]
 ]
 
 { #category : #'test - playing' }
@@ -187,9 +187,9 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOf: (game playerNumber: 1)) = 7 ].
+	self assert: [ (game positionOf: (Player named: #player1)) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOf: (game playerNumber: 1)) = 1 ]
+	self assert: [ (game positionOf: (Player named: #player1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -200,9 +200,9 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 		throwing: {(SequentialDice withSequence: {-4 . 4})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game positionOf: (game playerNumber: 1)) = 7 ].
+	self assert: [ (game positionOf: (Player named: #player1)) = 7 ].
 	game playOneRound.
-	self assert: [ (game positionOf: (game playerNumber: 1)) = 1 ]
+	self assert: [ (game positionOf: (Player named: #player1)) = 1 ]
 ]
 
 { #category : #'test - playing' }
@@ -213,7 +213,7 @@ GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber
 		throwing: {(SequentialDice withSequence: {9})}
 		using: (Board regularWithSpots: 10 andLaps: 2).
 	game playOneRound.
-	self assert: [ (game lapOf: (game playerNumber: 1)) = 0 ]
+	self assert: [ (game lapOf: (Player named: #player1)) = 0 ]
 ]
 
 { #category : #'test - playing' }
@@ -231,7 +231,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 	self
 		assert: game finishRanking
 		equals:
-			{(game playerNumber: 1).
-			(game playerNumber: 2).
-			(game playerNumber: 3)}
+			{(Player named: #player1).
+			(Player named: #player2).
+			(Player named: #player3)}
 ]
