@@ -46,7 +46,8 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 			{(Player named: #player1).
 			(Player named: #player2)}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (Board regularWithSpots: 10 andLaps: 2).
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
 	game nextTurnPlaying: cardToPlay affecting: (Player named: #player2).
 	self

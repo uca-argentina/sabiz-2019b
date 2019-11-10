@@ -111,11 +111,6 @@ Game >> finishRanking [
 	^ leaderBoard finishRanking
 ]
 
-{ #category : #accessing }
-Game >> globalPermanentCardEffects [
-	^ globalPermanentCardEffects
-]
-
 { #category : #accessingPlayer }
 Game >> historyOf: player [
 	^ playersStates at: player
@@ -253,6 +248,11 @@ Game >> player: aPlayer playsCard: aCard affecting: players [
 		playCard: aCard
 		on: self
 		affecting: players
+]
+
+{ #category : #effect }
+Game >> player: aPlayer triggersEffectAt: aPosition [
+	board player: aPlayer triggersEffectAt: aPosition on: self
 ]
 
 { #category : #effect }

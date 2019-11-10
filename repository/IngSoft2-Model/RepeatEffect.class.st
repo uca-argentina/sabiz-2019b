@@ -11,9 +11,10 @@ Class {
 RepeatEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	| history |
 	history := aGame historyOf: aPlayer.
-	history size <= 2
-		ifTrue: [ ^ self ].
+	history size < 2
+		ifTrue: [ AssertionFailure
+				signal: 'Cant play that card because the dices never rolled' ].
 	aGame
-		applyEffectTriggeredBy: aPlayer
-		in: (history at: history size - 1)
+		player: aPlayer
+		triggersEffectAt: (history at: history size - 1) position
 ]

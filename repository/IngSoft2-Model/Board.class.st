@@ -131,6 +131,16 @@ Board >> numberOfSpots [
 	^ spots size
 ]
 
+{ #category : #effect }
+Board >> player: aPlayer triggersEffectAt: aPosition on: aGame [
+	| lastState |
+	lastState := (aGame historyOf: aPlayer) last.
+	(self spotAt: aPosition)
+		applyEffectOn: aGame
+		triggeredBy: aPlayer
+		in: lastState
+]
+
 { #category : #accessing }
 Board >> spotAt: position [
 	self assert: (position > 0 and: position <= self numberOfSpots).
