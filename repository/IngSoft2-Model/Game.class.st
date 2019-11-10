@@ -77,6 +77,11 @@ Game >> currentRanking [
 		collect: [ :assoc | assoc key ]
 ]
 
+{ #category : #accessing }
+Game >> deck [
+	^ deck copy
+]
+
 { #category : #accessingGame }
 Game >> dices [
 	^ dices copy
@@ -85,11 +90,6 @@ Game >> dices [
 { #category : #accessingGameState }
 Game >> finishRanking [
 	^ leaderBoard finishRanking
-]
-
-{ #category : #playing }
-Game >> giveCardTo: aPlayer [
-
 ]
 
 { #category : #accessingPlayer }

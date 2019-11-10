@@ -9,5 +9,6 @@ Class {
 
 { #category : #effect }
 CardGivingEffect >> applyOn: game triggeredBy: player in: state [
-
+	player cardsInHand add: game deck nextCard.
+	game updateStateFor: player with: state
 ]

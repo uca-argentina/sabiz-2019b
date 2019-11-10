@@ -7,6 +7,25 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #'tests - cardgiving' }
+SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
+	| game board |
+	board := Board
+		with:
+			{(Spot with: NullEffect new).
+			(Spot with: MoonWalkEffect new).
+			(Spot with: SpeedUpEffect new).
+			(Spot with: TimeMachineEffect new).
+			(Spot with: CardGivingEffect new)}
+		andLaps: 2.
+	game := Game
+		playedBy: {(Player named: #player1)}
+		throwing: {(SequentialDice withSequence: {4})}
+		using: board.
+	game playOneRound.
+	self assert: [ (game playerNumber: 1) cardsInHand size = 3 ]
+]
+
 { #category : #'tests - moonwalk' }
 SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 	| board game |

@@ -15,24 +15,6 @@ Card class >> newWith: anEffect [
 	^ self new initializeWith: anEffect
 ]
 
-{ #category : #'instance creation' }
-Card class >> random [
-	^ self new
-]
-
-{ #category : #'set creation' }
-Card class >> startingSet [
-	| set |
-	set := OrderedCollection new.
-	self startingSetSize timesRepeat: [ set add: self random ].
-	^ set asArray
-]
-
-{ #category : #standardValues }
-Card class >> startingSetSize [
-	^ 2
-]
-
 { #category : #initialization }
 Card >> initializeWith: anEffect [
 	effect := anEffect
