@@ -27,6 +27,29 @@ CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayers [
 ]
 
 { #category : #'tests - permanent' }
+CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayersAndIsAcumulative [
+	| game cardToPlay |
+	game := Game
+		playedBy:
+			{(Player named: #player1).
+			(Player named: #player2)}
+		throwing: {(SequentialDice withSequence: {2})}
+		using: (Board regularWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: AccelerationEffect new.
+	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
+	game
+		nextTurnPlaying: cardToPlay
+		affecting: 'It is no necessary to clarify, this card affects all players'.
+	cardToPlay := (game cardsInHandOf: (Player named: #player2)) first.
+	game
+		nextTurnPlaying: cardToPlay
+		affecting: 'It is no necessary to clarify, this card affects all players'.
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: (Player named: #player1)) equals: 8.
+	self assert: (game positionOf: (Player named: #player2)) equals: 5
+]
+
+{ #category : #'tests - permanent' }
 CardTest >> testAccelerationEffectIncreasesInOneDicesRollResult [
 	| game cardToPlay |
 	game := Game
