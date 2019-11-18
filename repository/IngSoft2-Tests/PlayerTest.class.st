@@ -3,19 +3,17 @@ This class contains tests about players
 "
 Class {
 	#name : #PlayerTest,
-	#superclass : #TestCase,
+	#superclass : #ModelTest,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
 PlayerTest >> testAllPlayerReceivesTwoCardsAsSoonAsHeEntersTheGame [
 	| game board |
-	board := Board standard.
+	board := testResource standardBoard.
 	game := Game
-		playedBy:
-			{(Player named: #player1).
-			(Player named: #player2)}
-		throwing: {(RandomDice withFaces: 6)}
+		playedBy: {player1. player2}
+		throwing: {RandomDice withFaces: 6}
 		using: board.
 	game players
 		do: [ :each | self assert: each cardsInHand size equals: 2 ]
@@ -25,16 +23,14 @@ PlayerTest >> testAllPlayerReceivesTwoCardsAsSoonAsHeEntersTheGame [
 PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 	| game cardToPlay |
 	game := Game
-		playedBy:
-			{(Player named: #player1).
-			(Player named: #player2)}
+		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (Board regularWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: RepeatEffect.
-	cardToPlay := Card newWith: AccelerationEffect.
+		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+		andDeckLoadedWith: RepeatEffect new.
+	cardToPlay := Card newWith: AccelerationEffect new.
 	self
 		should:
-			[ game nextTurnPlaying: cardToPlay affecting: (Player named: #player2) ]
+			[ game nextTurnPlaying: cardToPlay affecting: player2 ]
 		raise: AssertionFailure
 ]
 
@@ -42,14 +38,12 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 PlayerTest >> testPlayingACardRemovesItFromHand [
 	| game cardToPlay |
 	game := Game
-		playedBy:
-			{(Player named: #player1).
-			(Player named: #player2)}
+		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (Board regularWithSpots: 10 andLaps: 2)
+		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
 		andDeckLoadedWith: AccelerationEffect new.
-	cardToPlay := (game cardsInHandOf: (Player named: #player1)) first.
-	game nextTurnPlaying: cardToPlay affecting: (Player named: #player2).
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game nextTurnPlaying: cardToPlay affecting: player2.
 	self
 		assert: (game cardsInHandOf: (Player named: #player1)) size
 		equals: 1

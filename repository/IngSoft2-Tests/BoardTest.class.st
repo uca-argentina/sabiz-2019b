@@ -3,7 +3,7 @@ This class contains tests about boards
 "
 Class {
 	#name : #BoardTest,
-	#superclass : #TestCase,
+	#superclass : #ModelTest,
 	#category : #'IngSoft2-Tests'
 }
 
@@ -16,14 +16,14 @@ BoardTest >> allSpotTypes [
 { #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfLaps [
 	| board |
-	board := Board standardWithSpots: 10 andLaps: 2.
+	board := testResource standardBoardWithSpots: 10 andLaps: 2.
 	self assert: [ board numberOfLaps = 2 ]
 ]
 
 { #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfSpots [
 	| board |
-	board := Board standardWithSpots: 20 andLaps: 2.
+	board := testResource standardBoardWithSpots: 20 andLaps: 2.
 	self assert: [ board numberOfSpots = 20 ]
 ]
 
@@ -46,17 +46,17 @@ BoardTest >> testCustomBoardHasParticularEffectAtGivenPosition [
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
-		should: [ Board standardWithSpots: 10 andLaps: 0 ]
+		should: [ testResource standardBoardWithSpots: 10 andLaps: 0 ]
 			raise: AssertionFailure;
-		should: [ Board standardWithSpots: 10 andLaps: -1 ]
+		should: [ testResource standardBoardWithSpots: 10 andLaps: -1 ]
 			raise: AssertionFailure
 ]
 
 { #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ Board standardWithSpots: 0 andLaps: 2 ]
+		should: [ testResource standardBoardWithSpots: 0 andLaps: 2 ]
 			raise: AssertionFailure;
-		should: [ Board standardWithSpots: -1 andLaps: 2 ]
+		should: [ testResource standardBoardWithSpots: -1 andLaps: 2 ]
 			raise: AssertionFailure
 ]

@@ -49,26 +49,6 @@ Game class >> playedBy: players throwing: dices using: aBoard andDeckLoadedWith:
 		usingDeckLoadedWith: anEffect
 ]
 
-{ #category : #'instance creation' }
-Game class >> standard [
-	^ self
-		playedBy: self standardSetOfPlayers
-		throwing: self standardSetOfDices
-		using: Board standard
-]
-
-{ #category : #standardValues }
-Game class >> standardSetOfDices [
-	^ {(RandomDice withFaces: 6)}
-]
-
-{ #category : #standardValues }
-Game class >> standardSetOfPlayers [
-	^ {(Player named: #player1).
-	(Player named: #player2).
-	(Player named: #player3)}
-]
-
 { #category : #effect }
 Game >> addEffectOfCard: aCard [
 	globalPermanentCardEffects add: aCard effect
