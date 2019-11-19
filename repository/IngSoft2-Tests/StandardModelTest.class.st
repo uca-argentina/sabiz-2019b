@@ -1,8 +1,8 @@
 "
-This is a superclass for the tests in this model, containing the resources to be repeatedly used in multiple test subclasses. Most test classes are a ModelTest, and shares the common elements that will be tested
+This is a superclass for the tests in this model, containing the resources to be repeatedly used in multiple test subclasses
 "
 Class {
-	#name : #ModelTest,
+	#name : #StandardModelTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'player1',
@@ -14,17 +14,17 @@ Class {
 }
 
 { #category : #running }
-ModelTest >> setUp [
+StandardModelTest >> setUp [
 	"Hooks that subclasses may override to define the fixture of test."
 	super setUp.
-	testResource := ModelTestResource new.
+	testResource := StandardModelTestResource new.
 	player1 := Player named: #Player1.
 	player2 := Player named: #Player2.
 	player3 := Player named: #Player3
 ]
 
 { #category : #testResourceTests }
-ModelTest >> testTestResourceYieldsValidObjects [
+StandardModelTest >> testTestResourceYieldsValidObjects [
 	self assert: testResource standardGame class equals: Game.
 	self assert: testResource standardBoard class equals: Board.
 	self assert: (testResource boardWith: testResource standardEffectDistribution andSpots: 10 andLaps: 2) class equals: Board.

@@ -2,13 +2,13 @@
 This class generates standard elements with a specific set of characteristics that are going to be needed in order to test each aspect of the model
 "
 Class {
-	#name : #ModelTestResource,
+	#name : #StandardModelTestResource,
 	#superclass : #TestResource,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #boardCreation }
-ModelTestResource >> boardWith: effectDistribution andSpots: spotsAmount andLaps: numberOfLaps [
+StandardModelTestResource >> boardWith: effectDistribution andSpots: spotsAmount andLaps: numberOfLaps [
 	| spots |
 	spots := OrderedCollection new.
 	spotsAmount
@@ -17,7 +17,7 @@ ModelTestResource >> boardWith: effectDistribution andSpots: spotsAmount andLaps
 ]
 
 { #category : #boardCreation }
-ModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber [
+StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber [
 	| spots |
 	spots := OrderedCollection
 		new: spotsNumber
@@ -27,7 +27,7 @@ ModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: sp
 ]
 
 { #category : #boardCreation }
-ModelTestResource >> effectlessBoardWithSpots: spotsNumber andLaps: lapsNumber [
+StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber andLaps: lapsNumber [
 	^ Board
 		with:
 			(OrderedCollection
@@ -37,14 +37,14 @@ ModelTestResource >> effectlessBoardWithSpots: spotsNumber andLaps: lapsNumber [
 ]
 
 { #category : #boardCreation }
-ModelTestResource >> standardBoard [
+StandardModelTestResource >> standardBoard [
 	^ self
 		standardBoardWithSpots: self standardNumberOfSpots
 		andLaps: self standardNumberOfLaps
 ]
 
 { #category : #boardCreation }
-ModelTestResource >> standardBoardWithSpots: spots andLaps: laps [
+StandardModelTestResource >> standardBoardWithSpots: spots andLaps: laps [
 	^ self
 		boardWith: self standardEffectDistribution
 		andSpots: spots
@@ -52,7 +52,7 @@ ModelTestResource >> standardBoardWithSpots: spots andLaps: laps [
 ]
 
 { #category : #standardValues }
-ModelTestResource >> standardDeckOfCards [
+StandardModelTestResource >> standardDeckOfCards [
 	| cardTypes |
 	cardTypes := OrderedCollection new.
 	cardTypes
@@ -63,7 +63,7 @@ ModelTestResource >> standardDeckOfCards [
 ]
 
 { #category : #standardValues }
-ModelTestResource >> standardEffectDistribution [
+StandardModelTestResource >> standardEffectDistribution [
 	^ OverallOccurrenceDistribution
 		with:
 			{(IndividualOccurrenceProbability
@@ -90,7 +90,7 @@ ModelTestResource >> standardEffectDistribution [
 ]
 
 { #category : #gameCreation }
-ModelTestResource >> standardGame [
+StandardModelTestResource >> standardGame [
 	^  Game
 		playedBy: self standardSetOfPlayers
 		throwing: self standardSetOfDices
@@ -99,22 +99,22 @@ ModelTestResource >> standardGame [
 ]
 
 { #category : #standardValues }
-ModelTestResource >> standardNumberOfLaps [
+StandardModelTestResource >> standardNumberOfLaps [
 	^ 2
 ]
 
 { #category : #standardValues }
-ModelTestResource >> standardNumberOfSpots [
+StandardModelTestResource >> standardNumberOfSpots [
 	^ 10
 ]
 
 { #category : #standardValues }
-ModelTestResource >> standardSetOfDices [
+StandardModelTestResource >> standardSetOfDices [
 	^ {(RandomDice withFaces: 6)}
 ]
 
 { #category : #standardValues }
-ModelTestResource >> standardSetOfPlayers [
+StandardModelTestResource >> standardSetOfPlayers [
 	^ {(Player named: #player1).
 	(Player named: #player2).
 	(Player named: #player3)}

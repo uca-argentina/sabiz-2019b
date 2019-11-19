@@ -3,7 +3,7 @@ This class contains tests about spots.
 "
 Class {
 	#name : #SpotEffectTest,
-	#superclass : #ModelTest,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

@@ -3,7 +3,7 @@ This class contains tests about the game
 "
 Class {
 	#name : #GameTest,
-	#superclass : #ModelTest,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

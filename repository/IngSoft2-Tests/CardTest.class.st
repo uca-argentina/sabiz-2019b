@@ -3,7 +3,7 @@ This class contains tests about cards and playerEffects in general
 "
 Class {
 	#name : #CardTest,
-	#superclass : #ModelTest,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

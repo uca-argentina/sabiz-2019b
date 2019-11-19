@@ -3,7 +3,7 @@ This class contains tests about players
 "
 Class {
 	#name : #PlayerTest,
-	#superclass : #ModelTest,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

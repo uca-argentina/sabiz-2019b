@@ -12,18 +12,9 @@ Class {
 
 { #category : #'instance creation' }
 Deck class >> with: cardTypes [
-	| individualProbability |
 	self assert: [ cardTypes isNotEmpty ].
-	individualProbability := 100 / cardTypes size.
 	^ self new
-		initializeWith:
-			(OverallOccurrenceDistribution
-				with:
-					(cardTypes
-						collect: [ :each | 
-							IndividualOccurrenceProbability
-								of: each
-								withProbability: individualProbability ]) asArray)
+		initializeWith: (OverallOccurrenceDistribution evenDistributionFor: cardTypes)
 ]
 
 { #category : #initialization }

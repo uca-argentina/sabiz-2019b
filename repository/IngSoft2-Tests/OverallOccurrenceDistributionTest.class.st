@@ -7,6 +7,13 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #asserting }
+OverallOccurrenceDistributionTest >> assertPercentageOf: element in: collection is: expectedPercentage within: tolerance [
+	| percentage |
+	percentage := ((collection count: [ :each | each = element ]) / collection size) * 100.
+	self assert: (percentage - expectedPercentage) abs <= tolerance
+]
+
 { #category : #tests }
 OverallOccurrenceDistributionTest >> testCantCreateEmptyDistribution [
 	self
@@ -16,36 +23,16 @@ OverallOccurrenceDistributionTest >> testCantCreateEmptyDistribution [
 
 { #category : #tests }
 OverallOccurrenceDistributionTest >> testDistributionYieldsExpectedProbabilityForEachElement [
-	| distribution distributionCounter |
-	distributionCounter := Dictionary new.
-	distributionCounter at: #NullEffect put: 0.
-	distributionCounter at: #AtomicBombEffect put: 0.
-	distributionCounter at: #SpeedUpEffect put: 0.
-	distributionCounter at: #MoonWalkEffect put: 0.
-	distribution := OverallOccurrenceDistribution
-		with:
-			{(IndividualOccurrenceProbability of: #NullEffect withProbability: 25).
-			(IndividualOccurrenceProbability
-				of: #AtomicBombEffect
-				withProbability: 25).
-			(IndividualOccurrenceProbability
-				of: #SpeedUpEffect
-				withProbability: 25).
-			(IndividualOccurrenceProbability
-				of: #MoonWalkEffect
-				withProbability: 25)}.
-	10000
-		timesRepeat: [ | currentValue |
-			currentValue := distribution random.
-			distributionCounter
-				at: currentValue
-				put: (distributionCounter at: currentValue) + 1 ].
-	(distributionCounter associations
-		collect:
-			[ :each | Association key: each key value: (each value / 100 roundTo: 1) ])
-		do: [ :each | 
-			self
-				assert: (each value - (distribution probabilityOf: each key)) abs <= 1 ]
+	| distribution generation tolerance |
+	tolerance := 5.
+	distribution := OverallOccurrenceDistribution with:
+			{(IndividualOccurrenceProbability of: #element1 withProbability: 20).
+			(IndividualOccurrenceProbability of: #element2 withProbability: 30).
+			(IndividualOccurrenceProbability of: #element3 withProbability: 50)}.
+	generation := distribution generate: 1000.
+	self assertPercentageOf: #element1 in: generation is: (distribution probabilityOf: #element1) within: tolerance.
+	self assertPercentageOf: #element2 in: generation is: (distribution probabilityOf: #element2) within: tolerance.
+	self assertPercentageOf: #element3 in: generation is: (distribution probabilityOf: #element3) within: tolerance
 ]
 
 { #category : #tests }

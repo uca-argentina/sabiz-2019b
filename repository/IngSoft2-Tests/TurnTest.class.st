@@ -3,7 +3,7 @@ Tests for Turn and Turn class
 "
 Class {
 	#name : #TurnTest,
-	#superclass : #ModelTest,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 
