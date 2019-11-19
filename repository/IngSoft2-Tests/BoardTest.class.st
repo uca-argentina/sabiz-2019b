@@ -44,6 +44,20 @@ BoardTest >> testCustomBoardHasParticularEffectAtGivenPosition [
 ]
 
 { #category : #tests }
+BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsElsewhere [
+	| effect board |
+	effect := MoonWalkEffect new.
+	board := testResource
+		effectTestingBoardWithSpots: testResource standardNumberOfSpots
+		and: effect
+		at: 1.
+	1 to: board numberOfSpots do: [ :index | 
+		index == 1
+			ifTrue: [ self assert: (board spotAt: index) effect equals: effect ]
+			ifFalse: [ self assert: (board spotAt: index) effect class equals: NullEffect ] ]
+]
+
+{ #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
 		should: [ testResource standardBoardWithSpots: 10 andLaps: 0 ]

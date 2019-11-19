@@ -11,41 +11,27 @@ Class {
 }
 
 { #category : #'instance creation' }
-Deck class >> newLoadedWith: anEffect [
-	^ self new initializeLoadedWith: anEffect
-]
-
-{ #category : #'instance creation' }
-Deck class >> newStandard [
-	^ self new initializeStandardDeck
+Deck class >> with: cardTypes [
+	| individualProbability |
+	self assert: [ cardTypes isNotEmpty ].
+	individualProbability := 100 / cardTypes size.
+	^ self new
+		initializeWith:
+			(OverallOccurrenceDistribution
+				with:
+					(cardTypes
+						collect: [ :each | 
+							IndividualOccurrenceProbability
+								of: each
+								withProbability: individualProbability ]) asArray)
 ]
 
 { #category : #initialization }
-Deck >> initializeLoadedWith: anEffect [
-	cardsDistribution := OverallOccurrenceDistribution
-		with:
-			{(IndividualOccurrenceProbability of: anEffect withProbability: 100)}
-]
-
-{ #category : #initialization }
-Deck >> initializeStandardDeck [
-	cardsDistribution := OverallOccurrenceDistribution
-		with:
-			{(IndividualOccurrenceProbability
-				of: RepeatEffect new
-				withProbability: 25).
-			(IndividualOccurrenceProbability
-				of: AccelerationEffect new
-				withProbability: 25).
-			(IndividualOccurrenceProbability
-				of: OverloadEffect new
-				withProbability: 25).
-			(IndividualOccurrenceProbability
-				of: SpeedEffect new
-				withProbability: 25)}
+Deck >> initializeWith: distribution [
+	cardsDistribution := distribution
 ]
 
 { #category : #accessing }
 Deck >> nextCard [
-	^ Card newWith: cardsDistribution random
+	^ Card with: cardsDistribution random
 ]

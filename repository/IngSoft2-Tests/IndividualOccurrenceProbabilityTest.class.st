@@ -2,20 +2,20 @@
 This class contains tests about individual spot distributions
 "
 Class {
-	#name : #IndividualOccurrenceDistributionTest,
+	#name : #IndividualOccurrenceProbabilityTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-IndividualOccurrenceDistributionTest >> testCantCreateDistributionWithNegativeProbabilityValue [
+IndividualOccurrenceProbabilityTest >> testCantCreateDistributionWithNegativeProbabilityValue [
 	self
 		should: [ IndividualOccurrenceProbability of: NullEffect withProbability: -1 ]
 		raise: AssertionFailure
 ]
 
 { #category : #tests }
-IndividualOccurrenceDistributionTest >> testCantCreateDistributionWithProbabilityValueOverAHundred [
+IndividualOccurrenceProbabilityTest >> testCantCreateDistributionWithProbabilityValueOverAHundred [
 	self
 		should: [ IndividualOccurrenceProbability of: NullEffect withProbability: 101 ]
 		raise: AssertionFailure

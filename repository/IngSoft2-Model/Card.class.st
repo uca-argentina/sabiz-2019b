@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Card class >> newWith: anEffect [
+Card class >> with: anEffect [
 	^ self new initializeWith: anEffect
 ]
 

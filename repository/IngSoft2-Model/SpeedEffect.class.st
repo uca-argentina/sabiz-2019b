@@ -11,7 +11,7 @@ Class {
 SpeedEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
 	self checkTurnOf: aPlayer in: aGame.
 	(aGame historyOf: player) last
-		addEffectOfCard: (Card newWith: self)
+		addEffectOfCard: (Card with: self)
 ]
 
 { #category : #evaluating }

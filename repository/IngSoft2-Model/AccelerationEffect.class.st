@@ -10,7 +10,7 @@ Class {
 { #category : #effect }
 AccelerationEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	self checkTurnOf: aPlayer in: aGame.
-	aGame addEffectOfCard: (Card newWith: self)
+	aGame addEffectOfCard: (Card with: self)
 ]
 
 { #category : #evaluating }

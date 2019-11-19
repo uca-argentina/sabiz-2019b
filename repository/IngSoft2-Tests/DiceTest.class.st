@@ -32,11 +32,10 @@ DiceTest >> testRandomDiceRollsValidNumber [
 DiceTest >> testSequentialDiceRollsExpectedSequence [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
-	dice := SequentialDice withSequence: {1 . 2 . 3 . 4}.
+	dice := SequentialDice withSequence: {1 . 2 . 3 }.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
-	rolledSequence add: dice roll.
-	self assert: [ rolledSequence asArray = {1 . 2 . 3 . 4 . 1} ]
+	self assert: [ rolledSequence asArray = {1 . 2 . 3 . 1} ]
 ]

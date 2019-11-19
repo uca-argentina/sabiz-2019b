@@ -17,7 +17,13 @@ ModelTestResource >> boardWith: effectDistribution andSpots: spotsAmount andLaps
 ]
 
 { #category : #boardCreation }
-ModelTestResource >> boardWith: effect at: spotNumber [
+ModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber [
+	| spots |
+	spots := OrderedCollection
+		new: spotsNumber
+		withAll: (Spot with: NullEffect new).
+	spots at: spotNumber put: (Spot with: effect).
+	^ Board with: spots andLaps: 2
 ]
 
 { #category : #boardCreation }
@@ -43,6 +49,17 @@ ModelTestResource >> standardBoardWithSpots: spots andLaps: laps [
 		boardWith: self standardEffectDistribution
 		andSpots: spots
 		andLaps: laps
+]
+
+{ #category : #standardValues }
+ModelTestResource >> standardDeckOfCards [
+	| cardTypes |
+	cardTypes := OrderedCollection new.
+	cardTypes
+		addAll: (CardInstantEffect subclasses collect: [ :each | each new ]).
+	cardTypes
+		addAll: (CardPermanentEffect subclasses collect: [ :each | each new ]).
+	^ Deck with: cardTypes asArray
 ]
 
 { #category : #standardValues }
@@ -77,7 +94,8 @@ ModelTestResource >> standardGame [
 	^  Game
 		playedBy: self standardSetOfPlayers
 		throwing: self standardSetOfDices
-		using: self standardBoard
+		on: self standardBoard
+		using: self standardDeckOfCards
 ]
 
 { #category : #standardValues }

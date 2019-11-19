@@ -53,20 +53,25 @@ OverallOccurrenceDistributionTest >> testProbabilityOfGivenElementHasCorrectValu
 	| distribution |
 	distribution := OverallOccurrenceDistribution
 		with:
-			{(IndividualOccurrenceProbability of: #NullEffect withProbability: 25).
-			(IndividualOccurrenceProbability of: #AtomicBombEffect withProbability: 25).
-			(IndividualOccurrenceProbability of: #SpeedUpEffect withProbability: 25).
-			(IndividualOccurrenceProbability of: #MoonWalkEffect withProbability: 25)}.
-	self assert: (distribution probabilityOf: #NullEffect) equals: 25
+			{(IndividualOccurrenceProbability of: #element1 withProbability: 30).
+			(IndividualOccurrenceProbability of: #element2 withProbability: 26).
+			(IndividualOccurrenceProbability of: #element3 withProbability: 24).
+			(IndividualOccurrenceProbability of: #element4 withProbability: 20)}.
+	self assert: (distribution probabilityOf: #element1) equals: 30
 ]
 
 { #category : #tests }
-OverallOccurrenceDistributionTest >> testTotalProbabilitiesCannotBeLowerThanOneHundred [
+OverallOccurrenceDistributionTest >> testTotalProbabilitiesCannotBeDifferentToOneHundred [
 	self
 		should: [ OverallOccurrenceDistribution
 				with:
-					{(IndividualOccurrenceProbability of: NullEffect new withProbability: 25).
-					(IndividualOccurrenceProbability of: AtomicBombEffect new withProbability: 25).
-					(IndividualOccurrenceProbability of: WormHoleEffect new withProbability: 25)} ]
+					{(IndividualOccurrenceProbability of: #element1 withProbability: 25).
+					(IndividualOccurrenceProbability of: #element2 withProbability: 25)} ]
+		raise: AssertionFailure.
+	self
+		should: [ OverallOccurrenceDistribution
+				with:
+					{(IndividualOccurrenceProbability of: #element1 withProbability: 80).
+					(IndividualOccurrenceProbability of: #element3 withProbability: 25)} ]
 		raise: AssertionFailure
 ]

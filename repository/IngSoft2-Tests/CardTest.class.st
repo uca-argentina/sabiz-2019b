@@ -7,31 +7,50 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'tests - permanent' }
-CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayers [
-	| game cardToPlay |
-	game := Game
+{ #category : #resources }
+CardTest >> newCardTestingGameFor: cardEffect [
+	^ self
+		newCardTestingGameFor: cardEffect
+		on: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+]
+
+{ #category : #resources }
+CardTest >> newCardTestingGameFor: cardEffect on: board [
+	^ Game
 		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {7})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: AccelerationEffect new.
+		throwing: {(SequentialDice withSequence: {1})}
+		on: board
+		using: (Deck with: {cardEffect})
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testAccelerationEffectIncreasesByOneRollResults [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: AccelerationEffect new.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game
+		nextTurnPlaying: cardToPlay
+		affecting: 'It is no necessary to clarify, this card affects all players'.
+	self assert: (game positionOf: player1) equals: 3
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testAccelerationEffectIncreasesByOneRollResultsForAllPlayers [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game
 		nextTurnPlaying: cardToPlay
 		affecting: 'It is no necessary to clarify, this card affects all players'.
 	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 9.
-	self assert: (game positionOf: player2) equals: 9
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game positionOf: player2) equals: 3
 ]
 
 { #category : #'tests - permanent' }
-CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayersAndIsAcumulative [
+CardTest >> testAccelerationEffectIncreasesByOneRollResultsForAllPlayersAndIsAcumulative [
 	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {2})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: AccelerationEffect new.
+	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game
 		nextTurnPlaying: cardToPlay
@@ -41,33 +60,14 @@ CardTest >> testAccelerationEffectIncreasesInOneDicesRollResulForAllPlayersAndIs
 		nextTurnPlaying: cardToPlay
 		affecting: 'It is no necessary to clarify, this card affects all players'.
 	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 8.
-	self assert: (game positionOf: player2) equals: 5
+	self assert: (game positionOf: player1) equals: 6.
+	self assert: (game positionOf: player2) equals: 4
 ]
 
 { #category : #'tests - permanent' }
-CardTest >> testAccelerationEffectIncreasesInOneDicesRollResult [
+CardTest >> testCantPlayAPermanentCardIfItsNotTheTurnOfThePlayer [
 	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {7})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: (AccelerationEffect new).
-	cardToPlay := (game cardsInHandOf: player1) first.
-	game
-		nextTurnPlaying: cardToPlay
-		affecting: 'It is no necessary to clarify, this card affects all players'.
-	self assert: (game positionOf: player1) equals: 9
-]
-
-{ #category : #'tests - permanent' }
-CardTest >> testCantPlayAPermanentCardIfIsNotTheTurnOfThePlayer [
-	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {7})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: AccelerationEffect new.
+	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player2) first.
 	self
 		should: [ game
@@ -78,69 +78,36 @@ CardTest >> testCantPlayAPermanentCardIfIsNotTheTurnOfThePlayer [
 ]
 
 { #category : #'tests - permanent' }
-CardTest >> testOverloadEffectDecreasesInTwoDicesRollResulForOnlyOnePlayerAndIsAcumulative [
+CardTest >> testOverloadEffectDecreasesByTwoTheRollResultOfOnlyOnePlayer [
 	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {4})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: OverloadEffect new.
-	cardToPlay := (game cardsInHandOf: player1) first.
-	game nextTurnPlaying: cardToPlay affecting: player1.
-	cardToPlay := (game cardsInHandOf: player2) first.
-	game nextTurnPlaying: cardToPlay affecting: player1.
-	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 3.
-	self assert: (game positionOf: player2) equals: 5
-]
-
-{ #category : #'tests - permanent' }
-CardTest >> testOverloadEffectDecreasesInTwoDicesRollResultOfOnlyOnePlayer [
-	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {7})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: OverloadEffect new.
-	cardToPlay := (game cardsInHandOf: player1) first.
-	game nextTurnPlaying: cardToPlay affecting: player2.
-	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 8.
-	self assert: (game positionOf: player2) equals: 6.
-]
-
-{ #category : #'tests - permanent' }
-CardTest >> testOverloadEffectDecreasesInTwoDicesRollResultOfOnlyOnePlayerAndIfAcumulativeIsNegativeGoesBack [
-	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {1})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: OverloadEffect new.
+	game := self newCardTestingGameFor: OverloadEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game nextTurnPlaying: cardToPlay affecting: player2.
 	game nextTurnWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 2.
 	self assert: (game positionOf: player2) equals: 10.
-	self assert: (game lapOf: player2) equals: -1.
+	self assert: (game lapOf: player2) equals: -1
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testOverloadEffectDecreasesByTwoTheRollResultOfOnlyOnePlayerAndIsAcumulative [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: OverloadEffect new.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	cardToPlay := (game cardsInHandOf: player2) first.
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: player1) equals: 7.
+	self assert: (game lapOf: player1) equals: -1.
+	self assert: (game positionOf: player2) equals: 2
 ]
 
 { #category : #'tests - instant' }
 CardTest >> testRepeatCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
 	| game cardToPlay board |
-	board := Board
-		with:
-			{(Spot with: NullEffect new).
-			(Spot with: SpeedUpEffect new).
-			(Spot with: NullEffect new).
-			(Spot with: NullEffect new).
-			(Spot with: NullEffect new)}
-		andLaps: 2.
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {1})}
-		using: board
-		andDeckLoadedWith: RepeatEffect new.
+	board := testResource effectTestingBoardWithSpots: 5 and: SpeedUpEffect new at: 2. 
+	game := self newCardTestingGameFor: RepeatEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game nextTurnWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
@@ -157,11 +124,7 @@ CardTest >> testRepeatCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
 { #category : #'tests - instant' }
 CardTest >> testRepeatCardCannotBePlayedIfDicesNeverRolled [
 	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(RandomDice withFaces: 6)}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: RepeatEffect new.
+	game := self newCardTestingGameFor: RepeatEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	self
 		should:
@@ -172,21 +135,10 @@ CardTest >> testRepeatCardCannotBePlayedIfDicesNeverRolled [
 { #category : #'tests - instant' }
 CardTest >> testRepeatCardRepeatesTheEffectOfTheSpotReachedAfterRollingDices [
 	| game cardToPlay board |
-	board := Board
-		with:
-			{(Spot with: NullEffect new).
-			(Spot with: SpeedUpEffect new).
-			(Spot with: NullEffect new).
-			(Spot with: NullEffect new).
-			(Spot with: NullEffect new)}
-		andLaps: 2.
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {1})}
-		using: board
-		andDeckLoadedWith: RepeatEffect new.
+	board := testResource effectTestingBoardWithSpots: 5 and: SpeedUpEffect new at: 2. 
+	game := self newCardTestingGameFor: RepeatEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
-	game nextTurnWithoutPlayingCards.
+	game nextTurnWithoutPlayingCards. 
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 1.
 	game
@@ -199,33 +151,25 @@ CardTest >> testRepeatCardRepeatesTheEffectOfTheSpotReachedAfterRollingDices [
 ]
 
 { #category : #'tests - permanent' }
-CardTest >> testSpeedEffectIncreasesInOneDicesRollResulForOnlyOnePlayerAndIsAcumulative [
+CardTest >> testSpeedEffectIncreasesByOneTheRollResulOfOnlyOnePlayerAndIsAcumulative [
 	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {2})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: SpeedEffect new.
+	game := self newCardTestingGameFor: SpeedEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game nextTurnPlaying: cardToPlay affecting: player1.
 	cardToPlay := (game cardsInHandOf: player2) first.
 	game nextTurnPlaying: cardToPlay affecting: player1.
 	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 8.
-	self assert: (game positionOf: player2) equals: 3
+	self assert: (game positionOf: player1) equals: 6.
+	self assert: (game positionOf: player2) equals: 2
 ]
 
 { #category : #'tests - permanent' }
-CardTest >> testSpeedEffectIncreasesInOneDicesRollResultOfOnlyOnePlayer [
+CardTest >> testSpeedEffectIncreasesByOneTheRollResultOfOnlyOnePlayer [
 	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {7})}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: SpeedEffect new.
+	game := self newCardTestingGameFor: SpeedEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game nextTurnPlaying: cardToPlay affecting: player1.
 	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 9.
-	self assert: (game positionOf: player2) equals: 8
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game positionOf: player2) equals: 2
 ]

@@ -13,9 +13,10 @@ TurnTest >> testItsThePreviousPlayerTurnUntilCallingNextTurn [
 	game := Game
 		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2).
+		on: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+		using: testResource standardDeckOfCards.
 	game nextTurnWithoutPlayingCards.
-	self assert: [(Player named: #player1) = game currentTurn].
+	self assert: player1 equals: game currentTurn.
 ]
 
 { #category : #tests }
@@ -24,7 +25,8 @@ TurnTest >> testTurnsFollowOrderOfInsertionOfPlayersInTheGame [
 	game := Game
 		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2).
+		on: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+		using: testResource standardDeckOfCards.
 	self assert: player1 equals: game nextTurnWithoutPlayingCards.
 	self assert: player2 equals: game nextTurnWithoutPlayingCards.
 	self assert: player1 equals: game nextTurnWithoutPlayingCards

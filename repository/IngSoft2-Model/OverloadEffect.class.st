@@ -10,7 +10,7 @@ Class {
 { #category : #effect }
 OverloadEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
 	self checkTurnOf: aPlayer in: aGame.
-	(aGame historyOf: player) last addEffectOfCard: (Card newWith: self)
+	(aGame historyOf: player) last addEffectOfCard: (Card with: self)
 ]
 
 { #category : #evaluating }

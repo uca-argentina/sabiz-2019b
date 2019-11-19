@@ -9,12 +9,8 @@ Class {
 
 { #category : #tests }
 PlayerTest >> testAllPlayerReceivesTwoCardsAsSoonAsHeEntersTheGame [
-	| game board |
-	board := testResource standardBoard.
-	game := Game
-		playedBy: {player1. player2}
-		throwing: {RandomDice withFaces: 6}
-		using: board.
+	| game |
+	game := testResource standardGame.
 	game players
 		do: [ :each | self assert: each cardsInHand size equals: 2 ]
 ]
@@ -25,9 +21,9 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 	game := Game
 		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: RepeatEffect new.
-	cardToPlay := Card newWith: AccelerationEffect new.
+		on: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+		using: (Deck with: {RepeatEffect new}).
+	cardToPlay := Card with: AccelerationEffect new.
 	self
 		should:
 			[ game nextTurnPlaying: cardToPlay affecting: player2 ]
@@ -40,12 +36,12 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 	game := Game
 		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
-		using: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
-		andDeckLoadedWith: AccelerationEffect new.
+		on: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+		using: (Deck with: {AccelerationEffect new}).
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game nextTurnPlaying: cardToPlay affecting: player2.
 	self
-		assert: (game cardsInHandOf: (Player named: #player1)) size
+		assert: (game cardsInHandOf: player1) size
 		equals: 1
 ]
 
@@ -56,7 +52,5 @@ PlayerTest >> testTwoPlayersWithTheDifferentNamesAreTheDifferentPlayers [
 
 { #category : #tests }
 PlayerTest >> testTwoPlayersWithTheSameNameAreTheSamePlayer [
-	self
-		assert: (Player named: #player1)
-		equals: (Player named: #player1)
+	self assert: (Player named: #player1) equals: (Player named: #player1)
 ]

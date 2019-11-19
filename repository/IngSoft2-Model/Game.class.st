@@ -17,36 +17,40 @@ Class {
 }
 
 { #category : #validation }
-Game class >> checkDuplicatePlayers: players [
-	self assert: players asSet size = players size
-]
-
-{ #category : #validation }
-Game class >> checkPlayerQuantity: players checkDices: dices [
-	self
-		assert: [ players isNotEmpty ]
-		description: 'Not enough players to initialize game'.
+Game class >> checkDices: dices [
 	self
 		assert: [ dices isNotEmpty ]
 		description: 'Tried to initialize a game with an invalid set of Dices'
 ]
 
-{ #category : #'instance creation' }
-Game class >> playedBy: players throwing: dices using: aBoard [
-	self checkDuplicatePlayers: players.
-	self checkPlayerQuantity: players checkDices: dices.
-	^ self new playedBy: players throwing: dices on: aBoard
+{ #category : #validation }
+Game class >> checkDuplicatePlayers: players [
+	self assert: players asSet size = players size
+]
+
+{ #category : #validation }
+Game class >> checkPlayerQuantity: players [
+	self
+		assert: [ players isNotEmpty ]
+		description: 'Not enough players to initialize game'
+]
+
+{ #category : #validation }
+Game class >> checkPlayersStartWithoutCards: players [
+	players do: [ :player | self assert: [ player cardsInHand isEmpty ] ]
 ]
 
 { #category : #'instance creation' }
-Game class >> playedBy: players throwing: dices using: aBoard andDeckLoadedWith: anEffect [
+Game class >> playedBy: players throwing: dices on: aBoard using: aDeck [
 	self checkDuplicatePlayers: players.
-	self checkPlayerQuantity: players checkDices: dices.
+	self checkPlayerQuantity: players.
+	self checkDices: dices.
+	self checkPlayersStartWithoutCards: players.
 	^ self new
 		playedBy: players
 		throwing: dices
 		on: aBoard
-		usingDeckLoadedWith: anEffect
+		using: aDeck
 ]
 
 { #category : #effect }
@@ -59,9 +63,9 @@ Game >> applyEffectTriggeredBy: player in: newState [
 	board applyEffectOn: self triggeredBy: player in: newState
 ]
 
-{ #category : #accessing }
+{ #category : #accessingPlayer }
 Game >> cardsInHandOf: aPlayer [
-	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
+	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand copy
 ]
 
 { #category : #accessingGameState }
@@ -71,12 +75,12 @@ Game >> currentRanking [
 		collect: [ :assoc | assoc key ]
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGame }
 Game >> currentTurn [
 	^ turn currentTurn
 ]
 
-{ #category : #accessing }
+{ #category : #accessingGame }
 Game >> deck [
 	^ deck copy
 ]
@@ -183,10 +187,10 @@ Game >> playOneRound [
 ]
 
 { #category : #initialization }
-Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
-	deck := Deck newStandard.
+	deck := aDeck.
 	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
@@ -199,27 +203,7 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard [
 			Association
 				key: each
 				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
-		asDictionary
-]
-
-{ #category : #initialization }
-Game >> playedBy: gamePlayers throwing: gameDices on: aBoard usingDeckLoadedWith: anEffect [
-	leaderBoard := LeaderBoard new.
-	board := aBoard copy.
-	deck := Deck newLoadedWith: anEffect.
-	turn := Turn newWith: gamePlayers.
-	dices := gameDices copy.
-	globalPermanentCardEffects := OrderedCollection new.
-	gamePlayers
-		do: [ :each | 
-			each cardsInHand add: deck nextCard.
-			each cardsInHand add: deck nextCard ].
-	playersStates := (gamePlayers
-		collect: [ :each | 
-			Association
-				key: each
-				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
-		asDictionary
+		asOrderedDictionary
 ]
 
 { #category : #playing }
@@ -260,12 +244,12 @@ Game >> playerHasNotFinished: player [
 	^ (self lapOf: player) < board numberOfLaps
 ]
 
-{ #category : #accessingPlayer }
+{ #category : #accessingGame }
 Game >> players [
-	^ playersStates keys
+	^ playersStates keys copy
 ]
 
-{ #category : #accessingPlayer }
+{ #category : #accessingGameState }
 Game >> playersCurrentStates [
 	^ (self players
 		collect: [ :player | Association key: player value: (self stateOf: player) ])
