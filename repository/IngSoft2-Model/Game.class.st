@@ -11,7 +11,8 @@ Class {
 		'playersStates',
 		'globalPermanentCardEffects',
 		'deck',
-		'turn'
+		'turn',
+		'cardsPlayed'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -58,6 +59,16 @@ Game >> addEffectOfCard: aCard [
 	globalPermanentCardEffects add: aCard effect
 ]
 
+{ #category : #updating }
+Game >> addPlayedCard: aCard [
+	cardsPlayed addLast: aCard
+]
+
+{ #category : #accessingGameState }
+Game >> allCardsPlayed [
+	^ cardsPlayed
+]
+
 { #category : #effect }
 Game >> applyEffectTriggeredBy: player in: newState [
 	board applyEffectOn: self triggeredBy: player in: newState
@@ -65,7 +76,7 @@ Game >> applyEffectTriggeredBy: player in: newState [
 
 { #category : #accessingPlayer }
 Game >> cardsInHandOf: aPlayer [
-	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand copy
+	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
 ]
 
 { #category : #accessingGameState }
@@ -153,7 +164,7 @@ Game >> nextStateFor: aState afterMoving: rollSum [
 	^ board nextStateFor: aState afterMoving: rollSum
 ]
 
-{ #category : #'private - moving' }
+{ #category : #playing }
 Game >> nextTurnPlaying: aCard affecting: players [
 	| currentTurnPlayer |
 	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
@@ -162,7 +173,7 @@ Game >> nextTurnPlaying: aCard affecting: players [
 	^ currentTurnPlayer
 ]
 
-{ #category : #'private - moving' }
+{ #category : #playing }
 Game >> nextTurnWithoutPlayingCards [
 	| currentTurnPlayer |
 	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
@@ -190,6 +201,7 @@ Game >> playOneRound [
 Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
+	cardsPlayed := OrderedCollection new.
 	deck := aDeck.
 	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.

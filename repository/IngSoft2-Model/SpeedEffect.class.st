@@ -10,8 +10,8 @@ Class {
 { #category : #effect }
 SpeedEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
 	self checkTurnOf: aPlayer in: aGame.
-	(aGame historyOf: player) last
-		addEffectOfCard: (Card with: self)
+	(aGame historyOf: player) last addEffectOfCard: (Card with: self).
+	aGame addPlayedCard: (Card with: self)
 ]
 
 { #category : #evaluating }

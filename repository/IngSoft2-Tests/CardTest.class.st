@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #resources }
+CardTest >> add: aCard on: aGame to: aPlayer [
+	(aGame cardsInHandOf: aPlayer) add: aCard
+]
+
+{ #category : #resources }
 CardTest >> newCardTestingGameFor: cardEffect [
 	^ self
 		newCardTestingGameFor: cardEffect
@@ -69,6 +74,7 @@ CardTest >> testCantPlayAPermanentCardIfItsNotTheTurnOfThePlayer [
 	| game cardToPlay |
 	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player2) first.
+	self assert: game currentTurn equals: player1.
 	self
 		should: [ game
 				player: player2
@@ -104,14 +110,69 @@ CardTest >> testOverloadEffectDecreasesByTwoTheRollResultOfOnlyOnePlayerAndIsAcu
 ]
 
 { #category : #'tests - instant' }
+CardTest >> testRedoCardActsAsAPermanentIfLastPlayedCardIsPermanent [
+	| game cardToPlay board |
+	board := testResource
+		effectTestingBoardWithSpots: 5
+		and: SpeedUpEffect new
+		at: 2.
+	game := self newCardTestingGameFor: AccelerationEffect new on: board.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	self add: (Card with: RedoEffect new) on: game to: player1.
+	game
+		nextTurnPlaying: cardToPlay
+		affecting: 'It is no necessary to clarify, this card affects all players'.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1) last.
+	self
+		should: [ game player: player1 playsCard: cardToPlay affecting: game players ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Is not the turn of that player, cannot play permanent cards'
+		description: 'description incorrect'
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testRedoCardActsAsAnInstantIfLastPlayedCardIsInstant [
+	| game cardToPlay board |
+	board := testResource
+		effectTestingBoardWithSpots: 5
+		and: SpeedUpEffect new
+		at: 2.
+	game := self newCardTestingGameFor: RepeatEffect new on: board.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	self add: (Card with: RedoEffect new) on: game to: player1.
+	game nextTurnWithoutPlayingCards.
+	game
+		player: player1
+		playsCard: cardToPlay
+		affecting:
+			'No need to clarify because this effect always applies over the player who plays it'.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1) last.
+	self assert: game currentTurn equals: player2.
+	self
+		shouldnt: [ game
+				player: player1
+				playsCard: cardToPlay
+				affecting:
+					'No need to clarify because this effect always applies over the player who plays it' ]
+		raise: AssertionFailure
+]
+
+{ #category : #'tests - instant' }
 CardTest >> testRepeatCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
 	| game cardToPlay board |
-	board := testResource effectTestingBoardWithSpots: 5 and: SpeedUpEffect new at: 2. 
+	board := testResource
+		effectTestingBoardWithSpots: 5
+		and: SpeedUpEffect new
+		at: 2.
 	game := self newCardTestingGameFor: RepeatEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game nextTurnWithoutPlayingCards.
+	game nextTurnWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 1.
+	self assert: game currentTurn equals: player2.
 	game
 		player: player1
 		playsCard: cardToPlay
@@ -135,10 +196,13 @@ CardTest >> testRepeatCardCannotBePlayedIfDicesNeverRolled [
 { #category : #'tests - instant' }
 CardTest >> testRepeatCardRepeatesTheEffectOfTheSpotReachedAfterRollingDices [
 	| game cardToPlay board |
-	board := testResource effectTestingBoardWithSpots: 5 and: SpeedUpEffect new at: 2. 
+	board := testResource
+		effectTestingBoardWithSpots: 5
+		and: SpeedUpEffect new
+		at: 2.
 	game := self newCardTestingGameFor: RepeatEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
-	game nextTurnWithoutPlayingCards. 
+	game nextTurnWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 1.
 	game

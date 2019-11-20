@@ -1,5 +1,5 @@
 "
-This class represents an instant effect produced by playing a card
+This class represents an instant repeat effect produced by playing a card
 "
 Class {
 	#name : #RepeatEffect,
@@ -16,5 +16,6 @@ RepeatEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 				signal: 'Cant play that card because the dices never rolled' ].
 	aGame
 		player: aPlayer
-		triggersEffectAt: (history at: history size - 1) position
+		triggersEffectAt: (history at: history size - 1) position.
+	aGame addPlayedCard: (Card with: self)
 ]
