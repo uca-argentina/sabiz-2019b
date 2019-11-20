@@ -124,6 +124,7 @@ CardTest >> testRedoCardActsAsAPermanentIfLastPlayedCardIsPermanent [
 		affecting: 'It is no necessary to clarify, this card affects all players'.
 	game nextTurnWithoutPlayingCards.
 	cardToPlay := (game cardsInHandOf: player1) last.
+	self assert: cardToPlay equals: (Card with: RedoEffect new).
 	self
 		should: [ game player: player1 playsCard: cardToPlay affecting: game players ]
 		raise: AssertionFailure
@@ -150,6 +151,7 @@ CardTest >> testRedoCardActsAsAnInstantIfLastPlayedCardIsInstant [
 	game nextTurnWithoutPlayingCards.
 	cardToPlay := (game cardsInHandOf: player1) last.
 	self assert: game currentTurn equals: player2.
+	self assert: cardToPlay equals: (Card with: RedoEffect new).
 	self
 		shouldnt: [ game
 				player: player1
@@ -157,6 +159,37 @@ CardTest >> testRedoCardActsAsAnInstantIfLastPlayedCardIsInstant [
 				affecting:
 					'No need to clarify because this effect always applies over the player who plays it' ]
 		raise: AssertionFailure
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testRedoCardActsAsLastPlayedCard [
+	| game cardToPlay board |
+	board := testResource
+		effectTestingBoardWithSpots: 5
+		and: SpeedUpEffect new
+		at: 2.
+	game := self newCardTestingGameFor: SpeedEffect new on: board.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	self add: (Card with: RedoEffect new) on: game to: player1.
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1) last.
+	self assert: cardToPlay equals: (Card with: RedoEffect new).
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	self assert: (game positionOf: player1) equals: 1.
+	self assert: (game lapOf: player1) equals: 1
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testRedoCardCannotBePlayedIfAnotherCardsWereNeverPlayed [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: RedoEffect new.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	self
+		should: [ game nextTurnPlaying: cardToPlay affecting: player2 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cant play that card because no other cards has been played'
+		description: 'Incorrect description'
 ]
 
 { #category : #'tests - instant' }

@@ -30,11 +30,6 @@ Card >> effect [
 	^ effect
 ]
 
-{ #category : #comparing }
-Card >> hash [
-	self effect className hash
-]
-
 { #category : #initialization }
 Card >> initializeWith: anEffect [
 	effect := anEffect

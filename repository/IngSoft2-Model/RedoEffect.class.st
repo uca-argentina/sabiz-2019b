@@ -10,9 +10,14 @@ Class {
 { #category : #effect }
 RedoEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	| lastCardPlayed |
-	aGame allCardsPlayed size < 1
-		ifTrue: [ AssertionFailure
-				signal: 'Cant play that card because no other cards has been played' ].
+	self checkIfOneCardWasPlayesAtLeastin: aGame.
 	lastCardPlayed := aGame allCardsPlayed last.
 	aGame player: aPlayer playsCard: lastCardPlayed affecting: players
+]
+
+{ #category : #effect }
+RedoEffect >> checkIfOneCardWasPlayesAtLeastin: aGame [
+	aGame allCardsPlayed size < 1
+		ifTrue: [ AssertionFailure
+				signal: 'Cant play that card because no other cards has been played' ]
 ]

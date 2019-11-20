@@ -35,8 +35,8 @@ Player >> checkAvailabilityOf: aCard [
 ]
 
 { #category : #comparing }
-Player >> hash [ 
-^ (self name) hash
+Player >> hash [
+	^ self name hash
 ]
 
 { #category : #initialization }
