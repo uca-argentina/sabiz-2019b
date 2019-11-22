@@ -7,12 +7,20 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #comparing }
+RedoEffect >> = anEffect [
+	^ self class = anEffect class
+]
+
 { #category : #effect }
 RedoEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	| lastCardPlayed |
 	self checkIfOneCardWasPlayesAtLeastin: aGame.
 	lastCardPlayed := aGame allCardsPlayed last.
-	aGame player: aPlayer playsCard: lastCardPlayed affecting: players
+	lastCardPlayed effect
+		applyEffectOn: players
+		on: aGame
+		triggeredBy: aPlayer
 ]
 
 { #category : #effect }

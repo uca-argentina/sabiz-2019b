@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #comparing }
+SpeedEffect >> = anEffect [
+	^ self class = anEffect class
+]
+
 { #category : #effect }
 SpeedEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
 	self checkTurnOf: aPlayer in: aGame.

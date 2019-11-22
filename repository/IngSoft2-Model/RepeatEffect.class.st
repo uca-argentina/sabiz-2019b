@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #comparing }
+RepeatEffect >> = anEffect [
+	^ self class = anEffect class
+]
+
 { #category : #effect }
 RepeatEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	| history |

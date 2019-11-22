@@ -9,7 +9,7 @@ Class {
 
 { #category : #resources }
 CardTest >> add: aCard on: aGame to: aPlayer [
-	(aGame cardsInHandOf: aPlayer) add: aCard
+	(aGame cardsInHandOf: aPlayer) addLast: aCard
 ]
 
 { #category : #resources }
@@ -112,10 +112,7 @@ CardTest >> testOverloadEffectDecreasesByTwoTheRollResultOfOnlyOnePlayerAndIsAcu
 { #category : #'tests - instant' }
 CardTest >> testRedoCardActsAsAPermanentIfLastPlayedCardIsPermanent [
 	| game cardToPlay board |
-	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: SpeedUpEffect new
-		at: 2.
+	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
 	game := self newCardTestingGameFor: AccelerationEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	self add: (Card with: RedoEffect new) on: game to: player1.
@@ -135,10 +132,7 @@ CardTest >> testRedoCardActsAsAPermanentIfLastPlayedCardIsPermanent [
 { #category : #'tests - instant' }
 CardTest >> testRedoCardActsAsAnInstantIfLastPlayedCardIsInstant [
 	| game cardToPlay board |
-	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: SpeedUpEffect new
-		at: 2.
+	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
 	game := self newCardTestingGameFor: RepeatEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	self add: (Card with: RedoEffect new) on: game to: player1.
@@ -164,10 +158,7 @@ CardTest >> testRedoCardActsAsAnInstantIfLastPlayedCardIsInstant [
 { #category : #'tests - instant' }
 CardTest >> testRedoCardActsAsLastPlayedCard [
 	| game cardToPlay board |
-	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: SpeedUpEffect new
-		at: 2.
+	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
 	game := self newCardTestingGameFor: SpeedEffect new on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	self add: (Card with: RedoEffect new) on: game to: player1.
@@ -177,6 +168,30 @@ CardTest >> testRedoCardActsAsLastPlayedCard [
 	self assert: cardToPlay equals: (Card with: RedoEffect new).
 	game nextTurnPlaying: cardToPlay affecting: player1.
 	self assert: (game positionOf: player1) equals: 1.
+	self assert: (game lapOf: player1) equals: 1
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testRedoCardActsAsThePreviousOneOfThePreviousOneCardIsThePreviousOneIsANotherRedo [
+	| game cardToPlay board |
+	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
+	game := self newCardTestingGameFor: SpeedEffect new on: board.
+	cardToPlay := (game cardsInHandOf: player1)
+		detect: [ :each | each = (Card with: SpeedEffect new) ].
+	self add: (Card with: RedoEffect new) on: game to: player1.
+	self add: (Card with: RedoEffect new) on: game to: player1.
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1)
+		detect: [ :each | each = (Card with: RedoEffect new) ].
+	self assert: cardToPlay equals: (Card with: RedoEffect new).
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1)
+		detect: [ :each | each = (Card with: RedoEffect new) ].
+	self assert: cardToPlay equals: (Card with: RedoEffect new).
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	self assert: (game positionOf: player1) equals: 5.
 	self assert: (game lapOf: player1) equals: 1
 ]
 

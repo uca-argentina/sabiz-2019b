@@ -17,7 +17,7 @@ Card class >> with: anEffect [
 
 { #category : #comparing }
 Card >> = aCard [
-	^ self effect className = aCard effect className
+	^ self effect = aCard effect
 ]
 
 { #category : #effect }
@@ -28,6 +28,11 @@ Card >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 { #category : #accessing }
 Card >> effect [
 	^ effect
+]
+
+{ #category : #comparing }
+Card >> hash [
+	^ self effect hash
 ]
 
 { #category : #initialization }
