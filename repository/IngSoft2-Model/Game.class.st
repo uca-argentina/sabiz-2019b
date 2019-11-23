@@ -274,6 +274,11 @@ Game >> positionOf: player [
 ]
 
 { #category : #effect }
+Game >> removeEffectOfCard: aCard [
+	globalPermanentCardEffects remove: aCard effect
+]
+
+{ #category : #effect }
 Game >> rewindPositionFor: player [
 	| history |
 	history := self historyOf: player.

@@ -19,16 +19,19 @@ CancellationEffect >> = anEffect [
 CancellationEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	self checkValidPlayers: players asOrderedCollection of: aGame.
 	aGame players = players
-		ifTrue: [ self cancelGlobal: effectToEliminate on: aGame ]
-		ifFalse: [ self cancelLocal: effectToEliminate on: players ]
+		ifTrue: [ self cancelGlobalOn: aGame ]
+		ifFalse: [ self cancelLocalEffectOf: players on: aGame ]
 ]
 
 { #category : #effect }
-CancellationEffect >> cancelGlobal: aGlobalEffect on: aGame [
+CancellationEffect >> cancelGlobalOn: aGame [
+	aGame removeEffectOfCard: (Card with: effectToEliminate)
 ]
 
 { #category : #effect }
-CancellationEffect >> cancelLocal: aLocalEffect on: aPlayer [
+CancellationEffect >> cancelLocalEffectOf: aPlayer on: aGame [
+	(aGame historyOf: aPlayer) last
+		removeEffectOfCard: (Card with: effectToEliminate)
 ]
 
 { #category : #effect }
@@ -39,7 +42,7 @@ CancellationEffect >> checkValidPlayers: players of: aGame [
 		description: 'This card only affects just one player or all players'
 ]
 
-{ #category : #accessing }
-CancellationEffect >> effectToEliminate [
-	^ effectToEliminate
+{ #category : #initialization }
+CancellationEffect >> setEffectToEliminate: aPermanentEffect [
+	effectToEliminate := aPermanentEffect
 ]
