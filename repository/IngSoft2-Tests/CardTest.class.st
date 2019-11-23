@@ -12,6 +12,11 @@ CardTest >> add: aCard on: aGame to: aPlayer [
 	(aGame cardsInHandOf: aPlayer) addLast: aCard
 ]
 
+{ #category : #'tests - instant' }
+CardTest >> addEffectToEliminate: aPermanentEffect onCancellationCard: aCard [
+	aCard effect effectToEliminate value: aPermanentEffect
+]
+
 { #category : #resources }
 CardTest >> newCardTestingGameFor: cardEffect [
 	^ self
@@ -22,7 +27,7 @@ CardTest >> newCardTestingGameFor: cardEffect [
 { #category : #resources }
 CardTest >> newCardTestingGameFor: cardEffect on: board [
 	^ Game
-		playedBy: {player1. player2}
+		playedBy: {player1. player2. player3}
 		throwing: {(SequentialDice withSequence: {1})}
 		on: board
 		using: (Deck with: {cardEffect})
@@ -67,6 +72,44 @@ CardTest >> testAccelerationEffectIncreasesByOneRollResultsForAllPlayersAndIsAcu
 	game nextTurnWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 6.
 	self assert: (game positionOf: player2) equals: 4
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testCancellationCardAffectingAllPlayersRemovesAGlobalEffect [
+	| game cardToPlay board |
+	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
+	game := self newCardTestingGameFor: AccelerationEffect new on: board.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	self add: (Card with: CancellationEffect new) on: game to: player1.
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	game nextTurnWithoutPlayingCards.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1) last.
+	self assert: cardToPlay equals: (Card with: CancellationEffect new).
+	game nextTurnPlaying: cardToPlay affecting: game players.
+	game nextTurnWithoutPlayingCards.
+	self assert: (game positionOf: player1) equals: 5.
+	self assert: (game lapOf: player1) equals: 0.
+	self assert: (game positionOf: player2) equals: 5.
+	self assert: (game lapOf: player2) equals: 0
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testCancellationCardCanBePlayedEvenIfIsNotTheTurnOfThePlayer [
+	| game cardToPlay board |
+	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
+	game := self newCardTestingGameFor: SpeedEffect new on: board.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	self add: (Card with: CancellationEffect new) on: game to: player1.
+	game nextTurnPlaying: cardToPlay affecting: player1.
+	game nextTurnWithoutPlayingCards.
+	cardToPlay := (game cardsInHandOf: player1) last.
+	self assert: game currentTurn equals: player2.
+	self assert: cardToPlay equals: (Card with: CancellationEffect new).
+	self
+		shouldnt:
+			[ game player: player1 playsCard: cardToPlay affecting: player2 ]
+		raise: AssertionFailure
 ]
 
 { #category : #'tests - permanent' }
@@ -172,7 +215,7 @@ CardTest >> testRedoCardActsAsLastPlayedCard [
 ]
 
 { #category : #'tests - instant' }
-CardTest >> testRedoCardActsAsThePreviousOneOfThePreviousOneCardIsThePreviousOneIsANotherRedo [
+CardTest >> testRedoCardActsAsThePreviousOneOfThePreviousOneCardIsThePreviousOneIsAnotherRedo [
 	| game cardToPlay board |
 	board := testResource effectlessBoardWithSpots: 5 andLaps: 2.
 	game := self newCardTestingGameFor: SpeedEffect new on: board.

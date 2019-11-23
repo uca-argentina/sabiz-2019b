@@ -258,7 +258,7 @@ Game >> playerHasNotFinished: player [
 
 { #category : #accessingGame }
 Game >> players [
-	^ playersStates keys copy
+	^ playersStates keys asOrderedCollection copy
 ]
 
 { #category : #accessingGameState }

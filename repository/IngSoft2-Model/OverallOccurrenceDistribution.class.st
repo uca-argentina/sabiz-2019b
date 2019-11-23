@@ -67,7 +67,7 @@ OverallOccurrenceDistribution >> random [
 			collection
 				addAll:
 					(OrderedCollection
-						new: each probability
+						new: each probability rounded
 						withAll: (each element)) ].
 	^ collection atRandom
 ]
