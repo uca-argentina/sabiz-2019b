@@ -22,11 +22,42 @@ Board class >> checkNumberOfSpots: spotsAmmount checkNumberOfLaps: numberOfLaps 
 ]
 
 { #category : #'instance creation' }
-Board class >> with: spotCollection andLaps: numberOfLaps [
+Board class >> newWith: numberOfSpots and: numberOfLaps [
+	| spots |
 	self
-		checkNumberOfSpots: spotCollection size
+		checkNumberOfSpots: numberOfSpots
 		checkNumberOfLaps: numberOfLaps.
-	^ self new with: spotCollection andLaps: numberOfLaps
+	spots := OrderedCollection new.
+	numberOfSpots
+		timesRepeat: [ spots add: (Spot with: self standardEffectDistribution random) ].
+	^ Board new initializeWith: spots andLaps: numberOfLaps
+]
+
+{ #category : #standardValues }
+Board class >> standardEffectDistribution [
+	^ OverallOccurrenceDistribution
+		with:
+			{(IndividualOccurrenceProbability
+				of: AtomicBombEffect new
+				withProbability: 2).
+			(IndividualOccurrenceProbability
+				of: NullEffect new
+				withProbability: 45).
+			(IndividualOccurrenceProbability
+				of: MoonWalkEffect new
+				withProbability: 5).
+			(IndividualOccurrenceProbability
+				of: SpeedUpEffect new
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: TimeMachineEffect new
+				withProbability: 8).
+			(IndividualOccurrenceProbability
+				of: WormHoleEffect new
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: CardGivingEffect new
+				withProbability: 10)}
 ]
 
 { #category : #effect }
@@ -35,6 +66,12 @@ Board >> applyEffectOn: game triggeredBy: player in: state [
 		applyEffectOn: game
 		triggeredBy: player
 		in: state
+]
+
+{ #category : #initialization }
+Board >> initializeWith: spotsCollection andLaps: lapsAmmount [
+	spots := spotsCollection.
+	numberOfLaps := lapsAmmount
 ]
 
 { #category : #'private - moving' }
@@ -77,10 +114,4 @@ Board >> player: aPlayer triggersEffectAt: aPosition on: aGame [
 Board >> spotAt: position [
 	self assert: (position > 0 and: position <= self numberOfSpots).
 	^ spots at: position
-]
-
-{ #category : #initialization }
-Board >> with: spotsCollection andLaps: lapsAmmount [
-	spots := spotsCollection.
-	numberOfLaps := lapsAmmount
 ]
