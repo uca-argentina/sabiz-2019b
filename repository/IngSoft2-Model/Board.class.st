@@ -1,5 +1,5 @@
 "
-Class that represents a game board with spots
+This class represents a game board with spots
 "
 Class {
 	#name : #Board,
