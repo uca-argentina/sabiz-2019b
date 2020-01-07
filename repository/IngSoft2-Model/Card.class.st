@@ -15,11 +15,6 @@ Card class >> with: anEffect [
 	^ self new initializeWith: anEffect
 ]
 
-{ #category : #comparing }
-Card >> = aCard [
-	^ self effect = aCard effect
-]
-
 { #category : #effect }
 Card >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
 	effect applyEffectOn: players on: aGame triggeredBy: aPlayer

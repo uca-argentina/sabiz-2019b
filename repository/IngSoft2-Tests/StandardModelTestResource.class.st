@@ -8,34 +8,47 @@ Class {
 }
 
 { #category : #boardCreation }
+StandardModelTestResource >> boardWith: effectDistribution andSpots: spotsAmount andLaps: numberOfLaps [
+	| spots |
+	spots := OrderedCollection new.
+	spotsAmount
+		timesRepeat: [ spots add: (Spot with: effectDistribution random) ].
+	^ Board with: spots andLaps: numberOfLaps
+]
+
+{ #category : #boardCreation }
 StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber [
 	| spots |
 	spots := OrderedCollection
 		new: spotsNumber
 		withAll: (Spot with: NullEffect new).
 	spots at: spotNumber put: (Spot with: effect).
-	^ self newBoardWithSpotCollection: spots and: 2
+	^ Board with: spots andLaps: 2
 ]
 
 { #category : #boardCreation }
 StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber andLaps: lapsNumber [
-	| spots |
-	spots := OrderedCollection
-		new: spotsNumber
-		withAll: (Spot with: NullEffect new).
-	^ self newBoardWithSpotCollection: spots and: lapsNumber
-]
-
-{ #category : #boardCreation }
-StandardModelTestResource >> newBoardWithSpotCollection: spots and: lapsNumber [
-	^ Board new initializeWith: spots andLaps: lapsNumber
+	^ Board
+		with:
+			(OrderedCollection
+				new: spotsNumber
+				withAll: (Spot with: NullEffect new))
+		andLaps: lapsNumber
 ]
 
 { #category : #boardCreation }
 StandardModelTestResource >> standardBoard [
-	^ Board
-		newWith: self standardNumberOfSpots
-		and: self standardNumberOfLaps
+	^ self
+		standardBoardWithSpots: self standardNumberOfSpots
+		andLaps: self standardNumberOfLaps
+]
+
+{ #category : #boardCreation }
+StandardModelTestResource >> standardBoardWithSpots: spots andLaps: laps [
+	^ self
+		boardWith: self standardEffectDistribution
+		andSpots: spots
+		andLaps: laps
 ]
 
 { #category : #standardValues }
@@ -47,6 +60,33 @@ StandardModelTestResource >> standardDeckOfCards [
 	cardTypes
 		addAll: (CardPermanentEffect subclasses collect: [ :each | each new ]).
 	^ Deck with: cardTypes asArray
+]
+
+{ #category : #standardValues }
+StandardModelTestResource >> standardEffectDistribution [
+	^ OverallOccurrenceDistribution
+		with:
+			{(IndividualOccurrenceProbability
+				of: AtomicBombEffect new
+				withProbability: 2).
+			(IndividualOccurrenceProbability
+				of: NullEffect new
+				withProbability: 45).
+			(IndividualOccurrenceProbability
+				of: MoonWalkEffect new
+				withProbability: 5).
+			(IndividualOccurrenceProbability
+				of: SpeedUpEffect new
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: TimeMachineEffect new
+				withProbability: 8).
+			(IndividualOccurrenceProbability
+				of: WormHoleEffect new
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: CardGivingEffect new
+				withProbability: 10)}
 ]
 
 { #category : #gameCreation }

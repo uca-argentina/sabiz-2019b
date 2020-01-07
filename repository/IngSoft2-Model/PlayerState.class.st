@@ -59,8 +59,3 @@ PlayerState >> on: currentPosition and: currentLapNumber under: playerEffects [
 PlayerState >> position [
 	^ position copy
 ]
-
-{ #category : #removing }
-PlayerState >> removeEffectOfCard: aCard [
-	permanentEffects remove: aCard effect
-]

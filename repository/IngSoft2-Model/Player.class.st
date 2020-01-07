@@ -6,6 +6,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'playerName',
+		'states',
 		'cardsInHand'
 	],
 	#category : #'IngSoft2-Model'
@@ -34,8 +35,8 @@ Player >> checkAvailabilityOf: aCard [
 ]
 
 { #category : #comparing }
-Player >> hash [
-	^ self name hash
+Player >> hash [ 
+^ (self name) hash
 ]
 
 { #category : #initialization }

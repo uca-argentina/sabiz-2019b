@@ -7,16 +7,10 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
-OverloadEffect >> = anEffect [
-	^ self class = anEffect class
-]
-
 { #category : #effect }
 OverloadEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
 	self checkTurnOf: aPlayer in: aGame.
-	(aGame historyOf: player) last addEffectOfCard: (Card with: self).
-	aGame addPlayedCard: (Card with: self)
+	(aGame historyOf: player) last addEffectOfCard: (Card with: self)
 ]
 
 { #category : #evaluating }
