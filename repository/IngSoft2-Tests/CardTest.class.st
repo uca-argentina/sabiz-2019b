@@ -11,7 +11,7 @@ Class {
 CardTest >> newCardTestingGameFor: cardEffect [
 	^ self
 		newCardTestingGameFor: cardEffect
-		on: (testResource effectlessBoardWithSpots: 10 andLaps: 2)
+		on: (testResource effectlessBoardWithSpots: 10)
 ]
 
 { #category : #resources }
@@ -21,6 +21,7 @@ CardTest >> newCardTestingGameFor: cardEffect on: board [
 		throwing: {(SequentialDice withSequence: {1})}
 		on: board
 		using: (Deck with: {cardEffect})
+		withLaps: 2
 ]
 
 { #category : #'tests - permanent' }

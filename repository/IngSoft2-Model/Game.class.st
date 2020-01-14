@@ -11,7 +11,8 @@ Class {
 		'playersStates',
 		'globalPermanentCardEffects',
 		'deck',
-		'turn'
+		'turn',
+		'laps'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,38 +20,45 @@ Class {
 { #category : #validation }
 Game class >> checkDices: dices [
 	self
-		assert: [ dices isNotEmpty ]
+		assert: dices isNotEmpty
 		description: 'Tried to initialize a game with an invalid set of Dices'
 ]
 
 { #category : #validation }
 Game class >> checkDuplicatePlayers: players [
-	self assert: players asSet size = players size
+	self assert: players asSet size = players size description: 'The player set contains a duplicate'
+]
+
+{ #category : #validation }
+Game class >> checkNumberOfLaps: laps [
+	self assert: laps > 0 description: 'Invalid number of laps'
 ]
 
 { #category : #validation }
 Game class >> checkPlayerQuantity: players [
 	self
-		assert: [ players isNotEmpty ]
+		assert: players isNotEmpty
 		description: 'Not enough players to initialize game'
 ]
 
 { #category : #validation }
 Game class >> checkPlayersStartWithoutCards: players [
-	players do: [ :player | self assert: [ player cardsInHand isEmpty ] ]
+	players do: [ :player | self assert: player cardsInHand isEmpty ]
 ]
 
 { #category : #'instance creation' }
-Game class >> playedBy: players throwing: dices on: aBoard using: aDeck [
+Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps: laps [
 	self checkDuplicatePlayers: players.
 	self checkPlayerQuantity: players.
 	self checkDices: dices.
 	self checkPlayersStartWithoutCards: players.
+	self checkNumberOfLaps: laps.
 	^ self new
 		playedBy: players
 		throwing: dices
 		on: aBoard
 		using: aDeck
+		withLaps: laps
 ]
 
 { #category : #effect }
@@ -171,6 +179,11 @@ Game >> nextTurnWithoutPlayingCards [
 ]
 
 { #category : #accessingGame }
+Game >> numberOfLaps [
+	^ laps
+]
+
+{ #category : #accessingGame }
 Game >> numberOfPlayers [
 	^ self players size
 ]
@@ -187,9 +200,10 @@ Game >> playOneRound [
 ]
 
 { #category : #initialization }
-Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLaps: numberOfLaps [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
+	laps := numberOfLaps.
 	deck := aDeck.
 	turn := Turn newWith: gamePlayers.
 	dices := gameDices copy.
@@ -241,7 +255,7 @@ Game >> playerHasFinished: player [
 
 { #category : #accessingGameState }
 Game >> playerHasNotFinished: player [
-	^ (self lapOf: player) < board numberOfLaps
+	^ (self lapOf: player) < self numberOfLaps
 ]
 
 { #category : #accessingGame }

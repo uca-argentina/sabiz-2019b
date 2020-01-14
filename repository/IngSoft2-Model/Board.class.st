@@ -5,28 +5,31 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'spots',
-		'numberOfLaps'
+		'spots'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #validation }
-Board class >> checkNumberOfSpots: spotsAmmount checkNumberOfLaps: numberOfLaps [
+Board class >> checkNumberOfSpots: spotsAmmount [
 	self
 		assert: [ spotsAmmount > 0 ]
-		description: 'Invalid number of spots'.
-	self
-		assert: [ numberOfLaps > 0 ]
-		description: 'Invalid number of laps'
+		description: 'Invalid number of spots'
 ]
 
 { #category : #'instance creation' }
-Board class >> with: spotCollection andLaps: numberOfLaps [
-	self
-		checkNumberOfSpots: spotCollection size
-		checkNumberOfLaps: numberOfLaps.
-	^ self new with: spotCollection andLaps: numberOfLaps
+Board class >> with: spotCollection [
+	self checkNumberOfSpots: spotCollection size.
+	^ self new initializeWith: spotCollection
+]
+
+{ #category : #'instance creation' }
+Board class >> with: effectDistribution andSpots: spotsAmount [
+	| spots |
+	spots := OrderedCollection new.
+	spotsAmount
+		timesRepeat: [ spots add: (Spot with: effectDistribution random) ].
+	^ Board with: spots
 ]
 
 { #category : #effect }
@@ -35,6 +38,11 @@ Board >> applyEffectOn: game triggeredBy: player in: state [
 		applyEffectOn: game
 		triggeredBy: player
 		in: state
+]
+
+{ #category : #initialization }
+Board >> initializeWith: spotsCollection [
+	spots := spotsCollection.
 ]
 
 { #category : #'private - moving' }
@@ -51,11 +59,6 @@ Board >> nextStateFor: state afterMoving: rollSum [
 		on: netNewPosition
 		and: newLapNumber
 		under: state effects
-]
-
-{ #category : #accessing }
-Board >> numberOfLaps [
-	^ numberOfLaps
 ]
 
 { #category : #accessing }
@@ -77,10 +80,4 @@ Board >> player: aPlayer triggersEffectAt: aPosition on: aGame [
 Board >> spotAt: position [
 	self assert: (position > 0 and: position <= self numberOfSpots).
 	^ spots at: position
-]
-
-{ #category : #initialization }
-Board >> with: spotsCollection andLaps: lapsAmmount [
-	spots := spotsCollection.
-	numberOfLaps := lapsAmmount
 ]

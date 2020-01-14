@@ -14,31 +14,24 @@ BoardTest >> allSpotTypes [
 ]
 
 { #category : #'test - accessing' }
-BoardTest >> testBoardHasGivenNumberOfLaps [
-	| board |
-	board := testResource standardBoardWithSpots: 10 andLaps: 2.
-	self assert: [ board numberOfLaps = 2 ]
-]
-
-{ #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfSpots [
 	| board |
-	board := testResource standardBoardWithSpots: 20 andLaps: 2.
+	board := testResource standardBoardWithSpots: 20.
 	self assert: [ board numberOfSpots = 20 ]
 ]
 
 { #category : #tests }
 BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 	self
-		should: [ Board with: {} andLaps: 5 ]
+		should: [ Board with: {} ]
 		raise: AssertionFailure
 ]
 
 { #category : #tests }
-BoardTest >> testCustomBoardHasParticularEffectAtGivenPosition [
+BoardTest >> testCustomBoardHasGivenEffectsInTheCorrespondingPosition [
 	| board spots |
 	spots := self allSpotTypes.
-	board := Board with: spots andLaps: 5.
+	board := Board with: spots.
 	spots
 		withIndexDo: [ :spot :index | self assert: (board spotAt: index) equals: spot ]
 ]
@@ -58,19 +51,10 @@ BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsEl
 ]
 
 { #category : #tests }
-BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
-	self
-		should: [ testResource standardBoardWithSpots: 10 andLaps: 0 ]
-			raise: AssertionFailure;
-		should: [ testResource standardBoardWithSpots: 10 andLaps: -1 ]
-			raise: AssertionFailure
-]
-
-{ #category : #tests }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
-		should: [ testResource standardBoardWithSpots: 0 andLaps: 2 ]
+		should: [ testResource standardBoardWithSpots: 0 ]
 			raise: AssertionFailure;
-		should: [ testResource standardBoardWithSpots: -1 andLaps: 2 ]
+		should: [ testResource standardBoardWithSpots: -1 ]
 			raise: AssertionFailure
 ]
