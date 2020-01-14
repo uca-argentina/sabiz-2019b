@@ -11,8 +11,8 @@ Class {
 		'playersStates',
 		'globalPermanentCardEffects',
 		'deck',
-		'turn',
-		'laps'
+		'laps',
+		'turnAllocator'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -61,12 +61,12 @@ Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps
 		withLaps: laps
 ]
 
-{ #category : #effect }
-Game >> addEffectOfCard: aCard [
+{ #category : #cardEffects }
+Game >> addEffectOf: aCard [
 	globalPermanentCardEffects add: aCard effect
 ]
 
-{ #category : #effect }
+{ #category : #spotEffects }
 Game >> applyEffectTriggeredBy: player in: newState [
 	board applyEffectOn: self triggeredBy: player in: newState
 ]
@@ -85,7 +85,7 @@ Game >> currentRanking [
 
 { #category : #accessingGame }
 Game >> currentTurn [
-	^ turn currentTurn
+	^ turnAllocator currentTurn
 ]
 
 { #category : #accessingGame }
@@ -143,7 +143,7 @@ Game >> moveAllPlayers [
 	self players do: [ :player | self move: player ]
 ]
 
-{ #category : #effect }
+{ #category : #spotEffects }
 Game >> moveEveryoneToTheFirstSpot [
 	self players
 		do: [ :each | 
@@ -157,23 +157,23 @@ Game >> moveEveryoneToTheFirstSpot [
 ]
 
 { #category : #'private - moving' }
-Game >> nextStateFor: aState afterMoving: rollSum [
-	^ board nextStateFor: aState afterMoving: rollSum
+Game >> nextStateFor: aState afterMoving: movementAmount [
+	^ board nextStateFor: aState afterMoving: movementAmount
 ]
 
-{ #category : #'private - moving' }
+{ #category : #'private - playingCards' }
 Game >> nextTurnPlaying: aCard affecting: players [
 	| currentTurnPlayer |
-	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
+	currentTurnPlayer := turnAllocator nextTurnWithoutPlayingCards.
 	self player: currentTurnPlayer  playsCard: aCard  affecting: players.
 	self move: currentTurnPlayer.
 	^ currentTurnPlayer
 ]
 
-{ #category : #'private - moving' }
+{ #category : #'private - playingCards' }
 Game >> nextTurnWithoutPlayingCards [
 	| currentTurnPlayer |
-	currentTurnPlayer := turn nextTurnWithoutPlayingCards.
+	currentTurnPlayer := turnAllocator nextTurnWithoutPlayingCards.
 	self move: currentTurnPlayer.
 	^ currentTurnPlayer
 ]
@@ -205,7 +205,7 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLa
 	board := aBoard copy.
 	laps := numberOfLaps.
 	deck := aDeck.
-	turn := Turn newWith: gamePlayers.
+	turnAllocator := TurnAllocator for: gamePlayers.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
 	gamePlayers
@@ -231,12 +231,12 @@ Game >> player: aPlayer playsCard: aCard affecting: players [
 		affecting: players
 ]
 
-{ #category : #effect }
+{ #category : #cardEffects }
 Game >> player: aPlayer triggersEffectAt: aPosition [
 	board player: aPlayer triggersEffectAt: aPosition on: self
 ]
 
-{ #category : #effect }
+{ #category : #spotEffects }
 Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 	self players
 		do: [ :each | 
@@ -275,7 +275,7 @@ Game >> positionOf: player [
 	^ (self stateOf: player) position
 ]
 
-{ #category : #effect }
+{ #category : #spotEffects }
 Game >> rewindPositionFor: player [
 	| history |
 	history := self historyOf: player.

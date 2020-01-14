@@ -201,6 +201,11 @@ GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 ]
 
 { #category : #'test - playing' }
+GameTest >> testPlayerCantPlayUnlessItsHisTurn [
+	self assert: false
+]
+
+{ #category : #'test - playing' }
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game |
 	game := Game
@@ -257,7 +262,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	self assert: (game positionOf: player1) equals: 1
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 GameTest >> testProhibitsCreatingGameWithInvalidNumberOfLaps [
 	self
 		should: [ Game

@@ -3,7 +3,7 @@ This class models an instant effect that can be applied in the game by using a c
 "
 Class {
 	#name : #CardInstantEffect,
-	#superclass : #Object,
+	#superclass : #CardEffect,
 	#category : #'IngSoft2-Model'
 }
 

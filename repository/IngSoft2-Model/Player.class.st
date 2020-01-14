@@ -6,7 +6,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'playerName',
-		'states',
 		'cardsInHand'
 	],
 	#category : #'IngSoft2-Model'

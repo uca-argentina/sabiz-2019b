@@ -3,7 +3,7 @@ This class models a card permanent effects that can be applied to one or more pl
 "
 Class {
 	#name : #CardPermanentEffect,
-	#superclass : #Object,
+	#superclass : #CardEffect,
 	#category : #'IngSoft2-Model'
 }
 

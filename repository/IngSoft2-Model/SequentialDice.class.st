@@ -25,8 +25,18 @@ SequentialDice >> initializeWithSequence: sequence [
 	lastRolledIndex := sequence size - 1
 ]
 
+{ #category : #accessing }
+SequentialDice >> lastRolledIndex [
+	^ lastRolledIndex
+]
+
 { #category : #roll }
 SequentialDice >> roll [
 	lastRolledIndex := (lastRolledIndex + 1) % rollingSequence size.
 	^ rollingSequence at: lastRolledIndex + 1
+]
+
+{ #category : #accessing }
+SequentialDice >> sequenceSize [
+	^ rollingSequence size
 ]

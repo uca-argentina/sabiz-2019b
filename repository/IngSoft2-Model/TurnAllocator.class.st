@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'turnWheel',
-		'currentTurn'
+		'currentTurn',
+		'currentRound'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -21,8 +22,16 @@ TurnAllocator class >> for: participants [
 
 { #category : #advancing }
 TurnAllocator >> advanceTurnWheel [
+	turnWheel lastRolledIndex = (turnWheel sequenceSize - 1) ifTrue: [ 
+		currentRound := currentRound + 1
+	].
 	currentTurn := turnWheel roll.
 	^ currentTurn
+]
+
+{ #category : #accessing }
+TurnAllocator >> currentRoundNumber [
+	^ currentRound
 ]
 
 { #category : #accessing }
@@ -33,5 +42,6 @@ TurnAllocator >> currentTurn [
 { #category : #initialization }
 TurnAllocator >> initializeFor: participants [
 	turnWheel := SequentialDice withSequence: participants.
-	currentTurn := turnWheel roll
+	currentTurn := turnWheel roll.
+	currentRound := 1
 ]

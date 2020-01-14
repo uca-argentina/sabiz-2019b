@@ -32,6 +32,18 @@ TurnAllocatorTest >> testTurnAllocatorRespectsExpectedOrder [
 	turns advanceTurnWheel.
 	self assert: turns currentTurn equals: player3.
 	turns advanceTurnWheel.
-	self assert: turns currentTurn equals: player1.
+	self assert: turns currentTurn equals: player1
+]
+
+{ #category : #tests }
+TurnAllocatorTest >> testTurnAllocatorYieldsExpectedRoundNumber [
+	| turns |
+	turns := TurnAllocator for: { player1. player2. player3 }.
+	self assert: turns currentRoundNumber equals: 1.
 	turns advanceTurnWheel.
+	self assert: turns currentRoundNumber equals: 1.
+	turns advanceTurnWheel.
+	self assert: turns currentRoundNumber equals: 1.
+	turns advanceTurnWheel.
+	self assert: turns currentRoundNumber equals: 2
 ]

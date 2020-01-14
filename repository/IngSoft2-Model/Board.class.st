@@ -46,7 +46,7 @@ Board >> initializeWith: spotsCollection [
 ]
 
 { #category : #'private - moving' }
-Board >> nextStateFor: state afterMoving: rollSum [
+Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 	| newLapNumber netNewPosition grossNewPosition |
 	grossNewPosition := state position + rollSum.
 	newLapNumber := state lapNumber
@@ -58,6 +58,7 @@ Board >> nextStateFor: state afterMoving: rollSum [
 	^ PlayerState
 		on: netNewPosition
 		and: newLapNumber
+		and: roundNumber
 		under: state effects
 ]
 
