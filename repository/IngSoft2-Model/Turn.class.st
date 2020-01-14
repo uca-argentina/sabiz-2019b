@@ -1,5 +1,5 @@
 "
-This class represents the turn handler of the game. It can give the game the information about which player has to play next and which player is playing now
+This class represents the turn handler of the game. It can give the game the information about which player has to play next
 "
 Class {
 	#name : #Turn,
