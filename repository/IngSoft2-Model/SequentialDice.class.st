@@ -21,13 +21,27 @@ SequentialDice class >> withSequence: sequence [
 
 { #category : #initialization }
 SequentialDice >> initializeWithSequence: sequence [
-	rollingSequence := sequence copy.
+	rollingSequence := sequence asOrderedCollection copy.
 	lastRolledIndex := sequence size - 1
 ]
 
 { #category : #accessing }
 SequentialDice >> lastRolledIndex [
 	^ lastRolledIndex
+]
+
+{ #category : #alteringSequence }
+SequentialDice >> removeFromSequence: element [
+	(rollingSequence
+		indexOf: element
+		ifAbsent: [ AssertionFailure
+				signal:
+					'Tried to remove a non existent element from the sequence of a sequential dice' ])
+		<= lastRolledIndex
+		ifTrue: [ lastRolledIndex := lastRolledIndex - 1 ].
+	rollingSequence remove: element.
+	lastRolledIndex < 0
+		ifTrue: [ lastRolledIndex := rollingSequence size - 1 ]
 ]
 
 { #category : #roll }

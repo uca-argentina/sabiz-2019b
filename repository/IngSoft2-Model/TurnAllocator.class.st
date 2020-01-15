@@ -45,3 +45,8 @@ TurnAllocator >> initializeFor: participants [
 	currentTurn := turnWheel roll.
 	currentRound := 1
 ]
+
+{ #category : #alteringWheel }
+TurnAllocator >> playerHasFinished: player [
+	turnWheel removeFromSequence: player
+]

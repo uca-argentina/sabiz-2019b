@@ -232,6 +232,11 @@ GameTest >> testPlayerOneWonTheGame [
 	self assert: game winner equals: player1
 ]
 
+{ #category : #tests }
+GameTest >> testPlayersThatFinishedAreNoLongerInTurnWheel [
+	self assert: false
+]
+
 { #category : #'test - playing' }
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game |

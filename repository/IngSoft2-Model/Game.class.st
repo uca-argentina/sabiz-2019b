@@ -126,8 +126,6 @@ Game >> lapOf: player [
 { #category : #'private - moving' }
 Game >> move: player [
 	| newState |
-	(self playerHasFinished: player)
-		ifTrue: [ ^ self ].
 	newState := self
 		nextStateFor: (self stateOf: player)
 		afterMoving: (self totalDisplacementFor: player).
@@ -197,6 +195,14 @@ Game >> playAnEntireGame [
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
 	self moveAllPlayers
+]
+
+{ #category : #playing }
+Game >> playTurnFor: player [
+	self
+		assert: (self playerHasNotFinished: player)
+		description: 'Trying to move a player that has already finished'.
+	self move: player
 ]
 
 { #category : #initialization }
