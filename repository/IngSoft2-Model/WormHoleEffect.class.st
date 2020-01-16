@@ -9,7 +9,7 @@ Class {
 
 { #category : #effect }
 WormHoleEffect >> applyOn: game triggeredBy: player [
-	game sendBack: player by: self numberOfSpotsToGoBack
+	game displace: player by: self numberOfSpotsToGoBack
 ]
 
 { #category : #standardValues }

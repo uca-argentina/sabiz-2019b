@@ -85,6 +85,17 @@ Game >> currentTurn [
 
 { #category : #'private - spotEffects' }
 Game >> dealCardTo: player [
+	| current newState hand |
+	current := self stateOf: player.
+	hand := current cardsInHand.
+	hand add: deck nextCard.
+	newState := PlayerState
+		on: current position
+		and: current lapNumber
+		and: current roundNumber
+		under: current effects
+		holding: hand.
+	self updateStateFor: player with: newState
 ]
 
 { #category : #accessingGame }
@@ -95,6 +106,16 @@ Game >> deck [
 { #category : #accessingGame }
 Game >> dices [
 	^ dices copy
+]
+
+{ #category : #'private - spotEffects' }
+Game >> displace: player by: anAmount [
+	| newState |
+	newState := board
+		nextStateFor: (self stateOf: player)
+		afterMoving: anAmount
+		onRoundNumber: turnAllocator currentRoundNumber.
+	self updateStateFor: player with: newState
 ]
 
 { #category : #accessingGameState }
@@ -202,6 +223,7 @@ Game >> playTurnFor: player [
 	self
 		assert: turnAllocator currentTurn = player
 		description: 'Trying to move a player out of turn'.
+	"aca hacer un backup inicial usado para marcar las conciciones al principio del turno de cada ronda, condiciones a las que se volveria con time machine"
 	self move: player.
 	(self playerHasFinished: player) ifTrue: [turnAllocator playerHasFinished: player].
 	(self isNotOver) ifTrue: [turnAllocator advanceTurnWheel]
@@ -318,14 +340,6 @@ Game >> rewindPositionFor: player [
 { #category : #'private - moving' }
 Game >> rollSum [
 	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
-]
-
-{ #category : #'private - spotEffects' }
-Game >> sendBack: player by: anAmount [
-]
-
-{ #category : #'private - spotEffects' }
-Game >> speedUp: player by: anAmount [
 ]
 
 { #category : #accessingPlayer }

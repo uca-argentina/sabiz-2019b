@@ -19,7 +19,12 @@ PlayerState class >> on: position and: lapNumber and: roundNumber under: playerE
 	self
 		assert: position > 0
 		description: 'A player cant be on a position lower than 1'.
-	^ self new on: position and: lapNumber and: roundNumber under: playerEffects holding: cards
+	^ self new
+		on: position
+		and: lapNumber
+		and: roundNumber
+		under: playerEffects asOrderedCollection
+		holding: cards asOrderedCollection
 ]
 
 { #category : #'instance creation' }

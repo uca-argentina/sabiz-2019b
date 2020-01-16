@@ -9,7 +9,7 @@ Class {
 
 { #category : #effect }
 SpeedUpEffect >> applyOn: game triggeredBy: player [
-	game speedUp: player by: self numberOfSpotsToGoForward
+	game displace: player by: self numberOfSpotsToGoForward
 ]
 
 { #category : #standardValues }
