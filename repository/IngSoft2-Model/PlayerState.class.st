@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'position',
 		'lapNumber',
-		'permanentEffects',
 		'roundNumber',
 		'cards'
 	],
@@ -15,7 +14,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-PlayerState class >> on: position and: lapNumber and: roundNumber under: playerEffects holding: cards [
+PlayerState class >> on: position and: lapNumber and: roundNumber holding: cards [
 	self
 		assert: position > 0
 		description: 'A player cant be on a position lower than 1'.
@@ -23,14 +22,13 @@ PlayerState class >> on: position and: lapNumber and: roundNumber under: playerE
 		on: position
 		and: lapNumber
 		and: roundNumber
-		under: playerEffects asOrderedCollection
 		holding: cards asOrderedCollection
 ]
 
 { #category : #'instance creation' }
 PlayerState class >> on: position and: lapNumber holding: cards [
 	"Used to create the first state"
-	^ self on: position and: lapNumber and: 0 under: OrderedCollection new holding: cards
+	^ self on: position and: lapNumber and: 0 holding: cards
 ]
 
 { #category : #comparing }
@@ -40,27 +38,16 @@ PlayerState >> > aState [
 		ifFalse: [ ^ self lapNumber > aState lapNumber ]
 ]
 
-{ #category : #adding }
-PlayerState >> addEffectOf: aCard [
-	permanentEffects add: aCard effect
-]
-
 { #category : #accessing }
 PlayerState >> cardsInHand [
 	^ cards copy
 ]
 
-{ #category : #experimental }
+{ #category : #validation }
 PlayerState >> checkAvailabilityOf: aCard [
-"category validation"
-	"self
-		assert: [ cardsInHand includes: aCard ]
-		description: 'That card is not in the Hand'"
-]
-
-{ #category : #accessing }
-PlayerState >> effects [
-	^ permanentEffects copy
+	self
+		assert: [ cards includes: aCard ]
+		description: 'That card is not in the hand of the player'
 ]
 
 { #category : #accessing }
@@ -69,10 +56,9 @@ PlayerState >> lapNumber [
 ]
 
 { #category : #initialization }
-PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber under: playerEffects holding: heldCards [
+PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber holding: heldCards [
 	position := currentPosition copy.
 	lapNumber := currentLapNumber copy.
-	permanentEffects := playerEffects.
 	roundNumber := currentRoundNumber.
 	cards := heldCards
 ]

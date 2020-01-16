@@ -55,6 +55,20 @@ Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps
 		withLaps: laps
 ]
 
+{ #category : #'private - cardEffects' }
+Game >> addPlayedCard: card to: target by: player [
+	| newState newHand |
+	playedCards add: (PlayedCard of: card effect to: target).
+	newHand := (self stateOf: player) cardsInHand.
+	newHand remove: card.
+	newState := PlayerState
+		on: (self stateOf: player) position
+		and: (self stateOf: player) lapNumber
+		and: turnAllocator currentRoundNumber
+		holding: newHand.
+	self updateStateFor: player with: newState
+]
+
 { #category : #accessingPlayer }
 Game >> cardsInHandOf: player [
 	^ (self stateOf: player) cardsInHand
@@ -82,7 +96,6 @@ Game >> dealCardTo: player [
 		on: current position
 		and: current lapNumber
 		and: current roundNumber
-		under: current effects
 		holding: hand.
 	self updateStateFor: player with: newState
 ]
@@ -184,7 +197,6 @@ Game >> moveEveryoneToTheFirstSpot [
 						on: 1
 						and: (self lapOf: each)
 						and: turnAllocator currentRoundNumber
-						under: (self stateOf: each) effects
 						holding: (self stateOf: each) cardsInHand) ]
 ]
 
@@ -198,6 +210,12 @@ Game >> numberOfPlayers [
 	^ self players size
 ]
 
+{ #category : #playing }
+Game >> play: card for: player on: target [
+	(self stateOf: player) checkAvailabilityOf: card.
+	card applyEffectOn: target on: self triggeredBy: player
+]
+
 { #category : #'testing - playing' }
 Game >> playAnEntireGame [
 	[ self isNotOver ] whileTrue: [ self playOneRound ]
@@ -207,30 +225,6 @@ Game >> playAnEntireGame [
 Game >> playOneRound [
 	self assert: [ self isNotOver ] description: 'Game is already over'.
 	self moveAllPlayers
-]
-
-{ #category : #playing }
-Game >> playTurnFor: player [
-	self
-		assert: (self playerHasNotFinished: player)
-		description: 'Trying to move a player that has already finished'.
-	self
-		assert: turnAllocator currentTurn = player
-		description: 'Trying to move a player out of turn'.
-	self
-		updateStateFor: player
-		with:
-			(PlayerState
-				on: (self stateOf: player) position
-				and: (self stateOf: player) lapNumber
-				and: turnAllocator currentRoundNumber
-				under: (self stateOf: player) effects
-				holding: (self stateOf: player) cardsInHand).
-	self move: player.
-	(self playerHasFinished: player)
-		ifTrue: [ turnAllocator playerHasFinished: player ].
-	self isNotOver
-		ifTrue: [ turnAllocator advanceTurnWheel ]
 ]
 
 { #category : #initialization }
@@ -294,6 +288,10 @@ Game >> positionOf: player [
 	^ (self stateOf: player) position
 ]
 
+{ #category : #'private - cardEffects' }
+Game >> removePlayedCard: card [
+]
+
 { #category : #'private - spotEffects' }
 Game >> rewindPositionFor: player [
 	| targetState |
@@ -307,7 +305,6 @@ Game >> rewindPositionFor: player [
 				on: targetState position
 				and: targetState lapNumber
 				and: turnAllocator currentRoundNumber
-				under: targetState effects
 				holding: targetState cardsInHand)
 ]
 
@@ -322,6 +319,29 @@ Game >> stateOf: player [
 		at: player
 		ifAbsent: [ AssertionFailure
 				signal: 'Asked for a player that is not in the game' ]) last copy
+]
+
+{ #category : #playing }
+Game >> throwDicesFor: player [
+	self
+		assert: (self playerHasNotFinished: player)
+		description: 'Trying to move a player that has already finished'.
+	self
+		assert: turnAllocator currentTurn = player
+		description: 'Trying to move a player out of turn'.
+	self
+		updateStateFor: player
+		with:
+			(PlayerState
+				on: (self stateOf: player) position
+				and: (self stateOf: player) lapNumber
+				and: turnAllocator currentRoundNumber
+				holding: (self stateOf: player) cardsInHand).
+	self move: player.
+	(self playerHasFinished: player)
+		ifTrue: [ turnAllocator playerHasFinished: player ].
+	self isNotOver
+		ifTrue: [ turnAllocator advanceTurnWheel ]
 ]
 
 { #category : #'private - moving' }

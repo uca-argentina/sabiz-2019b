@@ -8,18 +8,18 @@ Class {
 }
 
 { #category : #effect }
-CardPermanentEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
-	self subclassResponsibility
+CardPermanentEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
+	self checkTurnOf: aPlayer in: aGame
 ]
 
-{ #category : #effect }
+{ #category : #validation }
 CardPermanentEffect >> checkTurnOf: aPlayer in: aGame [
 	self
 		assert: [ aGame currentTurn = aPlayer ]
 		description: 'Is not the turn of that player, cannot play permanent cards'
 ]
 
-{ #category : #evaluating }
+{ #category : #accesing }
 CardPermanentEffect >> value [
 	self subclassResponsibility
 ]

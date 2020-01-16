@@ -56,7 +56,6 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 		on: netNewPosition
 		and: newLapNumber
 		and: roundNumber
-		under: state effects
 		holding: state cardsInHand
 ]
 

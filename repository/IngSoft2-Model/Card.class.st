@@ -15,14 +15,24 @@ Card class >> with: anEffect [
 	^ self new initializeWith: anEffect
 ]
 
+{ #category : #comparing }
+Card >> = aCard [
+	^ self effect className = aCard effect className
+]
+
 { #category : #effect }
 Card >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
-	effect applyEffectOn: players on: aGame triggeredBy: aPlayer
+	effect applyOn: players on: aGame triggeredBy: aPlayer
 ]
 
 { #category : #accessing }
 Card >> effect [
 	^ effect
+]
+
+{ #category : #comparing }
+Card >> hash [
+	^ self effect className hash
 ]
 
 { #category : #initialization }

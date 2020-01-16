@@ -16,10 +16,9 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 		on: (testResource effectlessBoardWithSpots: 10)
 		using: (Deck with: {RepeatEffect new})
 		withLaps: 2.
-	cardToPlay := Card with: AccelerationEffect new.
+	cardToPlay := Card with: OverloadEffect new.
 	self
-		should: [ game nextTurnPlaying: cardToPlay affecting: player2 ]
-		raise: AssertionFailure
+		should: [ game play: cardToPlay for: player1 on: { player2 }]	 raise: AssertionFailure.
 ]
 
 { #category : #tests }
@@ -32,7 +31,7 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 		using: (Deck with: {AccelerationEffect new})
 		withLaps: 2.
 	cardToPlay := (game cardsInHandOf: player1) first.
-	game nextTurnPlaying: cardToPlay affecting: player2.
+	game play: cardToPlay for: player1 on: game players. 
 	self assert: (game cardsInHandOf: player1) size equals: 1
 ]
 

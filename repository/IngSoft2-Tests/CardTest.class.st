@@ -29,40 +29,22 @@ CardTest >> testAccelerationEffectIncreasesByOneRollResults [
 	| game cardToPlay |
 	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
-	game
-		nextTurnPlaying: cardToPlay
-		affecting: 'It is no necessary to clarify, this card affects all players'.
-	self assert: (game positionOf: player1) equals: 3
-]
-
-{ #category : #'tests - permanent' }
-CardTest >> testAccelerationEffectIncreasesByOneRollResultsForAllPlayers [
-	| game cardToPlay |
-	game := self newCardTestingGameFor: AccelerationEffect new.
-	cardToPlay := (game cardsInHandOf: player1) first.
-	game
-		nextTurnPlaying: cardToPlay
-		affecting: 'It is no necessary to clarify, this card affects all players'.
-	game nextTurnWithoutPlayingCards.
+	game play: cardToPlay for: player1 on: game players.
+	game throwDicesFor: player1.
+	game play: cardToPlay for: player2 on: game players.
+	game throwDicesFor: player2.
 	self assert: (game positionOf: player1) equals: 3.
-	self assert: (game positionOf: player2) equals: 3
+	self assert: (game positionOf: player2) equals: 4
 ]
 
-{ #category : #'tests - permanent' }
-CardTest >> testAccelerationEffectIncreasesByOneRollResultsForAllPlayersAndIsAcumulative [
+{ #category : #tests }
+CardTest >> testAccelerationMustBeTargetedToAllPlayers [
 	| game cardToPlay |
 	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
-	game
-		nextTurnPlaying: cardToPlay
-		affecting: 'It is no necessary to clarify, this card affects all players'.
-	cardToPlay := (game cardsInHandOf: player2) first.
-	game
-		nextTurnPlaying: cardToPlay
-		affecting: 'It is no necessary to clarify, this card affects all players'.
-	game nextTurnWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 6.
-	self assert: (game positionOf: player2) equals: 4
+	game play: cardToPlay for: player1 on: { player1. player2 }.
+	game throwDicesFor: player1.
+	self should: [game play: cardToPlay for: player2 on: { player1 }] raise: AssertionFailure
 ]
 
 { #category : #'tests - permanent' }
@@ -71,10 +53,7 @@ CardTest >> testCantPlayAPermanentCardIfItsNotTheTurnOfThePlayer [
 	game := self newCardTestingGameFor: AccelerationEffect new.
 	cardToPlay := (game cardsInHandOf: player2) first.
 	self
-		should: [ game
-				player: player2
-				playsCard: cardToPlay
-				affecting: 'It is no necessary to clarify, this card affects all players' ]
+		should: [ game play: cardToPlay for: player2 on: { player1. player2 } ]
 		raise: AssertionFailure
 ]
 
@@ -83,8 +62,9 @@ CardTest >> testOverloadEffectDecreasesByTwoTheRollResultOfOnlyOnePlayer [
 	| game cardToPlay |
 	game := self newCardTestingGameFor: OverloadEffect new.
 	cardToPlay := (game cardsInHandOf: player1) first.
-	game nextTurnPlaying: cardToPlay affecting: player2.
-	game nextTurnWithoutPlayingCards.
+	game play: cardToPlay for: player1 on: player2.
+	game throwDicesFor: player1.
+	game throwDicesFor: player2.
 	self assert: (game positionOf: player1) equals: 2.
 	self assert: (game positionOf: player2) equals: 10.
 	self assert: (game lapOf: player2) equals: -1

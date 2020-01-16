@@ -8,12 +8,13 @@ Class {
 }
 
 { #category : #effect }
-AccelerationEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
-	self checkTurnOf: aPlayer in: aGame.
-	aGame addEffectOf: (Card with: self)
+AccelerationEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
+	super applyOn: target on: aGame triggeredBy: aPlayer.
+	self assert: target = aGame players description: 'Tried to play acceleration card on a specific set of players instead of all of them'.
+	aGame addPlayedCard: (Card with: self) to: target by: aPlayer
 ]
 
-{ #category : #evaluating }
+{ #category : #accesing }
 AccelerationEffect >> value [
 	^ 1
 ]

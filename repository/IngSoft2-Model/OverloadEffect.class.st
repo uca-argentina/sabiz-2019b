@@ -8,12 +8,13 @@ Class {
 }
 
 { #category : #effect }
-OverloadEffect >> applyEffectOn: player on: aGame triggeredBy: aPlayer [
-	self checkTurnOf: aPlayer in: aGame.
-	(aGame historyOf: player) last addEffectOf: (Card with: self)
+OverloadEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
+	super applyOn: target on: aGame triggeredBy: aPlayer.
+	self assert: target size = 1 description: 'Tried to play overload card on more than one player'.
+	aGame addPlayedCard: (Card with: self) to: target by: aPlayer
 ]
 
-{ #category : #evaluating }
+{ #category : #accesing }
 OverloadEffect >> value [
 	^ -2
 ]

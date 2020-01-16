@@ -8,6 +8,6 @@ Class {
 }
 
 { #category : #effect }
-CardInstantEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
+CardInstantEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
 	self subclassResponsibility
 ]

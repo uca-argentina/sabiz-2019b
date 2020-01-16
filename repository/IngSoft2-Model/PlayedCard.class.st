@@ -10,6 +10,17 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'instance creation' }
+PlayedCard class >> of: effect to: target [
+	^ self new of: effect to: target
+]
+
+{ #category : #'instance creation' }
+PlayedCard >> of: anEffect to: aTarget [
+	effect := anEffect.
+	target := aTarget
+]
+
 { #category : #accessing }
 PlayedCard >> target [
 	^ target copy

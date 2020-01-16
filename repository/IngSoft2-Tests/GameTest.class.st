@@ -191,13 +191,13 @@ GameTest >> testPlayerCantPlayUnlessItsHisTurn [
 		using: testResource standardDeckOfCards
 		withLaps: 2.
 	self assert: game currentTurn equals: player1.
-	game playTurnFor: player1.
+	game throwDicesFor: player1.
 	self assert: game currentTurn equals: player2.
-	game playTurnFor: player2.
+	game throwDicesFor: player2.
 	self assert: game currentTurn equals: player1.
-	game playTurnFor: player1.
+	game throwDicesFor: player1.
 	self assert: game currentTurn equals: player2.
-	self should: [ game playTurnFor: player1 ]
+	self should: [ game throwDicesFor: player1 ]
 		  raise: AssertionFailure
 ]
 
@@ -238,11 +238,11 @@ GameTest >> testPlayersThatFinishedAreNoLongerInTurnWheel [
 		using: testResource standardDeckOfCards
 		withLaps: 1.
 	self assert: game currentTurn equals: player1.
-	game playTurnFor: player1.
+	game throwDicesFor: player1.
 	self assert: game currentTurn equals: player2.
-	game playTurnFor: player2.
+	game throwDicesFor: player2.
 	self assert: game currentTurn equals: player2.
-	game playTurnFor: player2.
+	game throwDicesFor: player2.
 	self assert: game currentTurn equals: nil.
 
 ]

@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #effect }
-RepeatEffect >> applyEffectOn: players on: aGame triggeredBy: aPlayer [
+RepeatEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
 	| history |
 	history := aGame historyOf: aPlayer.
 	history size < 2
