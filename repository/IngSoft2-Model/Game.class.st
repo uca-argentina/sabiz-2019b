@@ -9,7 +9,7 @@ Class {
 		'dices',
 		'board',
 		'playersStates',
-		'globalPermanentCardEffects',
+		'playedCards',
 		'deck',
 		'laps',
 		'turnAllocator'
@@ -53,11 +53,6 @@ Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps
 		on: aBoard
 		using: aDeck
 		withLaps: laps
-]
-
-{ #category : #'private - cardEffects' }
-Game >> addEffectOf: aCard [
-	globalPermanentCardEffects add: aCard effect
 ]
 
 { #category : #accessingPlayer }
@@ -112,9 +107,31 @@ Game >> displace: player by: anAmount [
 	self updateStateFor: player with: newState
 ]
 
+{ #category : #'private - cardEffects' }
+Game >> effectsOn: player [
+	| cardsTargetingPlayer |
+	cardsTargetingPlayer := (playedCards
+		select: [ :each | {player} = each target ])
+		collect: [ :each | each effect value ].
+	cardsTargetingPlayer isNotEmpty
+		ifTrue: [ ^ cardsTargetingPlayer sum ].
+	^ 0
+]
+
 { #category : #accessingGameState }
 Game >> finishRanking [
 	^ leaderBoard finishRanking
+]
+
+{ #category : #'private - cardEffects' }
+Game >> globalPermanentCardEffects [
+	| globalCards |
+	globalCards := (playedCards
+		select: [ :each | self players asArray = each target ])
+		collect: [ :each | each effect value ].
+	globalCards isNotEmpty
+		ifTrue: [ ^ globalCards sum ].
+	^ 0
 ]
 
 { #category : #accessingPlayer }
@@ -171,23 +188,6 @@ Game >> moveEveryoneToTheFirstSpot [
 						holding: (self stateOf: each) cardsInHand) ]
 ]
 
-{ #category : #playing }
-Game >> nextTurnPlaying: aCard affecting: players [
-	| currentTurnPlayer |
-	currentTurnPlayer := turnAllocator nextTurnWithoutPlayingCards.
-	self player: currentTurnPlayer  playsCard: aCard  affecting: players.
-	self move: currentTurnPlayer.
-	^ currentTurnPlayer
-]
-
-{ #category : #playing }
-Game >> nextTurnWithoutPlayingCards [
-	| currentTurnPlayer |
-	currentTurnPlayer := turnAllocator nextTurnWithoutPlayingCards.
-	self move: currentTurnPlayer.
-	^ currentTurnPlayer
-]
-
 { #category : #accessingGame }
 Game >> numberOfLaps [
 	^ laps
@@ -241,7 +241,7 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLa
 	deck := aDeck.
 	turnAllocator := TurnAllocator for: gamePlayers.
 	dices := gameDices copy.
-	globalPermanentCardEffects := OrderedCollection new.
+	playedCards := OrderedCollection new.
 	playersStates := (gamePlayers
 		collect: [ :each | 
 			Association
@@ -252,22 +252,6 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLa
 						and: 0
 						holding: {deck nextCard. deck nextCard})
 				} asOrderedCollection ]) asOrderedDictionary
-]
-
-{ #category : #playing }
-Game >> player: aPlayer playsCard: aCard affecting: players [
-	(self playerHasFinished: aPlayer)
-		ifTrue: [ AssertionFailure
-				signal: 'Tried to make a player that has already finished play a card' ].
-	(self players detect: [ :each | each = aPlayer ])
-		playCard: aCard
-		on: self
-		affecting: players
-]
-
-{ #category : #'private - cardEffects' }
-Game >> player: aPlayer triggersEffectAt: aPosition [
-	board player: aPlayer triggersEffectAt: aPosition on: self
 ]
 
 { #category : #'private - spotEffects' }
@@ -342,14 +326,8 @@ Game >> stateOf: player [
 
 { #category : #'private - moving' }
 Game >> totalDisplacementFor: player [
-	| total |
-	total := globalPermanentCardEffects
-		inject: self rollSum
-		into: [ :sum :each | sum + each value ].
-	total := (self stateOf: player) effects
-		inject: total
-		into: [ :sum :each | sum + each value ].
-	^ total
+	^ self globalPermanentCardEffects + self rollSum
+		+ (self effectsOn: player)
 ]
 
 { #category : #'private - updating' }
