@@ -1,0 +1,8 @@
+turn allocator
+check asserts
+ver tema agregado demas de states
+extension for testing messages (playoneround, etc)
+move cards to state
+fix time machine
+group position, lapNumber and roundNumber into boardStatus or something
+custom exceptions
