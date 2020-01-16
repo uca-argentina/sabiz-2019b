@@ -50,6 +50,14 @@ PlayerState >> cardsInHand [
 	^ cards copy
 ]
 
+{ #category : #experimental }
+PlayerState >> checkAvailabilityOf: aCard [
+"category validation"
+	"self
+		assert: [ cardsInHand includes: aCard ]
+		description: 'That card is not in the Hand'"
+]
+
 { #category : #accessing }
 PlayerState >> effects [
 	^ permanentEffects copy
@@ -67,6 +75,14 @@ PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber
 	permanentEffects := playerEffects.
 	roundNumber := currentRoundNumber.
 	cards := heldCards
+]
+
+{ #category : #experimental }
+PlayerState >> playCard: aCard on: aGame affecting: players [
+	self checkAvailabilityOf: aCard.
+	aCard applyEffectOn: players on: aGame triggeredBy: self.
+	"category playing"
+"	cardsInHand remove: aCard"
 ]
 
 { #category : #accessing }

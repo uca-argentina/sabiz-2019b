@@ -8,14 +8,6 @@ Class {
 }
 
 { #category : #tests }
-PlayerTest >> testAllPlayerReceivesTwoCardsAsSoonAsHeEntersTheGame [
-	| game |
-	game := testResource standardGame.
-	game players
-		do: [ :each | self assert: each cardsInHand size equals: 2 ]
-]
-
-{ #category : #tests }
 PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 	| game cardToPlay |
 	game := Game

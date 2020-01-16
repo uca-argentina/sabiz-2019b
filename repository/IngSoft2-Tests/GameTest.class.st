@@ -50,22 +50,6 @@ GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 ]
 
 { #category : #'tests - instance creation' }
-GameTest >> testCantCreateGameWithPlayersAlreadyHoldingCards [
-	| player cards |
-	player := Player named: #player.
-	cards := player cardsInHand.
-	cards add: (Card with: AccelerationEffect new).
-	self
-		should: [ Game
-				playedBy: {player}
-				throwing: testResource standardSetOfDices
-				on: testResource standardBoard
-				using: testResource standardDeckOfCards
-				withLaps: 2 ]
-		raise: AssertionFailure
-]
-
-{ #category : #'tests - instance creation' }
 GameTest >> testCantCreateGameWithoutDices [
 	self
 		should: [ Game
@@ -338,8 +322,5 @@ GameTest >> testRiggedGameEndsAsExpected [
 	game playAnEntireGame.
 	self
 		assert: game finishRanking
-		equals:
-			{player1.
-			player2.
-			player3}
+		equals: {player1. player2. player3}
 ]

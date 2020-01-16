@@ -41,17 +41,11 @@ Game class >> checkPlayerQuantity: players [
 		description: 'Not enough players to initialize game'
 ]
 
-{ #category : #validation }
-Game class >> checkPlayersStartWithoutCards: players [
-	players do: [ :player | self assert: player cardsInHand isEmpty ]
-]
-
 { #category : #'instance creation' }
 Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps: laps [
 	self checkDuplicatePlayers: players.
 	self checkPlayerQuantity: players.
 	self checkDices: dices.
-	self checkPlayersStartWithoutCards: players.
 	self checkNumberOfLaps: laps.
 	^ self new
 		playedBy: players
@@ -67,8 +61,8 @@ Game >> addEffectOf: aCard [
 ]
 
 { #category : #accessingPlayer }
-Game >> cardsInHandOf: aPlayer [
-	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
+Game >> cardsInHandOf: player [
+	^ (self stateOf: player) cardsInHand
 ]
 
 { #category : #accessingGameState }
@@ -125,7 +119,7 @@ Game >> finishRanking [
 
 { #category : #accessingPlayer }
 Game >> historyOf: player [
-	^ playersStates at: player
+	^ (playersStates at: player) copy
 ]
 
 { #category : #accessingGameState }
@@ -223,10 +217,20 @@ Game >> playTurnFor: player [
 	self
 		assert: turnAllocator currentTurn = player
 		description: 'Trying to move a player out of turn'.
-	"aca hacer un backup inicial usado para marcar las conciciones al principio del turno de cada ronda, condiciones a las que se volveria con time machine"
+	self
+		updateStateFor: player
+		with:
+			(PlayerState
+				on: (self stateOf: player) position
+				and: (self stateOf: player) lapNumber
+				and: turnAllocator currentRoundNumber
+				under: (self stateOf: player) effects
+				holding: (self stateOf: player) cardsInHand).
 	self move: player.
-	(self playerHasFinished: player) ifTrue: [turnAllocator playerHasFinished: player].
-	(self isNotOver) ifTrue: [turnAllocator advanceTurnWheel]
+	(self playerHasFinished: player)
+		ifTrue: [ turnAllocator playerHasFinished: player ].
+	self isNotOver
+		ifTrue: [ turnAllocator advanceTurnWheel ]
 ]
 
 { #category : #initialization }
@@ -238,10 +242,6 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLa
 	turnAllocator := TurnAllocator for: gamePlayers.
 	dices := gameDices copy.
 	globalPermanentCardEffects := OrderedCollection new.
-	gamePlayers
-		do: [ :each | 
-			each cardsInHand add: deck nextCard.
-			each cardsInHand add: deck nextCard ].
 	playersStates := (gamePlayers
 		collect: [ :each | 
 			Association
@@ -312,29 +312,19 @@ Game >> positionOf: player [
 
 { #category : #'private - spotEffects' }
 Game >> rewindPositionFor: player [
-	| history |
-	history := self historyOf: player.
-	history size <= 2
-		ifTrue: [ self
-				updateStateFor: player
-				with:
-					(PlayerState
-						on: 1
-						and: 0
-						and: turnAllocator currentRoundNumber
-						under: (self stateOf: player) effects
-						holding: (self stateOf: player) cardsInHand) ]
-		ifFalse: [ | previousState |
-			previousState := history at: history size - 3.
-			self
-				updateStateFor: player
-				with:
-					(PlayerState
-						on: previousState position
-						and: previousState lapNumber
-						and: turnAllocator currentRoundNumber
-						under: (self stateOf: player) effects
-						holding: (self stateOf: player) cardsInHand) ]
+	| targetState |
+	targetState := ((self historyOf: player)
+		select: [ :each | each roundNumber = (turnAllocator currentRoundNumber - 1) ])
+		first.
+	self
+		updateStateFor: player
+		with:
+			(PlayerState
+				on: targetState position
+				and: targetState lapNumber
+				and: turnAllocator currentRoundNumber
+				under: targetState effects
+				holding: targetState cardsInHand)
 ]
 
 { #category : #'private - moving' }
@@ -347,7 +337,7 @@ Game >> stateOf: player [
 	^ (playersStates
 		at: player
 		ifAbsent: [ AssertionFailure
-				signal: 'Asked for a player that is not in the game' ]) last
+				signal: 'Asked for a player that is not in the game' ]) last copy
 ]
 
 { #category : #'private - moving' }
