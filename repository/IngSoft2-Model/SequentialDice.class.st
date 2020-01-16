@@ -46,6 +46,7 @@ SequentialDice >> removeFromSequence: element [
 
 { #category : #roll }
 SequentialDice >> roll [
+	self assert: rollingSequence isNotEmpty description: 'Tried to roll a sequential dice with an empty sequence'.
 	lastRolledIndex := (lastRolledIndex + 1) % rollingSequence size.
 	^ rollingSequence at: lastRolledIndex + 1
 ]

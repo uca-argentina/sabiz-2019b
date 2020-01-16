@@ -34,10 +34,7 @@ Board class >> with: effectDistribution andSpots: spotsAmount [
 
 { #category : #effect }
 Board >> applyEffectOn: game triggeredBy: player in: state [
-	(self spotAt: state position)
-		applyEffectOn: game
-		triggeredBy: player
-		in: state
+	(self spotAt: state position) applyEffectOn: game triggeredBy: player
 ]
 
 { #category : #initialization }
@@ -60,6 +57,7 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 		and: newLapNumber
 		and: roundNumber
 		under: state effects
+		holding: state cardsInHand
 ]
 
 { #category : #accessing }

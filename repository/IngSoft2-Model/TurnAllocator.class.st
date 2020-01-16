@@ -36,6 +36,8 @@ TurnAllocator >> currentRoundNumber [
 
 { #category : #accessing }
 TurnAllocator >> currentTurn [
+	turnWheel sequenceSize = 0
+		ifTrue: [ ^ nil ].
 	^ currentTurn
 ]
 

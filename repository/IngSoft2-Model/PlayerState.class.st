@@ -8,23 +8,24 @@ Class {
 		'position',
 		'lapNumber',
 		'permanentEffects',
-		'roundNumber'
+		'roundNumber',
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-PlayerState class >> on: position and: lapNumber [
-	"Used to create the first state"
-	^ self on: position and: lapNumber and: 1 under: OrderedCollection new
-]
-
-{ #category : #'instance creation' }
-PlayerState class >> on: position and: lapNumber and: roundNumber under: playerEffects [
+PlayerState class >> on: position and: lapNumber and: roundNumber under: playerEffects holding: cards [
 	self
 		assert: position > 0
 		description: 'A player cant be on a position lower than 1'.
-	^ self new on: position and: lapNumber and: roundNumber under: playerEffects
+	^ self new on: position and: lapNumber and: roundNumber under: playerEffects holding: cards
+]
+
+{ #category : #'instance creation' }
+PlayerState class >> on: position and: lapNumber holding: cards [
+	"Used to create the first state"
+	^ self on: position and: lapNumber and: 0 under: OrderedCollection new holding: cards
 ]
 
 { #category : #comparing }
@@ -40,6 +41,11 @@ PlayerState >> addEffectOf: aCard [
 ]
 
 { #category : #accessing }
+PlayerState >> cardsInHand [
+	^ cards copy
+]
+
+{ #category : #accessing }
 PlayerState >> effects [
 	^ permanentEffects copy
 ]
@@ -50,11 +56,12 @@ PlayerState >> lapNumber [
 ]
 
 { #category : #initialization }
-PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber under: playerEffects [
+PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber under: playerEffects holding: heldCards [
 	position := currentPosition copy.
 	lapNumber := currentLapNumber copy.
 	permanentEffects := playerEffects.
-	roundNumber := currentRoundNumber
+	roundNumber := currentRoundNumber.
+	cards := heldCards
 ]
 
 { #category : #accessing }

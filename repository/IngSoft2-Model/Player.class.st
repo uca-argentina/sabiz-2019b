@@ -18,7 +18,8 @@ Player class >> named: playerName [
 
 { #category : #comparing }
 Player >> = player [
-	^ self name = player name
+	^ (self class = player class) and: [(self name = player name)]
+	"The second part is a block to prevent it from being evaluated if the first part is false"
 ]
 
 { #category : #accessing }

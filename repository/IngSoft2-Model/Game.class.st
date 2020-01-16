@@ -61,19 +61,14 @@ Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps
 		withLaps: laps
 ]
 
-{ #category : #cardEffects }
+{ #category : #'private - cardEffects' }
 Game >> addEffectOf: aCard [
 	globalPermanentCardEffects add: aCard effect
 ]
 
-{ #category : #spotEffects }
-Game >> applyEffectTriggeredBy: player in: newState [
-	board applyEffectOn: self triggeredBy: player in: newState
-]
-
 { #category : #accessingPlayer }
 Game >> cardsInHandOf: aPlayer [
-	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand copy
+	^ (self players detect: [ :each | each = aPlayer ]) cardsInHand
 ]
 
 { #category : #accessingGameState }
@@ -86,6 +81,10 @@ Game >> currentRanking [
 { #category : #accessingGame }
 Game >> currentTurn [
 	^ turnAllocator currentTurn
+]
+
+{ #category : #'private - spotEffects' }
+Game >> dealCardTo: player [
 ]
 
 { #category : #accessingGame }
@@ -126,11 +125,12 @@ Game >> lapOf: player [
 { #category : #'private - moving' }
 Game >> move: player [
 	| newState |
-	newState := self
+	newState := board
 		nextStateFor: (self stateOf: player)
-		afterMoving: (self totalDisplacementFor: player).
+		afterMoving: (self totalDisplacementFor: player)
+		onRoundNumber: turnAllocator currentRoundNumber.
 	self updateStateFor: player with: newState.
-	self applyEffectTriggeredBy: player in: newState.
+	board applyEffectOn: self triggeredBy: player in: newState.
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]
@@ -141,7 +141,7 @@ Game >> moveAllPlayers [
 	self players do: [ :player | self move: player ]
 ]
 
-{ #category : #spotEffects }
+{ #category : #'private - spotEffects' }
 Game >> moveEveryoneToTheFirstSpot [
 	self players
 		do: [ :each | 
@@ -151,15 +151,12 @@ Game >> moveEveryoneToTheFirstSpot [
 					(PlayerState
 						on: 1
 						and: (self lapOf: each)
-						under: (self stateOf: each) effects) ]
+						and: turnAllocator currentRoundNumber
+						under: (self stateOf: each) effects
+						holding: (self stateOf: each) cardsInHand) ]
 ]
 
-{ #category : #'private - moving' }
-Game >> nextStateFor: aState afterMoving: movementAmount [
-	^ board nextStateFor: aState afterMoving: movementAmount
-]
-
-{ #category : #'private - playingCards' }
+{ #category : #playing }
 Game >> nextTurnPlaying: aCard affecting: players [
 	| currentTurnPlayer |
 	currentTurnPlayer := turnAllocator nextTurnWithoutPlayingCards.
@@ -168,7 +165,7 @@ Game >> nextTurnPlaying: aCard affecting: players [
 	^ currentTurnPlayer
 ]
 
-{ #category : #'private - playingCards' }
+{ #category : #playing }
 Game >> nextTurnWithoutPlayingCards [
 	| currentTurnPlayer |
 	currentTurnPlayer := turnAllocator nextTurnWithoutPlayingCards.
@@ -202,7 +199,12 @@ Game >> playTurnFor: player [
 	self
 		assert: (self playerHasNotFinished: player)
 		description: 'Trying to move a player that has already finished'.
-	self move: player
+	self
+		assert: turnAllocator currentTurn = player
+		description: 'Trying to move a player out of turn'.
+	self move: player.
+	(self playerHasFinished: player) ifTrue: [turnAllocator playerHasFinished: player].
+	(self isNotOver) ifTrue: [turnAllocator advanceTurnWheel]
 ]
 
 { #category : #initialization }
@@ -222,8 +224,12 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLa
 		collect: [ :each | 
 			Association
 				key: each
-				value: {(PlayerState on: 1 and: 0)} asOrderedCollection ])
-		asOrderedDictionary
+				value:
+					{(PlayerState
+						on: 1
+						and: 0
+						holding: {deck nextCard. deck nextCard})
+				} asOrderedCollection ]) asOrderedDictionary
 ]
 
 { #category : #playing }
@@ -237,12 +243,12 @@ Game >> player: aPlayer playsCard: aCard affecting: players [
 		affecting: players
 ]
 
-{ #category : #cardEffects }
+{ #category : #'private - cardEffects' }
 Game >> player: aPlayer triggersEffectAt: aPosition [
 	board player: aPlayer triggersEffectAt: aPosition on: self
 ]
 
-{ #category : #spotEffects }
+{ #category : #'private - spotEffects' }
 Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 	self players
 		do: [ :each | 
@@ -250,7 +256,8 @@ Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 			each == player
 				ifFalse: [ newState := board
 						nextStateFor: (self stateOf: each)
-						afterMoving: anAmount.
+						afterMoving: anAmount
+						onRoundNumber: turnAllocator currentRoundNumber.
 					self updateStateFor: each with: newState ] ]
 ]
 
@@ -281,14 +288,20 @@ Game >> positionOf: player [
 	^ (self stateOf: player) position
 ]
 
-{ #category : #spotEffects }
+{ #category : #'private - spotEffects' }
 Game >> rewindPositionFor: player [
 	| history |
 	history := self historyOf: player.
 	history size <= 2
 		ifTrue: [ self
 				updateStateFor: player
-				with: (PlayerState on: 1 and: 0 under: (self stateOf: player) effects) ]
+				with:
+					(PlayerState
+						on: 1
+						and: 0
+						and: turnAllocator currentRoundNumber
+						under: (self stateOf: player) effects
+						holding: (self stateOf: player) cardsInHand) ]
 		ifFalse: [ | previousState |
 			previousState := history at: history size - 3.
 			self
@@ -297,12 +310,22 @@ Game >> rewindPositionFor: player [
 					(PlayerState
 						on: previousState position
 						and: previousState lapNumber
-						under: (self stateOf: player) effects) ]
+						and: turnAllocator currentRoundNumber
+						under: (self stateOf: player) effects
+						holding: (self stateOf: player) cardsInHand) ]
 ]
 
 { #category : #'private - moving' }
 Game >> rollSum [
 	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
+]
+
+{ #category : #'private - spotEffects' }
+Game >> sendBack: player by: anAmount [
+]
+
+{ #category : #'private - spotEffects' }
+Game >> speedUp: player by: anAmount [
 ]
 
 { #category : #accessingPlayer }
@@ -325,7 +348,7 @@ Game >> totalDisplacementFor: player [
 	^ total
 ]
 
-{ #category : #updating }
+{ #category : #'private - updating' }
 Game >> updateStateFor: player with: aState [
 	| playerStates |
 	playerStates := playersStates at: player.

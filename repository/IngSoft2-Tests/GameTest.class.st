@@ -182,7 +182,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	self assert: (game lapOf: player1) equals: -1
 ]
 
-{ #category : #'tests - game state' }
+{ #category : #'test - playing' }
 GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	| game |
 	game := Game
@@ -194,15 +194,27 @@ GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	game playOneRound.
 	self
 		assert: game currentRanking
-		equals:
-			{player3.
-			player2.
-			player1}
+		equals: {player3. player2. player1}
 ]
 
 { #category : #'test - playing' }
 GameTest >> testPlayerCantPlayUnlessItsHisTurn [
-	self assert: false
+	| game |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {(RandomDice withFaces: 6)}
+		on: (testResource effectlessBoardWithSpots: 20)
+		using: testResource standardDeckOfCards
+		withLaps: 2.
+	self assert: game currentTurn equals: player1.
+	game playTurnFor: player1.
+	self assert: game currentTurn equals: player2.
+	game playTurnFor: player2.
+	self assert: game currentTurn equals: player1.
+	game playTurnFor: player1.
+	self assert: game currentTurn equals: player2.
+	self should: [ game playTurnFor: player1 ]
+		  raise: AssertionFailure
 ]
 
 { #category : #'test - playing' }
@@ -232,9 +244,23 @@ GameTest >> testPlayerOneWonTheGame [
 	self assert: game winner equals: player1
 ]
 
-{ #category : #tests }
+{ #category : #'test - playing' }
 GameTest >> testPlayersThatFinishedAreNoLongerInTurnWheel [
-	self assert: false
+	| game |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {(SequentialDice withSequence: {10. 1})}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: testResource standardDeckOfCards
+		withLaps: 1.
+	self assert: game currentTurn equals: player1.
+	game playTurnFor: player1.
+	self assert: game currentTurn equals: player2.
+	game playTurnFor: player2.
+	self assert: game currentTurn equals: player2.
+	game playTurnFor: player2.
+	self assert: game currentTurn equals: nil.
+
 ]
 
 { #category : #'test - playing' }

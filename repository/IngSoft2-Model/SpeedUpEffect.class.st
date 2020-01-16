@@ -8,12 +8,8 @@ Class {
 }
 
 { #category : #effect }
-SpeedUpEffect >> applyOn: game triggeredBy: player in: state [
-	| newState |
-	newState := game
-		nextStateFor: state
-		afterMoving: self numberOfSpotsToGoForward.
-	game updateStateFor: player with: newState
+SpeedUpEffect >> applyOn: game triggeredBy: player [
+	game speedUp: player by: self numberOfSpotsToGoForward
 ]
 
 { #category : #standardValues }
