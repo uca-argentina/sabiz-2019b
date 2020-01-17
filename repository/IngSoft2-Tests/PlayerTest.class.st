@@ -18,7 +18,7 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 		withLaps: 2.
 	cardToPlay := Card with: OverloadEffect new.
 	self
-		should: [ game play: cardToPlay for: player1 on: { player2 }]	 raise: AssertionFailure.
+		should: [ game play: cardToPlay for: player1 on: player2]	 raise: AssertionFailure.
 ]
 
 { #category : #tests }

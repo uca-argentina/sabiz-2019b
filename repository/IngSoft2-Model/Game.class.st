@@ -124,7 +124,7 @@ Game >> displace: player by: anAmount [
 Game >> effectsOn: player [
 	| cardsTargetingPlayer |
 	cardsTargetingPlayer := (playedCards
-		select: [ :each | {player} = each target ])
+		select: [ :each | each target includes: player ])
 		collect: [ :each | each effect value ].
 	cardsTargetingPlayer isNotEmpty
 		ifTrue: [ ^ cardsTargetingPlayer sum ].
@@ -134,17 +134,6 @@ Game >> effectsOn: player [
 { #category : #accessingGameState }
 Game >> finishRanking [
 	^ leaderBoard finishRanking
-]
-
-{ #category : #'private - cardEffects' }
-Game >> globalPermanentCardEffects [
-	| globalCards |
-	globalCards := (playedCards
-		select: [ :each | self players asArray = each target ])
-		collect: [ :each | each effect value ].
-	globalCards isNotEmpty
-		ifTrue: [ ^ globalCards sum ].
-	^ 0
 ]
 
 { #category : #accessingPlayer }
@@ -175,7 +164,7 @@ Game >> move: player [
 		afterMoving: (self totalDisplacementFor: player)
 		onRoundNumber: turnAllocator currentRoundNumber.
 	self updateStateFor: player with: newState.
-	board applyEffectOn: self triggeredBy: player in: newState.
+	self player: player triggersEffectAt: newState position. 
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]
@@ -249,6 +238,11 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLa
 ]
 
 { #category : #'private - spotEffects' }
+Game >> player: player triggersEffectAt: position [
+	board applyEffectOn: self triggeredBy: player at: position
+]
+
+{ #category : #'private - spotEffects' }
 Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 	self players
 		do: [ :each | 
@@ -289,22 +283,47 @@ Game >> positionOf: player [
 ]
 
 { #category : #'private - cardEffects' }
-Game >> removePlayedCard: card [
+Game >> removePlayedCard: playedCard [
+	playedCards
+		remove: playedCard
+		ifAbsent: [ AssertionFailure
+				signal:
+					'Tried to remove a non existent played card (check that both the effect and the target are in order)' ]
+]
+
+{ #category : #'private - cardEffects' }
+Game >> replayLastCardOn: target for: player [
+	| hand card |
+	self assert: playedCards isNotEmpty description: 'Cannot play redo card as there are no active played cards on the pile'.
+	card := Card with: playedCards last effect.
+	hand := self cardsInHandOf: player.
+	hand add: card.
+	self updateStateFor: player
+		with:
+			(PlayerState
+				on: (self positionOf: player)
+				and: (self lapOf: player)
+				and: turnAllocator currentRoundNumber
+				holding: hand).
+	self play: card for: player on: target
 ]
 
 { #category : #'private - spotEffects' }
 Game >> rewindPositionFor: player [
-	| targetState |
-	targetState := ((self historyOf: player)
-		select: [ :each | each roundNumber = (turnAllocator currentRoundNumber - 1) ])
-		first.
+	| targetState round |
+	round := (self stateOf: player) roundNumber.
+	targetState := (self historyOf: player)
+		select: [ :each | each roundNumber = (round - 1) ].
+	targetState isNotEmpty
+		ifTrue: [ targetState := targetState first ]
+		ifFalse: [ ^ self ].
 	self
 		updateStateFor: player
 		with:
 			(PlayerState
 				on: targetState position
 				and: targetState lapNumber
-				and: turnAllocator currentRoundNumber
+				and: targetState roundNumber
 				holding: targetState cardsInHand)
 ]
 
@@ -346,8 +365,7 @@ Game >> throwDicesFor: player [
 
 { #category : #'private - moving' }
 Game >> totalDisplacementFor: player [
-	^ self globalPermanentCardEffects + self rollSum
-		+ (self effectsOn: player)
+	^ self rollSum + (self effectsOn: player)
 ]
 
 { #category : #'private - updating' }

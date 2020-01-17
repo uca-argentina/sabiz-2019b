@@ -15,6 +15,18 @@ PlayedCard class >> of: effect to: target [
 	^ self new of: effect to: target
 ]
 
+{ #category : #comparing }
+PlayedCard >> = playedCard [
+	^ playedCard class = PlayedCard
+		and: [ self effect class = playedCard effect class
+				and: target = playedCard target ]
+]
+
+{ #category : #comparing }
+PlayedCard >> hash [
+	^ (self effect className hash + target hash) asString hash
+]
+
 { #category : #'instance creation' }
 PlayedCard >> of: anEffect to: aTarget [
 	effect := anEffect.

@@ -10,7 +10,7 @@ Class {
 { #category : #effect }
 OverloadEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
 	super applyOn: target on: aGame triggeredBy: aPlayer.
-	self assert: target size = 1 description: 'Tried to play overload card on more than one player'.
+	self assert: target size = 1 description: 'The overload card can only be played on a single player'.
 	aGame addPlayedCard: (Card with: self) to: target by: aPlayer
 ]
 

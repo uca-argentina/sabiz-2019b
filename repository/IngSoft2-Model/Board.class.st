@@ -33,8 +33,8 @@ Board class >> with: effectDistribution andSpots: spotsAmount [
 ]
 
 { #category : #effect }
-Board >> applyEffectOn: game triggeredBy: player in: state [
-	(self spotAt: state position) applyEffectOn: game triggeredBy: player
+Board >> applyEffectOn: game triggeredBy: player at: position [
+	(self spotAt: position) applyEffectOn: game triggeredBy: player
 ]
 
 { #category : #initialization }
@@ -62,16 +62,6 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
-]
-
-{ #category : #effect }
-Board >> player: aPlayer triggersEffectAt: aPosition on: aGame [
-	| lastState |
-	lastState := (aGame historyOf: aPlayer) last.
-	(self spotAt: aPosition)
-		applyEffectOn: aGame
-		triggeredBy: aPlayer
-		in: lastState
 ]
 
 { #category : #accessing }
