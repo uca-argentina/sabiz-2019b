@@ -14,7 +14,7 @@ StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effec
 		new: spotsNumber
 		withAll: (Spot with: NullEffect new).
 	spots at: spotNumber put: (Spot with: effect).
-	^ Board with: spots
+	^ Board with: spots andLaps: self standardNumberOfLaps
 ]
 
 { #category : #boardCreation }
@@ -24,6 +24,7 @@ StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber [
 			(OrderedCollection
 				new: spotsNumber
 				withAll: (Spot with: NullEffect new))
+		andLaps: 1
 ]
 
 { #category : #boardCreation }
@@ -33,7 +34,7 @@ StandardModelTestResource >> standardBoard [
 
 { #category : #boardCreation }
 StandardModelTestResource >> standardBoardWithSpots: spots [
-	^ Board with: self standardEffectDistribution andSpots: spots
+	^ Board with: self standardEffectDistribution andSpots: spots andLaps: self standardNumberOfLaps
 ]
 
 { #category : #standardValues }
@@ -81,7 +82,6 @@ StandardModelTestResource >> standardGame [
 		throwing: self standardSetOfDices
 		on: self standardBoard
 		using: self standardDeckOfCards
-		withLaps: self standardNumberOfLaps
 ]
 
 { #category : #standardValues }

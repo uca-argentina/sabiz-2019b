@@ -5,10 +5,16 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'spots'
+		'spots',
+		'laps'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #validation }
+Board class >> checkNumberOfLaps: laps [
+	self assert: laps > 0 description: 'Invalid number of laps'
+]
 
 { #category : #validation }
 Board class >> checkNumberOfSpots: spotsAmmount [
@@ -18,18 +24,19 @@ Board class >> checkNumberOfSpots: spotsAmmount [
 ]
 
 { #category : #'instance creation' }
-Board class >> with: spotCollection [
+Board class >> with: spotCollection andLaps: laps [
 	self checkNumberOfSpots: spotCollection size.
-	^ self new initializeWith: spotCollection
+	self checkNumberOfLaps: laps.
+	^ self new initializeWith: spotCollection andLaps: laps
 ]
 
 { #category : #'instance creation' }
-Board class >> with: effectDistribution andSpots: spotsAmount [
+Board class >> with: effectDistribution andSpots: spotsAmount andLaps: laps [
 	| spots |
 	spots := OrderedCollection new.
 	spotsAmount
 		timesRepeat: [ spots add: (Spot with: effectDistribution random) ].
-	^ Board with: spots
+	^ Board with: spots andLaps: laps
 ]
 
 { #category : #effect }
@@ -38,8 +45,9 @@ Board >> applyEffectOn: game triggeredBy: player at: position [
 ]
 
 { #category : #initialization }
-Board >> initializeWith: spotsCollection [
+Board >> initializeWith: spotsCollection andLaps: numberOfLaps [
 	spots := spotsCollection.
+	laps := numberOfLaps
 ]
 
 { #category : #'private - moving' }
@@ -57,6 +65,11 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 		and: newLapNumber
 		and: roundNumber
 		holding: state cardsInHand
+]
+
+{ #category : #accessingGame }
+Board >> numberOfLaps [
+	^ laps
 ]
 
 { #category : #accessing }

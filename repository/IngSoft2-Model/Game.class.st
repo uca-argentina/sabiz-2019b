@@ -11,7 +11,6 @@ Class {
 		'playersStates',
 		'playedCards',
 		'deck',
-		'laps',
 		'turnAllocator'
 	],
 	#category : #'IngSoft2-Model'
@@ -30,11 +29,6 @@ Game class >> checkDuplicatePlayers: players [
 ]
 
 { #category : #validation }
-Game class >> checkNumberOfLaps: laps [
-	self assert: laps > 0 description: 'Invalid number of laps'
-]
-
-{ #category : #validation }
 Game class >> checkPlayerQuantity: players [
 	self
 		assert: players isNotEmpty
@@ -42,17 +36,15 @@ Game class >> checkPlayerQuantity: players [
 ]
 
 { #category : #'instance creation' }
-Game class >> playedBy: players throwing: dices on: aBoard using: aDeck withLaps: laps [
+Game class >> playedBy: players throwing: dices on: aBoard using: aDeck [
 	self checkDuplicatePlayers: players.
 	self checkPlayerQuantity: players.
 	self checkDices: dices.
-	self checkNumberOfLaps: laps.
 	^ self new
 		playedBy: players
 		throwing: dices
 		on: aBoard
 		using: aDeck
-		withLaps: laps
 ]
 
 { #category : #'private - cardEffects' }
@@ -190,11 +182,6 @@ Game >> moveEveryoneToTheFirstSpot [
 ]
 
 { #category : #accessingGame }
-Game >> numberOfLaps [
-	^ laps
-]
-
-{ #category : #accessingGame }
 Game >> numberOfPlayers [
 	^ self players size
 ]
@@ -217,10 +204,9 @@ Game >> playOneRound [
 ]
 
 { #category : #initialization }
-Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck withLaps: numberOfLaps [
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
-	laps := numberOfLaps.
 	deck := aDeck.
 	turnAllocator := TurnAllocator for: gamePlayers.
 	dices := gameDices copy.
@@ -262,7 +248,7 @@ Game >> playerHasFinished: player [
 
 { #category : #accessingGameState }
 Game >> playerHasNotFinished: player [
-	^ (self lapOf: player) < self numberOfLaps
+	^ (self lapOf: player) < board numberOfLaps
 ]
 
 { #category : #accessingGame }

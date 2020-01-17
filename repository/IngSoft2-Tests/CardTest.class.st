@@ -21,7 +21,6 @@ CardTest >> newCardTestingGameFor: cardEffect on: board [
 		throwing: {(SequentialDice withSequence: {1})}
 		on: board
 		using: (Deck with: {cardEffect})
-		withLaps: 2
 ]
 
 { #category : #resources }
@@ -31,7 +30,6 @@ CardTest >> newCardTestingGameWith: deck [
 		throwing: {(SequentialDice withSequence: {1})}
 		on: (testResource effectlessBoardWithSpots: 10)
 		using: deck
-		withLaps: 2
 ]
 
 { #category : #'tests - permanent' }

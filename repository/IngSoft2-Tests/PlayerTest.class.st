@@ -14,8 +14,7 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
 		on: (testResource effectlessBoardWithSpots: 10)
-		using: (Deck with: {RepeatEffect new})
-		withLaps: 2.
+		using: (Deck with: {RepeatEffect new}).
 	cardToPlay := Card with: OverloadEffect new.
 	self
 		should: [ game play: cardToPlay for: player1 on: player2]	 raise: AssertionFailure.
@@ -28,8 +27,7 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 		playedBy: {player1. player2}
 		throwing: {(RandomDice withFaces: 6)}
 		on: (testResource effectlessBoardWithSpots: 10)
-		using: (Deck with: {AccelerationEffect new})
-		withLaps: 2.
+		using: (Deck with: {AccelerationEffect new}).
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game play: cardToPlay for: player1 on: game players. 
 	self assert: (game cardsInHandOf: player1) size equals: 1
