@@ -51,11 +51,11 @@ Game class >> playedBy: players throwing: dices on: aBoard using: aDeck [
 Game >> addPlayedCard: card to: target by: player [
 	| newState newHand |
 	playedCards add: (PlayedCard of: card effect to: target).
-	newHand := (self stateOf: player) cardsInHand.
+	newHand := self cardsInHandOf: player.
 	newHand remove: card.
 	newState := PlayerState
-		on: (self stateOf: player) position
-		and: (self stateOf: player) lapNumber
+		on: (self positionOf: player)
+		and: (self lapOf: player)
 		and: turnAllocator currentRoundNumber
 		holding: newHand.
 	self updateStateFor: player with: newState
@@ -80,14 +80,13 @@ Game >> currentTurn [
 
 { #category : #'private - spotEffects' }
 Game >> dealCardTo: player [
-	| current newState hand |
-	current := self stateOf: player.
-	hand := current cardsInHand.
+	| newState hand |
+	hand := self cardsInHandOf: player.
 	hand add: deck nextCard.
 	newState := PlayerState
-		on: current position
-		and: current lapNumber
-		and: current roundNumber
+		on: (self positionOf: player)
+		and: (self lapOf: player)
+		and: (self stateOf: player) roundNumber
 		holding: hand.
 	self updateStateFor: player with: newState
 ]
@@ -178,7 +177,7 @@ Game >> moveEveryoneToTheFirstSpot [
 						on: 1
 						and: (self lapOf: each)
 						and: turnAllocator currentRoundNumber
-						holding: (self stateOf: each) cardsInHand) ]
+						holding: (self cardsInHandOf: each)) ]
 ]
 
 { #category : #accessingGame }
@@ -338,10 +337,10 @@ Game >> throwDicesFor: player [
 		updateStateFor: player
 		with:
 			(PlayerState
-				on: (self stateOf: player) position
-				and: (self stateOf: player) lapNumber
+				on: (self positionOf: player)
+				and: (self lapOf: player)
 				and: turnAllocator currentRoundNumber
-				holding: (self stateOf: player) cardsInHand).
+				holding: (self cardsInHandOf: player)).
 	self move: player.
 	(self playerHasFinished: player)
 		ifTrue: [ turnAllocator playerHasFinished: player ].
