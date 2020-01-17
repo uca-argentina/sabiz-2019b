@@ -16,8 +16,7 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 		on: (testResource effectlessBoardWithSpots: 10)
 		using: (Deck with: {RepeatEffect new}).
 	cardToPlay := Card with: OverloadEffect new.
-	self
-		should: [ game play: cardToPlay for: player1 on: player2]	 raise: AssertionFailure.
+	self should: [ game play: cardToPlay for: player1 on: player2] raise: AssertionFailure.
 ]
 
 { #category : #tests }

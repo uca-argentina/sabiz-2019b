@@ -10,15 +10,17 @@ Class {
 { #category : #'tests - cardgiving' }
 SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 5 and: CardGivingEffect new at: 5. 
+	board := testResource
+		effectTestingBoardWithSpots: 5
+		and: CardGivingEffect new
+		at: 5.
 	game := Game
 		playedBy: {player1}
 		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRound.
-	self
-		assert: [ (game cardsInHandOf: player1) size = 3 ]
+	self assert: (game cardsInHandOf: player1) size equals: 3
 ]
 
 { #category : #'tests - moonwalk' }

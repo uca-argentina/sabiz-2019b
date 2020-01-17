@@ -24,10 +24,10 @@ BoardTest >> testBoardHasGivenNumberOfLaps [
 BoardTest >> testBoardHasGivenNumberOfSpots [
 	| board |
 	board := testResource standardBoardWithSpots: 20.
-	self assert: [ board numberOfSpots = 20 ]
+	self assert: board numberOfSpots equals: 20
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 	self
 		should: [ Board with: {} andLaps: 2]
@@ -66,7 +66,7 @@ BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 			raise: AssertionFailure
 ]
 
-{ #category : #tests }
+{ #category : #'tests - instance creation' }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
 		should: [ testResource standardBoardWithSpots: 0 ]

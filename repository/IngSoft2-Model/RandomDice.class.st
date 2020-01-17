@@ -13,7 +13,7 @@ Class {
 { #category : #'instance creation' }
 RandomDice class >> withFaces: faces [
 	self
-		assert: [ faces > 3 ]
+		assert: faces > 3 
 		description: 'Number of Faces should be greater than three'.
 	^ self new initializeWith: faces
 ]

@@ -199,7 +199,7 @@ Game >> playAnEntireGame [
 
 { #category : #'testing - playing' }
 Game >> playOneRound [
-	self assert: [ self isNotOver ] description: 'Game is already over'.
+	self assert: self isNotOver description: 'Game is already over'.
 	self moveAllPlayers
 ]
 

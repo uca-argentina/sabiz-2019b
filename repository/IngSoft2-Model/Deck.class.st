@@ -12,7 +12,7 @@ Class {
 
 { #category : #'instance creation' }
 Deck class >> with: cardEffectTypes [
-	self assert: [ cardEffectTypes isNotEmpty ].
+	self assert: cardEffectTypes isNotEmpty.
 	^ self new
 		initializeWith: (OverallOccurrenceDistribution evenDistributionFor: cardEffectTypes)
 ]

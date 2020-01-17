@@ -18,9 +18,7 @@ Board class >> checkNumberOfLaps: laps [
 
 { #category : #validation }
 Board class >> checkNumberOfSpots: spotsAmmount [
-	self
-		assert: [ spotsAmmount > 0 ]
-		description: 'Invalid number of spots'
+	self assert: spotsAmmount > 0 description: 'Invalid number of spots'
 ]
 
 { #category : #'instance creation' }

@@ -56,7 +56,7 @@ LeaderBoard >> size [
 { #category : #accessing }
 LeaderBoard >> winner [
 	self
-		assert: [ self isNotEmpty ]
+		assert: self isNotEmpty
 		description: 'No one has reached the end yet'.
 	^ self at: 1
 ]

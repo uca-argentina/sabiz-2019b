@@ -107,7 +107,7 @@ GameTest >> testGameHasGivenPlayer [
 		throwing: {(RandomDice withFaces: 6)}
 		on: testResource standardBoard
 		using: testResource standardDeckOfCards.
-	self assert: [ game isPlayedBy: player1 ]
+	self assert: (game isPlayedBy: player1)
 ]
 
 { #category : #'test - accessing' }
@@ -120,8 +120,7 @@ GameTest >> testGameHasGivenSetOfDices [
 		throwing: {dice1. dice2}
 		on: testResource standardBoard
 		using: testResource standardDeckOfCards.
-	self
-		assert: [ game dices includesAll: {dice1. dice2} ]
+	self assert: (game dices includesAll: {dice1. dice2})
 ]
 
 { #category : #'tests - game state' }
@@ -129,7 +128,7 @@ GameTest >> testGameIsOver [
 	| game |
 	game := testResource standardGame.
 	game playAnEntireGame.
-	self deny: [ game isNotOver ]
+	self deny: game isNotOver
 ]
 
 { #category : #'test - playing' }

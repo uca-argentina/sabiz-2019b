@@ -13,7 +13,7 @@ Class {
 { #category : #'instance creation' }
 OverallOccurrenceDistribution class >> evenDistributionFor: elements [
 	| probability |
-	self assert: [ elements isNotEmpty ].
+	self assert: elements isNotEmpty.
 	probability := 100 / elements size.
 	^ self
 		with:

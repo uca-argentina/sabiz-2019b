@@ -20,13 +20,13 @@ PlayerStateTest >> testCantCreateAStateWithAnInvalidPosition [
 { #category : #tests }
 PlayerStateTest >> testPlayerStateShowsGivenLapNumber [
 	| state |
-	state := PlayerState on: 5 and: 2 holding: { }.
-	self assert: [ state lapNumber = 2 ]
+	state := PlayerState on: 5 and: 2 holding: {}.
+	self assert: state lapNumber equals: 2
 ]
 
 { #category : #tests }
 PlayerStateTest >> testPlayerStateShowsGivenPosition [
 	| state |
-	state := PlayerState on: 5 and: 2 holding: { }.
-	self assert: [ state position = 5 ]
+	state := PlayerState on: 5 and: 2 holding: {}.
+	self assert: state position equals: 5
 ]

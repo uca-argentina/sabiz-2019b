@@ -33,30 +33,30 @@ DiceTest >> testRandomDiceRollsValidNumber [
 	faces := 6.
 	dice := RandomDice withFaces: faces.
 	result := dice roll.
-	self assert: [ result > 0 and: result <= faces ]
+	self assert: (result > 0 and: result <= faces)
 ]
 
 { #category : #sequentialDiceTests }
 DiceTest >> testSequentialDiceRollsExpectedSequence [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
-	dice := SequentialDice withSequence: {1 . 2 . 3 }.
+	dice := SequentialDice withSequence: {1 . 2 . 3}.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
-	self assert: [ rolledSequence asArray = {1 . 2 . 3 . 1} ]
+	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 1}
 ]
 
 { #category : #sequentialDiceTests }
 DiceTest >> testSequentialDiceRollsExpectedSequenceAfterRemovingElement [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
-	dice := SequentialDice withSequence: {1 . 2 . 3 }.
+	dice := SequentialDice withSequence: {1 . 2 . 3}.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	rolledSequence add: dice roll.
 	dice removeFromSequence: 1.
 	rolledSequence add: dice roll.
-	self assert: [ rolledSequence asArray = {1 . 2 . 3 . 2} ]
+	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 2}
 ]

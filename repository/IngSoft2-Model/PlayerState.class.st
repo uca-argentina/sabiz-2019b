@@ -46,7 +46,7 @@ PlayerState >> cardsInHand [
 { #category : #validation }
 PlayerState >> checkAvailabilityOf: aCard [
 	self
-		assert: [ cards includes: aCard ]
+		assert: (cards includes: aCard)
 		description: 'That card is not in the hand of the player'
 ]
 
@@ -61,14 +61,6 @@ PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber
 	lapNumber := currentLapNumber copy.
 	roundNumber := currentRoundNumber.
 	cards := heldCards
-]
-
-{ #category : #experimental }
-PlayerState >> playCard: aCard on: aGame affecting: players [
-	self checkAvailabilityOf: aCard.
-	aCard applyEffectOn: players on: aGame triggeredBy: self.
-	"category playing"
-"	cardsInHand remove: aCard"
 ]
 
 { #category : #accessing }

@@ -14,7 +14,7 @@ Class {
 { #category : #'instance creation' }
 SequentialDice class >> withSequence: sequence [
 	self
-		assert: [ sequence isNotEmpty ]
+		assert: sequence isNotEmpty
 		description: 'Tried to create a sequence dice with an empty sequence'.
 	^ self new initializeWithSequence: sequence
 ]
