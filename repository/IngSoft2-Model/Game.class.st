@@ -69,7 +69,7 @@ Game >> cardsInHandOf: player [
 { #category : #accessingGameState }
 Game >> currentRanking [
 	^ (self playersCurrentStates
-		sort: [ :assoc1 :assoc2 | assoc1 value > assoc2 value ])
+		sort: [ :assoc1 :assoc2 | assoc1 value position > assoc2 value position ])
 		collect: [ :assoc | assoc key ]
 ]
 
@@ -155,7 +155,7 @@ Game >> move: player [
 		afterMoving: (self totalDisplacementFor: player)
 		onRoundNumber: turnAllocator currentRoundNumber.
 	self updateStateFor: player with: newState.
-	self player: player triggersEffectAt: newState position. 
+	self player: player triggersEffectAt: newState spotNumber. 
 	((self playerHasNotFinished: player)
 		or: (leaderBoard includes: player))
 		ifFalse: [ leaderBoard add: player ]
@@ -264,7 +264,7 @@ Game >> playersCurrentStates [
 
 { #category : #accessingPlayer }
 Game >> positionOf: player [
-	^ (self stateOf: player) position
+	^ (self stateOf: player) spotNumber
 ]
 
 { #category : #'private - cardEffects' }
@@ -306,7 +306,7 @@ Game >> rewindPositionFor: player [
 		updateStateFor: player
 		with:
 			(PlayerState
-				on: targetState position
+				on: targetState spotNumber
 				and: targetState lapNumber
 				and: targetState roundNumber
 				holding: targetState cardsInHand)

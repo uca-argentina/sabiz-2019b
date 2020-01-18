@@ -1,12 +1,11 @@
 "
-This class contains information about the current state of a player, consisting of a lap number, the position of the player in the board, and the list of effects that are applied to him
+This class contains information about the current state of a player, consisting of its position, the current round number, and the cards in hand at the moment
 "
 Class {
 	#name : #PlayerState,
 	#superclass : #Object,
 	#instVars : [
 		'position',
-		'lapNumber',
 		'roundNumber',
 		'cards'
 	],
@@ -14,28 +13,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-PlayerState class >> on: position and: lapNumber and: roundNumber holding: cards [
-	self
-		assert: position > 0
-		description: 'A player cant be on a position lower than 1'.
+PlayerState class >> on: spotNumber and: lapNumber and: roundNumber holding: cards [
 	^ self new
-		on: position
-		and: lapNumber
+		on: (Position on: spotNumber and: lapNumber)
 		and: roundNumber
 		holding: cards asOrderedCollection
 ]
 
 { #category : #'instance creation' }
-PlayerState class >> on: position and: lapNumber holding: cards [
+PlayerState class >> on: spotNumber and: lapNumber holding: cards [
 	"Used to create the first state"
-	^ self on: position and: lapNumber and: 0 holding: cards
-]
-
-{ #category : #comparing }
-PlayerState >> > aState [
-	self lapNumber == aState lapNumber
-		ifTrue: [ ^ self position > aState position ]
-		ifFalse: [ ^ self lapNumber > aState lapNumber ]
+	^ self on: spotNumber and: lapNumber and: 0 holding: cards
 ]
 
 { #category : #accessing }
@@ -52,23 +40,27 @@ PlayerState >> checkAvailabilityOf: aCard [
 
 { #category : #accessing }
 PlayerState >> lapNumber [
-	^ lapNumber copy
+	^ position lapNumber
 ]
 
 { #category : #initialization }
-PlayerState >> on: currentPosition and: currentLapNumber and: currentRoundNumber holding: heldCards [
-	position := currentPosition copy.
-	lapNumber := currentLapNumber copy.
+PlayerState >> on: currentPosition and: currentRoundNumber holding: heldCards [
+	position := currentPosition.
 	roundNumber := currentRoundNumber.
 	cards := heldCards
 ]
 
 { #category : #accessing }
 PlayerState >> position [
-	^ position copy
+	^ position
 ]
 
 { #category : #accessing }
 PlayerState >> roundNumber [
 	^ roundNumber
+]
+
+{ #category : #accessing }
+PlayerState >> spotNumber [
+	^ position spotNumber
 ]

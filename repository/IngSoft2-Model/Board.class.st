@@ -51,7 +51,7 @@ Board >> initializeWith: spotsCollection andLaps: numberOfLaps [
 { #category : #'private - moving' }
 Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 	| newLapNumber netNewPosition grossNewPosition |
-	grossNewPosition := state position + rollSum.
+	grossNewPosition := state spotNumber + rollSum.
 	newLapNumber := state lapNumber
 		+ (grossNewPosition // self numberOfSpots).
 	netNewPosition := grossNewPosition % self numberOfSpots.
