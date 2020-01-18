@@ -16,23 +16,32 @@ TurnAllocatorTest >> testCantCreateTurnAllocatorWithEmptyCollection [
 TurnAllocatorTest >> testItsThePreviousPlayersTurnUntilAdvancingTheTurnWheel [
 	| turns |
 	turns := TurnAllocator for: { player1. player2 }.
-	self assert: turns currentTurn equals: player1.
-	self assert: turns currentTurn equals: player1.
+	self assert: turns playerWhoseTurnItIsToPlay equals: player1.
+	self assert: turns playerWhoseTurnItIsToPlay equals: player1.
 	turns advanceTurnWheel.
-	self assert: turns currentTurn equals: player2.
+	self assert: turns playerWhoseTurnItIsToPlay equals: player2.
 ]
 
 { #category : #tests }
 TurnAllocatorTest >> testTurnAllocatorRespectsExpectedOrder [
 	| turns |
 	turns := TurnAllocator for: { player1. player2. player3 }.
-	self assert: turns currentTurn equals: player1.
+	self assert: turns playerWhoseTurnItIsToPlay equals: player1.
 	turns advanceTurnWheel.
-	self assert: turns currentTurn equals: player2.
+	self assert: turns playerWhoseTurnItIsToPlay equals: player2.
 	turns advanceTurnWheel.
-	self assert: turns currentTurn equals: player3.
+	self assert: turns playerWhoseTurnItIsToPlay equals: player3.
 	turns advanceTurnWheel.
-	self assert: turns currentTurn equals: player1
+	self assert: turns playerWhoseTurnItIsToPlay equals: player1
+]
+
+{ #category : #tests }
+TurnAllocatorTest >> testTurnAllocatorReturnsNilWhenAskedForTheTurnOfAFinishedGame [
+	| allocator |
+	allocator := TurnAllocator for: { player1. player2 }.
+	allocator playerHasFinished: player1.
+	allocator playerHasFinished: player2.
+	self assert: allocator playerWhoseTurnItIsToPlay equals: 	nil
 ]
 
 { #category : #tests }

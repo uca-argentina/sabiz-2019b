@@ -19,7 +19,7 @@ SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game cardsInHandOf: player1) size equals: 3
 ]
 
@@ -32,11 +32,11 @@ SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 		throwing: {(SequentialDice withSequence: {1. 2. 3})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 2.
 	self assert: (game positionOf: player2) equals: 3.
 	self assert: (game positionOf: player3) equals: 4.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 8.
 	self assert: (game lapOf: player1) equals: -1.
 	self assert: (game positionOf: player2) equals: 2.
@@ -52,14 +52,14 @@ SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMain
 		throwing: {(SequentialDice withSequence: {8. 3. 1})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 4.
 	self assert: (game lapOf: player1) equals: 1.
 	self assert: (game positionOf: player2) equals: 4.
 	self assert: (game lapOf: player2) equals: 0.
 	self assert: (game positionOf: player3) equals: 2.
 	self assert: (game lapOf: player3) equals: 0.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 3.
 	self assert: (game positionOf: player2) equals: 1.
@@ -77,7 +77,7 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 9
 ]
 
@@ -91,7 +91,7 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingF
 		on: board
 		using: testResource standardDeckOfCards.
 	self assert: (game lapOf: player1) equals: 0.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 3.
 	self assert: (game lapOf: player1) equals: 1
 ]
@@ -105,7 +105,7 @@ SpotEffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 		throwing: {(SequentialDice withSequence: {5})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 2
 ]
 
@@ -118,10 +118,10 @@ SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingB
 		throwing: {(SequentialDice withSequence: {6. 1})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 1.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 4.
 	self assert: (game lapOf: player1) equals: 0
 ]
@@ -135,7 +135,7 @@ SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
 		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 5
 ]
 
@@ -148,7 +148,7 @@ SpotEffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositio
 		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 0
 ]
@@ -162,8 +162,8 @@ SpotEffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 		throwing: {(SequentialDice withSequence: {2. 8})}
 		on: board
 		using: testResource standardDeckOfCards.
-	game playOneRound.
-	game playOneRound.
+	game playOneRoundWithoutPlayingCards.
+	game playOneRoundWithoutPlayingCards.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 0
 ]

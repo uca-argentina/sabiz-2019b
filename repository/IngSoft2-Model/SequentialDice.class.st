@@ -19,6 +19,18 @@ SequentialDice class >> withSequence: sequence [
 	^ self new initializeWithSequence: sequence
 ]
 
+{ #category : #validation }
+SequentialDice >> checkIfSizeOfSequenceAllowsForRemovalOfAnElement [
+	self assert: rollingSequence size > 1 description: 'The last element of a sequence cannot be removed'
+]
+
+{ #category : #validation }
+SequentialDice >> checkPresenceOf: element [
+	(rollingSequence includes: element)
+		ifFalse: [ AssertionFailure
+				signal: 'This element is not present in the sequence of the dice' ]
+]
+
 { #category : #initialization }
 SequentialDice >> initializeWithSequence: sequence [
 	rollingSequence := sequence asOrderedCollection copy.
@@ -32,15 +44,12 @@ SequentialDice >> lastRolledIndex [
 
 { #category : #alteringSequence }
 SequentialDice >> removeFromSequence: element [
-	(rollingSequence
-		indexOf: element
-		ifAbsent: [ AssertionFailure
-				signal:
-					'Tried to remove a non existent element from the sequence of a sequential dice' ])
-		<= lastRolledIndex
+	self checkPresenceOf: element.
+	self checkIfSizeOfSequenceAllowsForRemovalOfAnElement.
+	(rollingSequence indexOf: element) <= lastRolledIndex
 		ifTrue: [ lastRolledIndex := lastRolledIndex - 1 ].
 	rollingSequence remove: element.
-	lastRolledIndex < 0
+	lastRolledIndex = -1
 		ifTrue: [ lastRolledIndex := rollingSequence size - 1 ]
 ]
 

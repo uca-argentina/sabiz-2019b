@@ -15,6 +15,15 @@ DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 ]
 
 { #category : #sequentialDiceTests }
+DiceTest >> testCantRemoveLastElementFromSequentialDice [
+	| dice |
+	dice := SequentialDice withSequence: { 1. 2. 3 }.
+	dice removeFromSequence: 1.
+	dice removeFromSequence: 2.
+	self should: [ dice removeFromSequence: 3 ] raise: AssertionFailure
+]
+
+{ #category : #sequentialDiceTests }
 DiceTest >> testCantRemoveUnexistingElementFromSequentialDice [
 	| dice |
 	dice := SequentialDice withSequence: {1 . 2}.
@@ -34,6 +43,20 @@ DiceTest >> testRandomDiceRollsValidNumber [
 	dice := RandomDice withFaces: faces.
 	result := dice roll.
 	self assert: (result > 0 and: result <= faces)
+]
+
+{ #category : #sequentialDiceTests }
+DiceTest >> testRemovingElementFromSequentialDiceYieldsExpectedSequence [
+	| list  dice |
+	list := OrderedCollection new.
+	dice := SequentialDice withSequence: { 1. 2. 3 }.
+	list add: dice roll.
+	list add: dice roll.
+	list add: dice roll.
+	dice removeFromSequence: 2.
+	list add: dice roll.
+	list add: dice roll.
+	self assert: list asArray equals: { 1. 2. 3. 1. 3 }
 ]
 
 { #category : #sequentialDiceTests }

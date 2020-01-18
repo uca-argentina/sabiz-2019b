@@ -112,7 +112,7 @@ CardTest >> testInstantCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
 	game throwDicesFor: player1.
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game lapOf: player1) equals: 1.
-	self assert: game currentTurn equals: player2.
+	self assert: game playerWhoseTurnItIsToPlay equals: player2.
 	game play: cardToPlay for: player1 on: {player1}.
 	
 ]

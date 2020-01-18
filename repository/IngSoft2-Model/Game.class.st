@@ -73,11 +73,6 @@ Game >> currentRanking [
 		collect: [ :assoc | assoc key ]
 ]
 
-{ #category : #accessingGame }
-Game >> currentTurn [
-	^ turnAllocator currentTurn
-]
-
 { #category : #'private - spotEffects' }
 Game >> dealCardTo: player [
 	| newState hand |
@@ -161,11 +156,6 @@ Game >> move: player [
 		ifFalse: [ leaderBoard add: player ]
 ]
 
-{ #category : #'testing - playing' }
-Game >> moveAllPlayers [
-	self players do: [ :player | self move: player ]
-]
-
 { #category : #'private - spotEffects' }
 Game >> moveEveryoneToTheFirstSpot [
 	self players
@@ -189,17 +179,6 @@ Game >> numberOfPlayers [
 Game >> play: card for: player on: target [
 	(self stateOf: player) checkAvailabilityOf: card.
 	card applyEffectOn: target on: self triggeredBy: player
-]
-
-{ #category : #'testing - playing' }
-Game >> playAnEntireGame [
-	[ self isNotOver ] whileTrue: [ self playOneRound ]
-]
-
-{ #category : #'testing - playing' }
-Game >> playOneRound [
-	self assert: self isNotOver description: 'Game is already over'.
-	self moveAllPlayers
 ]
 
 { #category : #initialization }
@@ -248,6 +227,11 @@ Game >> playerHasFinished: player [
 { #category : #accessingGameState }
 Game >> playerHasNotFinished: player [
 	^ (self lapOf: player) < board numberOfLaps
+]
+
+{ #category : #accessingGame }
+Game >> playerWhoseTurnItIsToPlay [
+	^ turnAllocator playerWhoseTurnItIsToPlay
 ]
 
 { #category : #accessingGame }
@@ -331,7 +315,7 @@ Game >> throwDicesFor: player [
 		assert: (self playerHasNotFinished: player)
 		description: 'Trying to move a player that has already finished'.
 	self
-		assert: turnAllocator currentTurn = player
+		assert: turnAllocator playerWhoseTurnItIsToPlay = player
 		description: 'Trying to move a player out of turn'.
 	self
 		updateStateFor: player

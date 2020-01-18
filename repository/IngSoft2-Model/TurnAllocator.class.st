@@ -22,6 +22,7 @@ TurnAllocator class >> for: participants [
 
 { #category : #advancing }
 TurnAllocator >> advanceTurnWheel [
+	currentTurn isNil ifTrue: [ ^ nil ].
 	turnWheel lastRolledIndex = (turnWheel sequenceSize - 1)
 		ifTrue: [ currentRound := currentRound + 1 ].
 	currentTurn := turnWheel roll.
@@ -33,13 +34,6 @@ TurnAllocator >> currentRoundNumber [
 	^ currentRound
 ]
 
-{ #category : #accessing }
-TurnAllocator >> currentTurn [
-	turnWheel sequenceSize = 0
-		ifTrue: [ ^ nil ].
-	^ currentTurn
-]
-
 { #category : #initialization }
 TurnAllocator >> initializeFor: participants [
 	turnWheel := SequentialDice withSequence: participants.
@@ -49,5 +43,12 @@ TurnAllocator >> initializeFor: participants [
 
 { #category : #alteringWheel }
 TurnAllocator >> playerHasFinished: player [
-	turnWheel removeFromSequence: player
+	turnWheel sequenceSize = 1
+		ifTrue: [ currentTurn := nil ]
+		ifFalse: [ turnWheel removeFromSequence: player ]
+]
+
+{ #category : #accessing }
+TurnAllocator >> playerWhoseTurnItIsToPlay [
+	^ currentTurn
 ]

@@ -15,7 +15,7 @@ CardPermanentEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
 { #category : #validation }
 CardPermanentEffect >> checkTurnOf: aPlayer in: aGame [
 	self
-		assert: aGame currentTurn = aPlayer
+		assert: aGame playerWhoseTurnItIsToPlay = aPlayer
 		description: 'Is not the turn of that player, cannot play permanent cards'
 ]
 
