@@ -15,11 +15,6 @@ Spot class >> with: anEffect [
 	^ self new with: anEffect
 ]
 
-{ #category : #effect }
-Spot >> applyEffectOn: game triggeredBy: player [
-	effect applyOn: game triggeredBy: player
-]
-
 { #category : #accessing }
 Spot >> effect [
 	^ effect

@@ -37,9 +37,10 @@ Board class >> with: effectDistribution andSpots: spotsAmount andLaps: laps [
 	^ Board with: spots andLaps: laps
 ]
 
-{ #category : #effect }
-Board >> applyEffectOn: game triggeredBy: player at: position [
-	(self spotAt: position) applyEffectOn: game triggeredBy: player
+{ #category : #accessing }
+Board >> effectAt: position [
+	self assert: (position > 0 and: position <= self numberOfSpots).
+	^ (spots at: position) effect
 ]
 
 { #category : #initialization }
@@ -73,10 +74,4 @@ Board >> numberOfLaps [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
-]
-
-{ #category : #accessing }
-Board >> spotAt: position [
-	self assert: (position > 0 and: position <= self numberOfSpots).
-	^ spots at: position
 ]

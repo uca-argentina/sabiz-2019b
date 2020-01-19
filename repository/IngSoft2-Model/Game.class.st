@@ -61,6 +61,11 @@ Game >> addPlayedCard: card to: target by: player [
 	self updateStateFor: player with: newState
 ]
 
+{ #category : #'private - spotEffects' }
+Game >> apply: effect for: player [
+	effect applyOn: self triggeredBy: player
+]
+
 { #category : #accessingPlayer }
 Game >> cardsInHandOf: player [
 	^ (self stateOf: player) cardsInHand
@@ -202,8 +207,10 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
 ]
 
 { #category : #'private - spotEffects' }
-Game >> player: player triggersEffectAt: position [
-	board applyEffectOn: self triggeredBy: player at: position
+Game >> player: player triggersEffectAt: spotNumber [
+	| effect |
+	effect := board effectAt: spotNumber.
+	self apply: effect for: player
 ]
 
 { #category : #'private - spotEffects' }

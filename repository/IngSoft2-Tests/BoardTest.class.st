@@ -40,7 +40,7 @@ BoardTest >> testCustomBoardHasGivenEffectsInTheCorrespondingPosition [
 	spots := self allSpotTypes.
 	board := Board with: spots andLaps: 2.
 	spots
-		withIndexDo: [ :spot :index | self assert: (board spotAt: index) equals: spot ]
+		withIndexDo: [ :spot :index | self assert: (board effectAt: index) equals: spot effect ]
 ]
 
 { #category : #tests }
@@ -53,8 +53,8 @@ BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsEl
 		at: 1.
 	1 to: board numberOfSpots do: [ :index | 
 		index == 1
-			ifTrue: [ self assert: (board spotAt: index) effect equals: effect ]
-			ifFalse: [ self assert: (board spotAt: index) effect class equals: NullEffect ] ]
+			ifTrue: [ self assert: (board effectAt: index) equals: effect ]
+			ifFalse: [ self assert: (board effectAt: index) class equals: NullEffect ] ]
 ]
 
 { #category : #'tests - instance creation' }
